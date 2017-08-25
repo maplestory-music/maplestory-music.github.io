@@ -3,31 +3,6 @@ import React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import LinkComponent from './LinkComponent';
 
-const products = [];
-var data = require('./bgm.json');
-
-function parseJSON() {
-  for (let i = 0; i < data.length; i++) {
-    let obj = data[i];
-    let source = obj.source;
-    let metadata = obj.metadata;
-    let version = "";
-    if (source.client && source.version) {
-      version = source.client + " " + source.version
-    }
-    products.push({
-      title: metadata.title,
-      filename: obj.filename,
-      description: obj.description,
-      icon: obj.icon,
-      structure: source.structure,
-      youtube: obj.youtube,
-      mark: obj.mark,
-      version: version
-    });
-  }
-}
-
 function linkFormatter(cell, row) {
   return (
     <LinkComponent youtube={row.youtube} title={row.title} />
@@ -55,9 +30,57 @@ function markSort(a, b, order) {
   }
 }
 
-parseJSON();
-
 class MyTable extends React.Component {
+
+  state = {
+    data: [],
+    dataParsed: []
+  };
+
+  parseJSON() {
+    let jsonData = this.state.data;
+    let parsedData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let obj = jsonData[i];
+      let source = obj.source;
+      let metadata = obj.metadata;
+      let version = "";
+      if (source.client && source.version) {
+        version = source.client + " " + source.version
+      }
+      parsedData.push({
+        title: metadata.title,
+        filename: obj.filename,
+        description: obj.description,
+        icon: obj.icon,
+        structure: source.structure,
+        youtube: obj.youtube,
+        mark: obj.mark,
+        version: version
+      });
+    }
+    this.setState({
+      dataParsed: parsedData
+    });
+  }
+
+  loadData() {
+    fetch('https://raw.githubusercontent.com/nanochromatic/maplebgm-db/master/bgm.json')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          data: responseJson
+        });
+        this.parseJSON();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  componentWillMount() {
+    this.loadData();
+  }
 
   render() {
     const options = {
@@ -72,7 +95,7 @@ class MyTable extends React.Component {
     return (
       <div>
         <BootstrapTable
-          data={products}
+          data={this.state.dataParsed}
           striped
           hover
           pagination={true}
