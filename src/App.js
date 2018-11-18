@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import { Nav, NavItem, Navbar, NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import MyTable from './MyTable.jsx'
+import MusicTable from './MusicTable.jsx';
 import './App.css';
 
 const Header = () => (
@@ -46,7 +46,7 @@ const Main = () => (
 const Home = () => (
   <home>
     <div className="App">
-      <MyTable />
+      <MusicTable />
     </div>
   </home>
 )

@@ -4,16 +4,6 @@ body {
   font-family: 'Lato', 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.react-bs-table-container {
-  margin: 15px 50px 15px 50px;
-}
-
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 10px 10px 10px;
-}
-
-/* Bootstrap table cells */
-.table > tbody > tr > td {
-  height: 60px;
-  vertical-align: middle;
 }
