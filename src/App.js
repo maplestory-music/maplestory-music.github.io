@@ -34,11 +34,9 @@ const Main = () => (
 )
 
 const Home = () => (
-  <home>
-    <div className="App">
-      <MusicTable />
-    </div>
-  </home>
+  <div className="App">
+    <MusicTable />
+  </div>
 )
 
 const About = () => (
