@@ -1,11 +1,11 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MapleStory Music",
+  "name": "MapleStory Music website",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "192x192",
-      "type": "image/png"
+      "sizes": "32x32",
+      "type": "image/x-icon"
     }
   ],
   "start_url": "./index.html",
