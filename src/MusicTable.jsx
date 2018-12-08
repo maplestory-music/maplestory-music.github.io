@@ -1,17 +1,10 @@
 /* eslint max-len: 0 */
 import React from 'react';
+import MarkComponent from './MarkComponent.jsx';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-
-function markRenderer(params) {
-  var element = document.createElement("span");
-  var imageElement = document.createElement("img");
-  imageElement.src = 'mark/' + params.value + '.png';
-  element.appendChild(imageElement);
-  return element;
-}
 
 function linkRenderer(params) {
   var element = document.createElement("span");
@@ -36,7 +29,7 @@ class MusicTable extends React.Component {
 
     this.state = {
       columnDefs: [
-        { headerName: "", field: "mark", width: 70, minWidth: 50, suppressSizeToFit: true, cellRenderer: "markRenderer" },
+        { headerName: "", field: "mark", width: 70, minWidth: 50, suppressSizeToFit: true, cellRendererFramework: MarkComponent },
         { headerName: "Folder", field: "source.structure" },
         { headerName: "Title", field: "metadata.title", cellRenderer: "linkRenderer" },
         { headerName: "Description", field: "description" },
@@ -52,7 +45,6 @@ class MusicTable extends React.Component {
         rowHeight: 45
       },
       components: {
-        markRenderer: markRenderer,
         linkRenderer: linkRenderer
       },
       cellStyle: {
