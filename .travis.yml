@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - 'stable'
+cache:
+  yarn: true
+  directories:
+    - node_modules
+script:
+  - yarn build
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: build
+  target-branch: master
+  on:
+    branch: source
