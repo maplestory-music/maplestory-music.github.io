@@ -1,7 +1,8 @@
 {
-  "name": "maplebgm-react",
+  "name": "maplestory-music",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://maplestory-music.github.io/",
   "dependencies": {
     "ag-grid-community": "^19.1.1",
     "ag-grid-react": "^19.1.1",
@@ -12,13 +13,16 @@
     "react-router-dom": "^4.1.1"
   },
   "devDependencies": {
+    "gh-pages": "^2.0.1",
     "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -b master -d build"
   },
   "browserslist": [
     ">0.2%",
