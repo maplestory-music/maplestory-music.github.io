@@ -1,10 +1,15 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Route, Link, Switch } from 'react-router-dom';
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+
 import AboutPage from './AboutPage.jsx';
 import MusicTable from './MusicTable.jsx';
 import './App.css';
+
+ReactGA.initialize('UA-53945508-5');
+ReactGA.pageview('/home');
 
 const Header = () => (
   <Navbar collapseOnSelect>
