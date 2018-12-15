@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: 'Lato', 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.navbar {
+  margin-bottom: 10px;
+}

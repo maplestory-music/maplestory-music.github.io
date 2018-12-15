@@ -69,17 +69,22 @@ class MusicTable extends React.Component {
 
   render() {
     return (
-      <div className="ag-theme-balham">
-        <AgGridReact
-          columnDefs={this.state.columnDefs}
-          rowData={this.state.rowData}
-          gridOptions={
-            this.state.gridOptions
-          }
-          components={this.state.components}
-          onFirstDataRendered={this.onFirstDataRendered.bind(this)}
-          cellStyle={this.state.cellStyle}>
-        </AgGridReact>
+      <div>
+        <div>
+          <img id='header-logo' src='assets/pink-bean.png' alt='header logo'/>
+        </div>
+        <div className="ag-theme-balham">
+          <AgGridReact
+            columnDefs={this.state.columnDefs}
+            rowData={this.state.rowData}
+            gridOptions={
+              this.state.gridOptions
+            }
+            components={this.state.components}
+            onFirstDataRendered={this.onFirstDataRendered.bind(this)}
+            cellStyle={this.state.cellStyle}>
+          </AgGridReact>
+        </div>
       </div>
     );
   }

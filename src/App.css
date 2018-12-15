@@ -2,6 +2,13 @@
   margin: 2% 3% 3% 3%;
 }
 
+.App #header-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
 .App .ag-theme-balham {
   margin: auto;
   height: 90vh;
