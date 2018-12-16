@@ -29,11 +29,34 @@ class MusicTable extends React.Component {
 
     this.state = {
       columnDefs: [
-        { headerName: "", field: "mark", width: 70, minWidth: 50, suppressSizeToFit: true, cellRendererFramework: MarkComponent },
-        { headerName: "Folder", field: "source.structure" },
-        { headerName: "Title", field: "metadata.title", cellRenderer: "linkRenderer" },
-        { headerName: "Description", field: "description" },
-        { headerName: "Date", field: "source.date" }
+        {
+          headerName: '',
+          field: 'mark',
+          minWidth: 70,
+          maxWidth: 70,
+          suppressResize: true,
+          cellRendererFramework: MarkComponent
+        },
+        {
+          headerName: 'Title',
+          field: 'metadata.title',
+          minWidth: 250,
+          cellRenderer: 'linkRenderer'
+        },
+        {
+          headerName: 'Description',
+          minWidth: 375,
+          field: 'description'
+        },
+        {
+          headerName: 'Folder',
+          field: 'source.structure'
+        },
+        {
+          headerName: 'Date',
+          field: 'source.date',
+          sort: 'desc'
+        }
       ],
       gridOptions: {
         enableColResize: true,
@@ -42,6 +65,7 @@ class MusicTable extends React.Component {
         animateRows: true,
         pagination: true,
         paginationPageSize: 25,
+        suppressColumnVirtualisation: true,
         rowHeight: 45
       },
       components: {
