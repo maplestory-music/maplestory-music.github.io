@@ -97,6 +97,15 @@ class MusicTable extends React.Component {
         <div>
           <img id='header-logo' src='assets/pink-bean.png' alt='header logo'/>
         </div>
+        <div>
+          <p>
+            Welcome to the MapleStory Music database. This site provides a complete listing of the background music (BGM)
+            used in MapleStory. Collectively, the songs are also known as MapleStory's original soundtrack (OST).
+            Filter and sort operations can be performed on the properties shown below. Hover over a column header and press the menu
+            icon to access the filter dialog. Mobile users can access the filter dialog by pressing and holding the column
+            header.
+          </p>
+        </div>
         <div className="ag-theme-balham">
           <AgGridReact
             columnDefs={this.state.columnDefs}

@@ -2,6 +2,10 @@
   margin: 2% 3% 3% 3%;
 }
 
+.App p {
+  margin: 2vh 4vw;
+}
+
 .App #header-logo {
   display: block;
   margin-left: auto;

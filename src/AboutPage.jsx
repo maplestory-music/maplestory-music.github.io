@@ -6,8 +6,8 @@ class AboutPage extends React.Component {
       <div>
         <h2>About</h2>
           <p>
-            Welcome to the MapleStory Music database. This site provides a complete listing of the background music (BGM)
-            used in MapleStory. Collectively, the songs are also known as MapleStory's original soundtrack (OST).
+            This database catalogs music from every region of MapleStory and aims to be the definitive resource for
+            MapleStory music. It will be updated whenever new songs are added to the client of any region.
           </p>
       </div>
     );
