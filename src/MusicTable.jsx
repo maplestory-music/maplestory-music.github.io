@@ -66,6 +66,7 @@ class MusicTable extends React.Component {
         pagination: true,
         paginationPageSize: 25,
         suppressColumnVirtualisation: true,
+        suppressMovableColumns: true,
         rowHeight: 45
       },
       components: {
