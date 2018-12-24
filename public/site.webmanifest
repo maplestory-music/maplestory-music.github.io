@@ -1,0 +1,20 @@
+{
+  "name": "MapleStory Music",
+  "short_name": "MapleStory Music",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "start_url": "https://maplestory-music.github.io/",
+  "display": "standalone"
+}
