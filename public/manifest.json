@@ -15,6 +15,6 @@
   ],
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "start_url": "https://maplestory-music.github.io/",
+  "start_url": "/",
   "display": "standalone"
 }
