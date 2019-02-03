@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "https://maplestory-music.github.io/",
   "dependencies": {
-    "ag-grid-community": "^19.1.1",
-    "ag-grid-react": "^19.1.1",
+    "ag-grid-community": "^20.0.0",
+    "ag-grid-react": "^20.0.0",
     "react": "^16.6.3",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.6.3",
