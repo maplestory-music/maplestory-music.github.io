@@ -34,7 +34,7 @@ class MusicTable extends React.Component {
           field: 'mark',
           minWidth: 70,
           maxWidth: 70,
-          suppressResize: true,
+          resizable: false,
           cellRendererFramework: MarkComponent
         },
         {
@@ -59,15 +59,17 @@ class MusicTable extends React.Component {
         }
       ],
       gridOptions: {
-        enableColResize: true,
-        enableFilter: true,
-        enableSorting: true,
         animateRows: true,
         pagination: true,
         paginationPageSize: 25,
         suppressColumnVirtualisation: true,
         suppressMovableColumns: true,
-        rowHeight: 45
+        rowHeight: 45,
+        defaultColDef: {
+          sortable: true,
+          filter: true,
+          resizable: true
+        }
       },
       components: {
         linkRenderer: linkRenderer
