@@ -3,6 +3,7 @@ import React from 'react';
 import MarkComponent from './MarkComponent.jsx';
 
 import { AgGridReact } from 'ag-grid-react';
+import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
@@ -35,7 +36,8 @@ class MusicTable extends React.Component {
           minWidth: 70,
           maxWidth: 70,
           resizable: false,
-          cellRendererFramework: MarkComponent
+          cellRendererFramework: MarkComponent,
+          getQuickFilterText: () => ''
         },
         {
           headerName: 'Title',
@@ -50,12 +52,14 @@ class MusicTable extends React.Component {
         },
         {
           headerName: 'Folder',
-          field: 'source.structure'
+          field: 'source.structure',
+          getQuickFilterText: () => ''
         },
         {
           headerName: 'Date',
           field: 'source.date',
-          sort: 'desc'
+          sort: 'desc',
+          getQuickFilterText: () => ''
         }
       ],
       gridOptions: {
@@ -94,6 +98,15 @@ class MusicTable extends React.Component {
     params.columnApi.autoSizeColumns(allColumnIds);
   }
 
+  onFilterTextChanged(params) {
+    this.gridApi.setQuickFilter(params.target.value);
+  }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
   render() {
     return (
       <div>
@@ -104,11 +117,21 @@ class MusicTable extends React.Component {
           <p>
             Welcome to the MapleStory Music database. This site provides a complete listing of the background music (BGM)
             used in MapleStory. Collectively, the songs are also known as MapleStory's original soundtrack (OST).
-            Filter and sort operations can be performed on the properties shown below. Hover over a column header and press the menu
-            icon to access the filter dialog. Mobile users can access the filter dialog by pressing and holding the column
-            header.
+            To sort by a column, press the column header. Hover over a column header and press the menu icon to access the
+            advanced filter dialog. Mobile users can access the filter dialog by pressing and holding the column header.
           </p>
         </div>
+        <FormGroup className='filter-text' bsSize="large">
+          <InputGroup>
+            <InputGroup.Addon>
+              <Glyphicon glyph="search" />
+            </InputGroup.Addon>
+            <FormControl
+              type='text'
+              placeholder='Song title or keyword'
+              onChange={this.onFilterTextChanged.bind(this)} />
+          </InputGroup>
+        </FormGroup>
         <div className="ag-theme-balham">
           <AgGridReact
             columnDefs={this.state.columnDefs}
@@ -118,6 +141,7 @@ class MusicTable extends React.Component {
             }
             components={this.state.components}
             onFirstDataRendered={this.onFirstDataRendered.bind(this)}
+            onGridReady={this.onGridReady.bind(this)}
             cellStyle={this.state.cellStyle}>
           </AgGridReact>
         </div>

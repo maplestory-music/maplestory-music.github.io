@@ -13,6 +13,10 @@
   margin-bottom: 10px;
 }
 
+.App .filter-text {
+  margin: 2vh 14vw;
+}
+
 .App .ag-theme-balham {
   margin: auto;
   width: 95vw;
