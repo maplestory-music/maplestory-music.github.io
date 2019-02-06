@@ -3,7 +3,12 @@ import React from 'react';
 import MarkComponent from './MarkComponent.jsx';
 
 import { AgGridReact } from 'ag-grid-react';
-import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
+import {
+  FormControl,
+  FormGroup,
+  Glyphicon,
+  InputGroup
+} from 'react-bootstrap';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
@@ -102,6 +107,12 @@ class MusicTable extends React.Component {
     this.gridApi.setQuickFilter(params.target.value);
   }
 
+  onFilterTextKeyPress(params) {
+    if (params.key === 'Enter') {
+      document.activeElement.blur();
+    }
+  }
+
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
@@ -129,7 +140,8 @@ class MusicTable extends React.Component {
             <FormControl
               type='text'
               placeholder='Song title or keyword'
-              onChange={this.onFilterTextChanged.bind(this)} />
+              onChange={this.onFilterTextChanged.bind(this)}
+              onKeyPress={this.onFilterTextKeyPress.bind(this)} />
           </InputGroup>
         </FormGroup>
         <div className="ag-theme-balham">
