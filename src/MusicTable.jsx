@@ -65,6 +65,11 @@ class MusicTable extends React.Component {
           field: 'source.date',
           sort: 'desc',
           getQuickFilterText: () => ''
+        },
+        {
+          headerName: 'Client',
+          field: 'source.cliver',
+          getQuickFilterText: () => ''
         }
       ],
       gridOptions: {
@@ -92,7 +97,15 @@ class MusicTable extends React.Component {
   componentWillMount() {
     fetch('https://raw.githubusercontent.com/maplestory-music/maplebgm-db/master/bgm.json')
       .then(result => result.json())
-      .then(rowData => this.setState({ rowData }))
+      .then(rowData => {
+        let rowDataMod = rowData.map(song => {
+          if ('client' in song.source && 'version' in song.source) {
+            song.source['cliver'] = `${song.source.client}  ${song.source.version}`;
+          }
+          return song;
+        });
+        this.setState({ rowData: rowDataMod })
+      });
   }
 
   onFirstDataRendered(params) {
