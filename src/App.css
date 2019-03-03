@@ -27,3 +27,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.App .ag-theme-balham a {
+  text-decoration: underline;
+  font-weight: 500;
+}
