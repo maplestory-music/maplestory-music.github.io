@@ -1,9 +1,22 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Lato', 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Lato', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .navbar {
   margin-bottom: 10px;
+}
+
+.browser-alert {
+  padding: 16px;
+  text-align: center;
+  color: #a94442;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+}
+
+.browser-msg {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
 }
