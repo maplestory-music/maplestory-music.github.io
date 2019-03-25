@@ -32,3 +32,11 @@
   text-decoration: underline;
   font-weight: 500;
 }
+
+.About .gh-project-name {
+  margin-top: 0;
+}
+
+.About .gh-project-entry {
+  margin-top: 20px;
+}

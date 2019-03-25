@@ -4061,6 +4061,11 @@ gh-pages@^2.0.1:
     graceful-fs "^4.1.11"
     rimraf "^2.6.2"
 
+github-buttons@^2.2.5:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/github-buttons/-/github-buttons-2.2.8.tgz#635a7bef3466e5404bd4a9ad85c440677a2b8ede"
+  integrity sha512-vdCNuBsKyVfLX/HJCJ9MPgwt0k8rluxYx0K3hoL9j/pShasYLoRla2OpC5u9bjB+a0X4pVHxi7CwiB66oE+smg==
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -7942,6 +7947,13 @@ react-ga@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.5.6.tgz#5a2e2fa78ae298e5b0a4498210eeec631ef1b562"
   integrity sha512-g04dz6zrbdHRxVaURPWT3RUbjLflh74sS6dCuhGeZupj7ii+UEt9lwTjALb2ST2w+7wAmzG1YqYlNX4yvRXe1g==
+
+react-github-btn@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-github-btn/-/react-github-btn-1.0.3.tgz#0a0d2967c913cf514953ebe8ceab281c8adfc9c3"
+  integrity sha512-+DLWYt3yqtkgaRfe77ALnPGSDmy188sXWPt0XzBnuoLBwzaKUjwdueDvZ2r7VYVrDumGwz92XUDOgkQHWQCYvg==
+  dependencies:
+    github-buttons "^2.2.5"
 
 react-is@^16.3.2:
   version "16.6.3"
