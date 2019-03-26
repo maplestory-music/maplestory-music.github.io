@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactGA from 'react-ga';
-import { Route, Link, Switch } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+import { Route, Link, Switch, Router } from 'react-router-dom';
 import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -8,8 +9,12 @@ import AboutPage from './AboutPage.jsx';
 import MusicTable from './MusicTable.jsx';
 import './App.css';
 
+const history = createHistory();
 ReactGA.initialize('UA-53945508-5');
-ReactGA.pageview('/home');
+history.listen((location, action) => {
+  ReactGA.pageview(location.pathname + location.search);
+});
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const Header = () => (
   <Navbar collapseOnSelect>
@@ -51,10 +56,12 @@ const About = () => (
 )
 
 const App = () => (
-  <div>
-    <Header />
-    <Main />
-  </div>
+  <Router history={history}>
+    <div>
+      <Header />
+      <Main />
+    </div>
+  </Router>
 )
 
 export default App;
