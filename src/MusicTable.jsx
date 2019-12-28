@@ -83,7 +83,8 @@ class MusicTable extends React.Component {
           sortable: true,
           filter: true,
           resizable: true
-        }
+        },
+        domLayout: 'autoHeight'
       },
       components: {
         linkRenderer: linkRenderer
