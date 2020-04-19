@@ -1,20 +1,25 @@
 {
-  "name": "Maple Music",
-  "short_name": "Maple Music",
+  "short_name": "MapleStory Music",
+  "name": "MapleStory Music",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
     },
     {
-      "src": "/android-chrome-256x256.png",
-      "sizes": "256x256",
-      "type": "image/png"
+      "src": "android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "android-chrome-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
     }
   ],
+  "start_url": ".",
+  "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "start_url": "/",
-  "display": "standalone"
+  "background_color": "#ffffff"
 }
