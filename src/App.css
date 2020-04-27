@@ -1,38 +1,42 @@
-.App {
-  text-align: center;
+.About {
+  margin: 2% 3% 3% 3%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App p {
+  margin: 2vh 4vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App #header-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App .filter-text {
+  margin: 2vh 14vw;
+}
+
+.App .ag-theme-balham {
+  margin: auto;
+  width: 95vw;
+}
+
+.App .ag-theme-balham .ag-cell[col-id='mark'] {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App .ag-theme-balham a {
+  text-decoration: underline;
+  font-weight: 500;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.About .gh-project-name {
+  margin-top: 0;
+}
+
+.About .gh-project-entry {
+  margin-top: 20px;
 }
