@@ -121,7 +121,7 @@ const getComponents: () => any = () => {
   };
 };
 
-const MusicGrid: React.FC = () => {
+const MusicGrid: React.FC<{ query: string | undefined }> = ({ query }) => {
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
@@ -132,7 +132,7 @@ const MusicGrid: React.FC = () => {
 
   useEffect(() => {
     fetch(
-      'https://raw.githubusercontent.com/maplestory-music/maplebgm-db/master/bgm.json'
+      'https://raw.githubusercontent.com/maplestory-music/maplebgm-db/prod/bgm.min.json'
     )
       .then((result) => result.json())
       .then((rowData) => {
@@ -143,8 +143,13 @@ const MusicGrid: React.FC = () => {
           return song;
         });
         setRowData(rowDataMod);
+        gridColumnApi.current?.autoSizeAllColumns();
       });
   }, [setRowData]);
+
+  useEffect(() => {
+    gridApi.current?.setQuickFilter(query);
+  }, [query]);
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api;
@@ -158,7 +163,6 @@ const MusicGrid: React.FC = () => {
         rowData={rowData}
         gridOptions={gridOptions.current}
         components={getComponents()}
-        // onFirstDataRendered={this.onFirstDataRendered.bind(this)}
         onGridReady={onGridReady}
       ></AgGridReact>
     </div>
