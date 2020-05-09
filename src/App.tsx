@@ -1,4 +1,5 @@
-import React from 'react';
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -14,6 +15,16 @@ import HomePage from './pages/HomePage';
 const Header = () => (
   <Navbar bg='dark' variant='dark' expand='lg'>
     <Navbar.Brand as={Link} to='/'>
+      <img
+        css={css`
+          margin-right: 8px;
+        `}
+        alt=''
+        src='./assets/pb-logo.svg'
+        width='30'
+        height='30'
+        className='d-inline-block align-top'
+      />{' '}
       MapleStory Music
     </Navbar.Brand>
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
