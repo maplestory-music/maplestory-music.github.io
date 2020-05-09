@@ -41,22 +41,6 @@ interface IMusicGridData extends IMusicGridJson {
   };
 }
 
-function linkRenderer(params: any) {
-  var element = document.createElement('span');
-  var textNode = document.createTextNode(params.data.metadata.title);
-  if (params.data.youtube) {
-    var linkElement = document.createElement('a');
-    linkElement.appendChild(textNode);
-    linkElement.href = 'https://youtu.be/' + params.data.youtube;
-    linkElement.target = '_blank';
-    linkElement.rel = 'noopener noreferrer';
-    element.appendChild(linkElement);
-  } else {
-    element.appendChild(textNode);
-  }
-  return element;
-}
-
 const getGridOptions: () => GridOptions = () => {
   return {
     animateRows: true,
@@ -115,13 +99,10 @@ const getColDef: () => ColDef[] = () => {
   ];
 };
 
-const getComponents: () => any = () => {
-  return {
-    linkRenderer: linkRenderer,
-  };
-};
-
-const MusicGrid: React.FC<{ query: string | undefined }> = ({ query }) => {
+const MusicGrid: React.FC<{
+  query: string | undefined;
+  onSongChange: (song: string) => void;
+}> = ({ query, onSongChange }) => {
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
@@ -156,13 +137,33 @@ const MusicGrid: React.FC<{ query: string | undefined }> = ({ query }) => {
     gridColumnApi.current = params.columnApi;
   };
 
+  const linkRenderer: (params: any) => HTMLElement = (params) => {
+    var element = document.createElement('span');
+    var textNode = document.createTextNode(params.data.metadata.title);
+    if (params.data.youtube) {
+      var linkElement = document.createElement('a');
+      linkElement.appendChild(textNode);
+      // linkElement.href = 'https://youtu.be/' + params.data.youtube;
+      linkElement.href = '#';
+      // linkElement.target = '_blank';
+      linkElement.rel = 'noopener noreferrer';
+      linkElement.onclick = (ev: MouseEvent): any => {
+        onSongChange('https://youtu.be/' + params.data.youtube);
+      };
+      element.appendChild(linkElement);
+    } else {
+      element.appendChild(textNode);
+    }
+    return element;
+  };
+
   return (
     <div className='ag-theme-balham'>
       <AgGridReact
         columnDefs={colDef.current}
         rowData={rowData}
         gridOptions={gridOptions.current}
-        components={getComponents()}
+        components={{ linkRenderer: linkRenderer }}
         onGridReady={onGridReady}
       ></AgGridReact>
     </div>

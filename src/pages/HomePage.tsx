@@ -1,9 +1,13 @@
+/** @jsx jsx */
 import React, { useState } from 'react';
+import { css, jsx } from '@emotion/core';
 import { Form, InputGroup } from 'react-bootstrap';
+import ReactPlayer from 'react-player';
 import MusicGrid from '../components/MusicGrid';
 
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
+  const [currentSong, setCurrentSong] = useState<string>();
 
   const onFilterTextChanged: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -21,22 +25,33 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const onSongChange: (song: string) => void = (song) => {
+    setCurrentSong(song);
+  };
+
   return (
     <div>
-      <div>
-        <img id='header-logo' src='assets/pink-bean.png' alt='header logo' />
-      </div>
-      <div>
-        <p>
-          Welcome to the MapleStory Music database. This site provides a
-          complete listing of the background music (BGM) used in MapleStory.
-          Collectively, the songs are also known as MapleStory's original
-          soundtrack (OST). To sort by a column, press the column header. Hover
-          over a column header and press the menu icon to access the advanced
-          filter dialog. Mobile users can access the filter dialog by pressing
-          and holding the column header.
-        </p>
-      </div>
+      {currentSong === undefined && (
+        <div>
+          <img id='header-logo' src='assets/pink-bean.png' alt='header logo' />
+        </div>
+      )}
+      {currentSong !== undefined && (
+        <div>
+          <ReactPlayer
+            css={css`
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              max-width: 100vw;
+            `}
+            url={currentSong}
+            playing
+            loop
+            controls
+          />
+        </div>
+      )}
       <Form.Group className='filter-text'>
         <InputGroup size='lg'>
           <InputGroup.Prepend>
@@ -52,7 +67,7 @@ const HomePage: React.FC = () => {
           />
         </InputGroup>
       </Form.Group>
-      <MusicGrid query={filterText} />
+      <MusicGrid query={filterText} onSongChange={onSongChange} />
     </div>
   );
 };

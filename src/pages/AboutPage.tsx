@@ -4,6 +4,17 @@ import GitHubButton from 'react-github-btn';
 const AboutPage: React.FC = () => (
   <div>
     <h2>About</h2>
+    <div>
+      <p>
+        Welcome to the MapleStory Music database. This site provides a complete
+        listing of the background music (BGM) used in MapleStory. Collectively,
+        the songs are also known as MapleStory's original soundtrack (OST). To
+        sort by a column, press the column header. Hover over a column header
+        and press the menu icon to access the advanced filter dialog. Mobile
+        users can access the filter dialog by pressing and holding the column
+        header.
+      </p>
+    </div>
     <p>
       This database catalogs music from every region of MapleStory and aims to
       be the definitive resource for MapleStory music. It will be updated
