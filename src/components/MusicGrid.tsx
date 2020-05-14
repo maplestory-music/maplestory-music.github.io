@@ -6,10 +6,13 @@ import {
   GridApi,
   ColumnApi,
   GridReadyEvent,
+  ICellRendererParams,
+  FirstDataRenderedEvent,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import MapIcon from './MapIcon';
+import MarkRenderer from './MarkRenderer';
+import LinkRenderer from './LinkRenderer';
 
 interface IMusicGridJson {
   description: string;
@@ -58,7 +61,9 @@ const getGridOptions: () => GridOptions = () => {
   };
 };
 
-const getColDef: () => ColDef[] = () => {
+const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
+  onSongChange
+) => {
   return [
     {
       headerName: '',
@@ -66,14 +71,19 @@ const getColDef: () => ColDef[] = () => {
       minWidth: 70,
       maxWidth: 70,
       resizable: false,
-      cellRendererFramework: MapIcon,
+      cellRendererFramework: MarkRenderer,
       getQuickFilterText: () => '',
     },
     {
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
-      cellRenderer: 'linkRenderer',
+      cellRendererFramework: LinkRenderer,
+      cellRendererParams: (props: ICellRendererParams) => ({
+        title: props.value,
+        youtube: props.data.youtube,
+        onSongChange: onSongChange,
+      }),
     },
     {
       headerName: 'Description',
@@ -107,8 +117,8 @@ const MusicGrid: React.FC<{
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
   const gridOptions = useRef<GridOptions | undefined>(undefined);
-  const [rowData, setRowData] = useState<any>(null);
-  colDef.current = getColDef();
+  const [rowData, setRowData] = useState<any>(undefined);
+  colDef.current = getColDef(onSongChange);
   gridOptions.current = getGridOptions();
 
   useEffect(() => {
@@ -124,7 +134,6 @@ const MusicGrid: React.FC<{
           return song;
         });
         setRowData(rowDataMod);
-        gridColumnApi.current?.autoSizeAllColumns();
       });
   }, [setRowData]);
 
@@ -137,24 +146,8 @@ const MusicGrid: React.FC<{
     gridColumnApi.current = params.columnApi;
   };
 
-  const linkRenderer: (params: any) => HTMLElement = (params) => {
-    var element = document.createElement('span');
-    var textNode = document.createTextNode(params.data.metadata.title);
-    if (params.data.youtube) {
-      var linkElement = document.createElement('a');
-      linkElement.appendChild(textNode);
-      // linkElement.href = 'https://youtu.be/' + params.data.youtube;
-      linkElement.href = '#';
-      // linkElement.target = '_blank';
-      linkElement.rel = 'noopener noreferrer';
-      linkElement.onclick = (ev: MouseEvent): any => {
-        onSongChange('https://youtu.be/' + params.data.youtube);
-      };
-      element.appendChild(linkElement);
-    } else {
-      element.appendChild(textNode);
-    }
-    return element;
+  const onFirstDataRendered = (event: FirstDataRenderedEvent) => {
+    event.columnApi.autoSizeAllColumns();
   };
 
   return (
@@ -163,7 +156,7 @@ const MusicGrid: React.FC<{
         columnDefs={colDef.current}
         rowData={rowData}
         gridOptions={gridOptions.current}
-        components={{ linkRenderer: linkRenderer }}
+        onFirstDataRendered={onFirstDataRendered}
         onGridReady={onGridReady}
       ></AgGridReact>
     </div>

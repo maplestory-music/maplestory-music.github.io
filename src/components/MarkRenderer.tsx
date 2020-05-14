@@ -1,7 +1,7 @@
 import React from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 
-const MapIcon: React.FC<ICellRendererParams> = (props: ICellRendererParams) => {
+const MarkRenderer: React.FC<ICellRendererParams> = (props) => {
   const path = `mark/${props.value}.png`;
   return (
     <span>
@@ -10,4 +10,4 @@ const MapIcon: React.FC<ICellRendererParams> = (props: ICellRendererParams) => {
   );
 };
 
-export default MapIcon;
+export default MarkRenderer;
