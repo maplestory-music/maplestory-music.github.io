@@ -2,6 +2,7 @@
 import React from 'react';
 import { css, jsx } from '@emotion/core';
 import { ICellRendererParams } from 'ag-grid-community';
+import ReactGA from 'react-ga';
 
 interface ILinkRenderer extends ICellRendererParams {
   title: string;
@@ -14,9 +15,21 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
   youtube,
   onSongChange,
 }) => {
-  const onClick: (evt: React.MouseEvent) => void = (evt) => {
+  const onEmbeddedClick: (e: React.MouseEvent) => void = (e) => {
+    ReactGA.event({
+      category: 'Video',
+      action: 'View embedded video',
+      label: youtube,
+    });
     onSongChange(`https://youtu.be/${youtube}`);
-    evt.preventDefault();
+    e.preventDefault();
+  };
+  const onExternalClick: (e: React.MouseEvent) => void = (e) => {
+    ReactGA.event({
+      category: 'Video',
+      action: 'View external video',
+      label: youtube,
+    });
   };
   return (
     <div>
@@ -33,10 +46,11 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
             rel='noopener noreferrer'
             target='_blank'
             title='View on YouTube'
+            onClick={onExternalClick}
           >
             <i className='fa fa-external-link'></i>
           </a>
-          <a href='# ' rel='noopener noreferrer' onClick={onClick}>
+          <a href='# ' rel='noopener noreferrer' onClick={onEmbeddedClick}>
             {title}
           </a>
         </span>

@@ -1,20 +1,30 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  NavLink,
-} from 'react-router-dom';
+import { Router, Switch, Route, Link, NavLink } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import ReactGA from 'react-ga';
 import { Navbar, Nav } from 'react-bootstrap';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 
+ReactGA.initialize('UA-53945508-5');
+const history = createBrowserHistory();
+history.listen((location, action) => {
+  ReactGA.pageview(location.pathname + location.search);
+});
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+const onNavLinkClick: (e: React.MouseEvent) => void = (e) => {
+  const target = e.currentTarget as HTMLAnchorElement;
+  if (target.pathname === window.location.pathname) {
+    e.preventDefault();
+  }
+};
+
 const Header = () => (
   <Navbar bg='dark' variant='dark' expand='lg'>
-    <Navbar.Brand as={Link} to='/'>
+    <Navbar.Brand as={Link} to='/' onClick={onNavLinkClick}>
       <img
         css={css`
           margin-right: 8px;
@@ -30,10 +40,10 @@ const Header = () => (
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
     <Navbar.Collapse id='basic-navbar-nav'>
       <Nav className='mr-auto'>
-        <Nav.Link as={NavLink} exact to='/'>
+        <Nav.Link as={NavLink} exact to='/' onClick={onNavLinkClick}>
           Home
         </Nav.Link>
-        <Nav.Link as={NavLink} exact to='/about'>
+        <Nav.Link as={NavLink} exact to='/about' onClick={onNavLinkClick}>
           About
         </Nav.Link>
       </Nav>
@@ -63,7 +73,7 @@ const About = () => (
 );
 
 const App = () => (
-  <Router>
+  <Router history={history}>
     <div>
       <Header />
       <Main />

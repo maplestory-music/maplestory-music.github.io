@@ -18,6 +18,7 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
+    "react-ga": "^2.7.0",
     "react-github-btn": "^1.2.0",
     "react-player": "^2.0.1",
     "react-router-dom": "^5.1.2",
