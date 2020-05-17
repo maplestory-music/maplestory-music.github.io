@@ -1,27 +1,3 @@
-.About {
-  margin: 2% 3% 3% 3%;
-}
-
-.App p {
-  margin: 2vh 4vw;
-}
-
-.App #header-logo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-}
-
-.App .filter-text {
-  margin: 2vh 14vw;
-}
-
-.App .ag-theme-balham {
-  margin: auto;
-  width: 95vw;
-}
-
 .App .ag-theme-balham .ag-cell[col-id='mark'] {
   display: flex;
   align-items: center;

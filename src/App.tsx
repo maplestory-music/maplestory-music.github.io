@@ -23,7 +23,14 @@ const onNavLinkClick: (e: React.MouseEvent) => void = (e) => {
 };
 
 const Header = () => (
-  <Navbar bg='dark' variant='dark' expand='lg'>
+  <Navbar
+    css={css`
+      margin-bottom: 10px;
+    `}
+    bg='dark'
+    variant='dark'
+    expand='lg'
+  >
     <Navbar.Brand as={Link} to='/' onClick={onNavLinkClick}>
       <img
         css={css`
@@ -67,7 +74,12 @@ const Home = () => (
 );
 
 const About = () => (
-  <div className='About'>
+  <div
+    css={css`
+      margin: 2% 3% 3% 3%;
+    `}
+    className='About'
+  >
     <AboutPage />
   </div>
 );

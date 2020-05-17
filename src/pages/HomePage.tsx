@@ -33,7 +33,17 @@ const HomePage: React.FC = () => {
     <div>
       {currentSong === undefined && (
         <div>
-          <img id='header-logo' src='assets/pink-bean.png' alt='header logo' />
+          <img
+            css={css`
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              margin-bottom: 10px;
+            `}
+            id='header-logo'
+            src='assets/pink-bean.png'
+            alt='header logo'
+          />
         </div>
       )}
       {currentSong !== undefined && (
@@ -52,7 +62,12 @@ const HomePage: React.FC = () => {
           />
         </div>
       )}
-      <Form.Group className='filter-text'>
+      <Form.Group
+        css={css`
+          margin: 2vh 14vw;
+        `}
+        className='filter-text'
+      >
         <InputGroup size='lg'>
           <InputGroup.Prepend>
             <InputGroup.Text>

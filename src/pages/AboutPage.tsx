@@ -31,9 +31,9 @@ const AboutPage: React.FC = () => (
       >
         Star
       </GitHubButton>
-      <h4 className='gh-project-name'>
+      <h5 className='gh-project-name'>
         maplebgm-db: Definitive MapleStory music database
-      </h4>
+      </h5>
     </div>
     <div className='gh-project-entry'>
       <GitHubButton
@@ -44,9 +44,9 @@ const AboutPage: React.FC = () => (
       >
         Star
       </GitHubButton>
-      <h4 className='gh-project-name'>
+      <h5 className='gh-project-name'>
         maplestory-music: MapleStory Music website
-      </h4>
+      </h5>
     </div>
   </div>
 );

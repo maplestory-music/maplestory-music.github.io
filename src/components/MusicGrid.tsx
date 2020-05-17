@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import React, { useRef, useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
@@ -151,7 +153,13 @@ const MusicGrid: React.FC<{
   };
 
   return (
-    <div className='ag-theme-balham'>
+    <div
+      css={css`
+        margin: auto;
+        width: 95vw;
+      `}
+      className='ag-theme-balham'
+    >
       <AgGridReact
         columnDefs={colDef.current}
         rowData={rowData}
