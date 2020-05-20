@@ -11,9 +11,9 @@ import HomePage from './pages/HomePage';
 ReactGA.initialize('UA-53945508-5');
 const history = createBrowserHistory();
 history.listen((location, action) => {
-  ReactGA.pageview(location.pathname + location.search);
+  ReactGA.pageview(window.location.pathname);
 });
-ReactGA.pageview(window.location.pathname + window.location.search);
+ReactGA.pageview(window.location.pathname);
 
 const onNavLinkClick: (e: React.MouseEvent) => void = (e) => {
   const target = e.currentTarget as HTMLAnchorElement;
