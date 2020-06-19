@@ -1,13 +1,15 @@
 /** @jsx jsx */
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useRef } from 'react';
 import { css, jsx } from '@emotion/core';
 import { Form, InputGroup } from 'react-bootstrap';
 import ReactPlayer from 'react-player';
+import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
 
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
   const [currentSong, setCurrentSong] = useState<string>();
+  const player = useRef<ReactPlayer>(null);
 
   const onFilterTextChanged: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -64,10 +66,20 @@ const HomePage: React.FC = () => {
               margin-right: auto;
               max-width: 100vw;
             `}
-            url={currentSong}
+            ref={player}
+            url={`https://youtu.be/${currentSong}`}
             playing
-            loop
             controls
+            onEnded={() => {
+              if (player.current !== null) {
+                player.current.seekTo(0);
+                ReactGA.event({
+                  category: 'Video',
+                  action: 'Loop Embedded Video',
+                  label: currentSong,
+                });
+              }
+            }}
           />
         </div>
       )}

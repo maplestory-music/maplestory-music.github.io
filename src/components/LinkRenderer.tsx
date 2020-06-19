@@ -22,7 +22,7 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
       action: 'View embedded video',
       label: youtube,
     });
-    onSongChange(`https://youtu.be/${youtube}`);
+    onSongChange(youtube);
     e.preventDefault();
   };
   const onExternalClick: (e: React.MouseEvent) => void = (e) => {
