@@ -1,12 +1,20 @@
 /** @jsx jsx */
 import React, { useState, Fragment, useRef } from 'react';
 import { css, jsx } from '@emotion/core';
-import { Form, InputGroup } from 'react-bootstrap';
+import {
+  Form,
+  InputGroup,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap';
 import ReactPlayer from 'react-player';
 import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
+import { useDataSourceState } from '../context/DataSourceContext';
 
 const HomePage: React.FC = () => {
+  const dataSource = useDataSourceState();
   const [filterText, setFilterText] = useState<string>();
   const [currentSong, setCurrentSong] = useState<string>();
   const player = useRef<ReactPlayer>(null);
@@ -29,6 +37,20 @@ const HomePage: React.FC = () => {
 
   const onSongChange: (song: string) => void = (song) => {
     setCurrentSong(song);
+  };
+
+  const onShuffleSong: () => void = () => {
+    const selectionPool = dataSource.filter(
+      (song) => song.youtube !== '' && song.youtube !== currentSong
+    );
+    const shuffleSong =
+      selectionPool[Math.floor(Math.random() * selectionPool.length)];
+    setCurrentSong(shuffleSong.youtube);
+    ReactGA.event({
+      category: 'Video',
+      action: 'Shuffle Embedded Video',
+      label: shuffleSong.youtube,
+    });
   };
 
   return (
@@ -101,6 +123,20 @@ const HomePage: React.FC = () => {
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
+          <InputGroup.Append>
+            <OverlayTrigger
+              delay={{ show: 250, hide: 100 }}
+              overlay={
+                <Tooltip id={`tooltip-shuffle-song`}>
+                  Play a Random Song!
+                </Tooltip>
+              }
+            >
+              <Button variant='outline-success' onClick={onShuffleSong}>
+                <i className='fa fa-random'></i>
+              </Button>
+            </OverlayTrigger>
+          </InputGroup.Append>
         </InputGroup>
       </Form.Group>
       <MusicGrid query={filterText} onSongChange={onSongChange} />

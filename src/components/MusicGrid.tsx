@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
@@ -15,6 +15,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import MarkRenderer from './MarkRenderer';
 import LinkRenderer from './LinkRenderer';
+import { useDataSourceState } from '../context/DataSourceContext';
 
 interface IMusicGridJson {
   description: string;
@@ -36,7 +37,7 @@ interface IMusicGridJson {
   youtube: string;
 }
 
-interface IMusicGridData extends IMusicGridJson {
+export interface IMusicGridData extends IMusicGridJson {
   source: {
     client: string;
     date: string;
@@ -115,29 +116,13 @@ const MusicGrid: React.FC<{
   query: string | undefined;
   onSongChange: (song: string) => void;
 }> = ({ query, onSongChange }) => {
+  const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
   const gridOptions = useRef<GridOptions | undefined>(undefined);
-  const [rowData, setRowData] = useState<any>(undefined);
   colDef.current = getColDef(onSongChange);
   gridOptions.current = getGridOptions();
-
-  useEffect(() => {
-    fetch(
-      'https://raw.githubusercontent.com/maplestory-music/maplebgm-db/prod/bgm.min.json'
-    )
-      .then((result) => result.json())
-      .then((rowData) => {
-        const rowDataMod = rowData.map((song: IMusicGridData) => {
-          if (song.source.client && song.source.version) {
-            song.source.cliver = `${song.source.client} ${song.source.version}`;
-          }
-          return song;
-        });
-        setRowData(rowDataMod);
-      });
-  }, [setRowData]);
 
   useEffect(() => {
     gridApi.current?.setQuickFilter(query);
@@ -162,7 +147,7 @@ const MusicGrid: React.FC<{
     >
       <AgGridReact
         columnDefs={colDef.current}
-        rowData={rowData}
+        rowData={dataSource}
         gridOptions={gridOptions.current}
         onFirstDataRendered={onFirstDataRendered}
         onGridReady={onGridReady}

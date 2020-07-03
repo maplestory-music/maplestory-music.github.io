@@ -19,7 +19,7 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
   const onEmbeddedClick: (e: React.MouseEvent) => void = (e) => {
     ReactGA.event({
       category: 'Video',
-      action: 'View embedded video',
+      action: 'View Embedded Video',
       label: youtube,
     });
     onSongChange(youtube);
@@ -28,7 +28,7 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
   const onExternalClick: (e: React.MouseEvent) => void = (e) => {
     ReactGA.event({
       category: 'Video',
-      action: 'View external video',
+      action: 'View External Video',
       label: youtube,
     });
     // Handle tooltip defocus

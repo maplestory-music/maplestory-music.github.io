@@ -7,6 +7,7 @@ import ReactGA from 'react-ga';
 import { Navbar, Nav } from 'react-bootstrap';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
+import { DataSourceProvider } from './context/DataSourceContext';
 
 ReactGA.initialize('UA-53945508-5');
 const history = createBrowserHistory();
@@ -85,12 +86,14 @@ const About = () => (
 );
 
 const App = () => (
-  <Router history={history}>
-    <div>
-      <Header />
-      <Main />
-    </div>
-  </Router>
+  <DataSourceProvider>
+    <Router history={history}>
+      <div>
+        <Header />
+        <Main />
+      </div>
+    </Router>
+  </DataSourceProvider>
 );
 
 export default App;
