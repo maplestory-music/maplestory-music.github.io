@@ -18,5 +18,7 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "@typescript-eslint/interface-name-prefix": [true, "always-prefix"]
+  }
 }

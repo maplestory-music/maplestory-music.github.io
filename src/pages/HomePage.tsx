@@ -97,9 +97,9 @@ const HomePage: React.FC = () => {
                 margin-right: auto;
                 margin-bottom: 10px;
               `}
-              id='header-logo'
-              src='assets/pink-bean.png'
-              alt='header logo'
+              id="header-logo"
+              src="assets/pink-bean.png"
+              alt="header logo"
             />
           </div>
           <div>
@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
             url={`https://youtu.be/${currentSong}`}
             playing
             controls
-            onEnded={() => {
+            onEnded={(): void => {
               if (player.current !== null) {
                 if (!inPlaylistMode()) {
                   player.current.seekTo(0);
@@ -154,17 +154,17 @@ const HomePage: React.FC = () => {
           />
           {inPlaylistMode() && (
             <div
-              className='text-center'
+              className="text-center"
               css={css`
                 margin-top: 5px;
               `}
             >
-              <ButtonGroup size='sm'>
+              <ButtonGroup size="sm">
                 <Button
-                  variant='outline-primary'
+                  variant="outline-primary"
                   onClick={onPreviousPlaylistSong}
                 >
-                  <i className='fa fa-step-backward'></i>
+                  <i className="fa fa-step-backward"></i>
                 </Button>
                 <span
                   css={css`
@@ -182,8 +182,8 @@ const HomePage: React.FC = () => {
                   shufflePlaylist.current.length.toString().length,
                   '0'
                 )} | ${shufflePlaylist.current.length}`}</span>
-                <Button variant='outline-primary' onClick={onNextPlaylistSong}>
-                  <i className='fa fa-step-forward'></i>
+                <Button variant="outline-primary" onClick={onNextPlaylistSong}>
+                  <i className="fa fa-step-forward"></i>
                 </Button>
               </ButtonGroup>
             </div>
@@ -194,17 +194,17 @@ const HomePage: React.FC = () => {
         css={css`
           margin: 10px 14vw;
         `}
-        className='filter-text'
+        className="filter-text"
       >
-        <InputGroup size='lg'>
+        <InputGroup size="lg">
           <InputGroup.Prepend>
             <InputGroup.Text>
-              <i className='fa fa-search'></i>
+              <i className="fa fa-search"></i>
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            type='text'
-            placeholder='Song title or keyword'
+            type="text"
+            placeholder="Song title or keyword"
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
@@ -218,8 +218,8 @@ const HomePage: React.FC = () => {
                   </Tooltip>
                 }
               >
-                <Button variant='outline-success' onClick={onShufflePlaylist}>
-                  <i className='fa fa-random'></i>
+                <Button variant="outline-success" onClick={onShufflePlaylist}>
+                  <i className="fa fa-random"></i>
                 </Button>
               </OverlayTrigger>
             </InputGroup.Append>

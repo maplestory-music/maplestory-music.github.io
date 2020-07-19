@@ -75,14 +75,20 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       maxWidth: 70,
       resizable: false,
       cellRendererFramework: MarkRenderer,
-      getQuickFilterText: () => '',
+      getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
       cellRendererFramework: LinkRenderer,
-      cellRendererParams: (props: ICellRendererParams) => ({
+      cellRendererParams: (
+        props: ICellRendererParams
+      ): {
+        title: string;
+        youtube: string;
+        onSongChange: (song: string) => void;
+      } => ({
         title: props.value,
         youtube: props.data.youtube,
         onSongChange: onSongChange,
@@ -96,18 +102,18 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
     {
       headerName: 'Folder',
       field: 'source.structure',
-      getQuickFilterText: () => '',
+      getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Date',
       field: 'source.date',
       sort: 'desc',
-      getQuickFilterText: () => '',
+      getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Client',
       field: 'source.cliver',
-      getQuickFilterText: () => '',
+      getQuickFilterText: (): string => '',
     },
   ];
 };
@@ -128,12 +134,12 @@ const MusicGrid: React.FC<{
     gridApi.current?.setQuickFilter(query);
   }, [query]);
 
-  const onGridReady = (params: GridReadyEvent) => {
+  const onGridReady = (params: GridReadyEvent): void => {
     gridApi.current = params.api;
     gridColumnApi.current = params.columnApi;
   };
 
-  const onFirstDataRendered = (event: FirstDataRenderedEvent) => {
+  const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
     event.columnApi.autoSizeAllColumns();
   };
 
@@ -143,7 +149,7 @@ const MusicGrid: React.FC<{
         margin: auto;
         width: 95vw;
       `}
-      className='ag-theme-balham'
+      className="ag-theme-balham"
     >
       <AgGridReact
         columnDefs={colDef.current}

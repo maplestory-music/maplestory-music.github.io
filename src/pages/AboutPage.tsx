@@ -17,29 +17,29 @@ const AboutPage: React.FC = () => (
     </p>
     <h2>Source</h2>
     <p>The following GitHub projects power this site.</p>
-    <div className='gh-project-entry'>
+    <div className="gh-project-entry">
       <GitHubButton
-        href='https://github.com/maplestory-music/maplebgm-db'
-        data-size='large'
+        href="https://github.com/maplestory-music/maplebgm-db"
+        data-size="large"
         data-show-count={true}
-        aria-label='Star maplestory-music/maplebgm-db on GitHub'
+        aria-label="Star maplestory-music/maplebgm-db on GitHub"
       >
         Star
       </GitHubButton>
-      <h5 className='gh-project-name'>
+      <h5 className="gh-project-name">
         maplebgm-db: Definitive MapleStory music database
       </h5>
     </div>
-    <div className='gh-project-entry'>
+    <div className="gh-project-entry">
       <GitHubButton
-        href='https://github.com/maplestory-music/maplestory-music.github.io'
-        data-size='large'
+        href="https://github.com/maplestory-music/maplestory-music.github.io"
+        data-size="large"
         data-show-count={true}
-        aria-label='Star maplestory-music/maplestory-music.github.io on GitHub'
+        aria-label="Star maplestory-music/maplestory-music.github.io on GitHub"
       >
         Star
       </GitHubButton>
-      <h5 className='gh-project-name'>
+      <h5 className="gh-project-name">
         maplestory-music: MapleStory Music website
       </h5>
     </div>

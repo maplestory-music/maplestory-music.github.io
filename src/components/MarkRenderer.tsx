@@ -5,7 +5,7 @@ const MarkRenderer: React.FC<ICellRendererParams> = (props) => {
   const path = `mark/${props.value}.png`;
   return (
     <span>
-      <img src={path} alt='icon' />
+      <img src={path} alt="icon" />
     </span>
   );
 };

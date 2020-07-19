@@ -54,14 +54,14 @@ const LinkRenderer: React.FC<ILinkRenderer> = ({
                 margin-right: 3px;
               `}
               href={`https://youtu.be/${youtube}`}
-              rel='noopener noreferrer'
-              target='_blank'
+              rel="noopener noreferrer"
+              target="_blank"
               onClick={onExternalClick}
             >
-              <i className='fa fa-external-link'></i>
+              <i className="fa fa-external-link"></i>
             </a>
           </OverlayTrigger>
-          <a href='# ' rel='noopener noreferrer' onClick={onEmbeddedClick}>
+          <a href="# " rel="noopener noreferrer" onClick={onEmbeddedClick}>
             {title}
           </a>
         </span>
