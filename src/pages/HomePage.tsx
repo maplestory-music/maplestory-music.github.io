@@ -163,6 +163,7 @@ const HomePage: React.FC = () => {
                 <Button
                   variant="outline-primary"
                   onClick={onPreviousPlaylistSong}
+                  disabled={currentPlaylistSong.current === 0}
                 >
                   <i className="fa fa-step-backward"></i>
                 </Button>
@@ -182,7 +183,14 @@ const HomePage: React.FC = () => {
                   shufflePlaylist.current.length.toString().length,
                   '0'
                 )} | ${shufflePlaylist.current.length}`}</span>
-                <Button variant="outline-primary" onClick={onNextPlaylistSong}>
+                <Button
+                  variant="outline-primary"
+                  onClick={onNextPlaylistSong}
+                  disabled={
+                    currentPlaylistSong.current + 1 ===
+                    shufflePlaylist.current.length
+                  }
+                >
                   <i className="fa fa-step-forward"></i>
                 </Button>
               </ButtonGroup>
