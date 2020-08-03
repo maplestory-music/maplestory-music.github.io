@@ -2,6 +2,11 @@
   margin: 2vh 4vw;
 }
 
+.App .ag-theme-balham .ext-link {
+  color: inherit;
+  margin-right: 3px;
+}
+
 .App .ag-theme-balham .ag-cell[col-id='mark'] {
   display: flex;
   align-items: center;

@@ -13,8 +13,7 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import MarkRenderer from './MarkRenderer';
-import LinkRenderer from './LinkRenderer';
+import { MarkRenderer, LinkRenderer } from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 
 interface IMusicGridJson {
@@ -74,14 +73,14 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       minWidth: 70,
       maxWidth: 70,
       resizable: false,
-      cellRendererFramework: MarkRenderer,
+      cellRenderer: MarkRenderer,
       getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
-      cellRendererFramework: LinkRenderer,
+      cellRenderer: LinkRenderer,
       cellRendererParams: (
         props: ICellRendererParams
       ): {
