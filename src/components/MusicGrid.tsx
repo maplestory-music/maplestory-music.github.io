@@ -147,6 +147,7 @@ const MusicGrid: React.FC<{
       css={css`
         margin: auto;
         width: 95vw;
+        margin-bottom: 15px;
       `}
       className="ag-theme-balham"
     >
