@@ -1,4 +1,5 @@
 import { ICellRendererParams } from 'ag-grid-community';
+import { parseISO, differenceInWeeks, isFuture } from 'date-fns';
 import ReactGA from 'react-ga';
 
 interface ILinkRenderer extends ICellRendererParams {
@@ -63,6 +64,29 @@ export const LinkRenderer: (params: ILinkRenderer) => HTMLElement = (
 
     element.appendChild(extLink);
     element.appendChild(embeddedLink);
+  }
+  return element;
+};
+
+export const DateRenderer: (params: ICellRendererParams) => HTMLElement = (
+  params
+) => {
+  const element = document.createElement('div');
+  element.className = 'date-col';
+  const dateSpan = document.createElement('span');
+  const dateStr = params.value;
+  const date = parseISO(dateStr);
+  const now = new Date();
+  const isRecentTrack = differenceInWeeks(now, date) < 3 || isFuture(date);
+  dateSpan.innerHTML = dateStr;
+  element.appendChild(dateSpan);
+  if (isRecentTrack) {
+    dateSpan.className = 'recent-track';
+    const icon = document.createElement('i');
+    icon.className = 'fa fa-star';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.title = 'Recent Track';
+    element.appendChild(icon);
   }
   return element;
 };

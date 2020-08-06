@@ -13,7 +13,7 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import { MarkRenderer, LinkRenderer } from './CellRenderer';
+import { MarkRenderer, LinkRenderer, DateRenderer } from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 
 interface IMusicGridJson {
@@ -107,6 +107,7 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Date',
       field: 'source.date',
       sort: 'desc',
+      cellRenderer: DateRenderer,
       getQuickFilterText: (): string => '',
     },
     {

@@ -7,6 +7,14 @@
   margin-right: 3px;
 }
 
+.App .ag-theme-balham .date-col > .recent-track {
+  margin-right: 3px;
+}
+
+.App .ag-theme-balham .date-col > .fa.fa-star {
+  color: palevioletred;
+}
+
 .App .ag-theme-balham .ag-cell[col-id='mark'] {
   display: flex;
   align-items: center;
