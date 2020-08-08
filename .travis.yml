@@ -1,11 +1,15 @@
 language: node_js
 node_js:
-  - 'stable'
+  - lts/*
 cache:
   yarn: true
   directories:
     - node_modules
+branches:
+  except:
+    - master
 script:
+  - ./env.sh
   - yarn build
 
 deploy:

@@ -10,7 +10,7 @@ import HomePage from './pages/HomePage';
 import { DataSourceProvider } from './context/DataSourceContext';
 import { ReactElement } from 'react';
 
-ReactGA.initialize('UA-53945508-5');
+ReactGA.initialize(process.env.REACT_APP_GA_TOKEN);
 const history = createBrowserHistory();
 history.listen((location, action) => {
   ReactGA.pageview(window.location.pathname);
