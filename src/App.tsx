@@ -60,6 +60,21 @@ const Header = (): ReactElement => (
   </Navbar>
 );
 
+const Footer = (): ReactElement | null => {
+  const buildHash = process.env.REACT_APP_BUILD_HASH;
+  return buildHash ? (
+    <div
+      css={css`
+        text-align: center;
+        margin-bottom: 10px;
+      `}
+      className="footer"
+    >
+      <span>{`Build: ${buildHash}`}</span>
+    </div>
+  ) : null;
+};
+
 const Main = (): ReactElement => (
   <main>
     <Switch>
@@ -92,6 +107,7 @@ const App = (): ReactElement => (
       <div>
         <Header />
         <Main />
+        <Footer />
       </div>
     </Router>
   </DataSourceProvider>

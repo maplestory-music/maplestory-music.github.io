@@ -2,6 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       REACT_APP_GA_TOKEN: string;
+      REACT_APP_BUILD_HASH: string;
       NODE_ENV: 'development' | 'production';
     }
   }
