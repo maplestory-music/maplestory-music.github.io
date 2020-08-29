@@ -1,0 +1,42 @@
+.App {
+  p {
+    margin: 2vh 4vw;
+  }
+
+  .ag-theme-balham {
+    .ext-link {
+      color: inherit;
+      margin-right: 3px;
+    }
+
+    .date-col > {
+      .recent-track {
+        margin-right: 3px;
+      }
+      .fa.fa-star {
+        color: palevioletred;
+      }
+    }
+
+    .ag-cell[col-id='mark'] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    a {
+      text-decoration: underline;
+      font-weight: 500;
+    }
+  }
+}
+
+.About {
+  .gh-project-name {
+    margin-top: 0;
+  }
+
+  .gh-project-entry {
+    margin-top: 20px;
+  }
+}

@@ -19,6 +19,7 @@
     "date-fns": "^2.15.0",
     "gh-pages": "^2.2.0",
     "lodash-es": "^4.17.15",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
