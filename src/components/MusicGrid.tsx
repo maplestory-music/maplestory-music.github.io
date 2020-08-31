@@ -10,41 +10,13 @@ import {
   GridReadyEvent,
   ICellRendererParams,
   FirstDataRenderedEvent,
+  ValueFormatterParams,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { MarkRenderer, LinkRenderer, DateRenderer } from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
-
-interface IMusicGridJson {
-  description: string;
-  filename: string;
-  mark: string;
-  metadata: {
-    albumArtist: string;
-    artist: string;
-    subtitle: string;
-    title: string;
-    year: string;
-  };
-  source: {
-    client: string;
-    date: string;
-    structure: string;
-    version: string;
-  };
-  youtube: string;
-}
-
-export interface IMusicGridData extends IMusicGridJson {
-  source: {
-    client: string;
-    date: string;
-    structure: string;
-    version: string;
-    cliver: string;
-  };
-}
+import { format } from 'date-fns';
 
 const getGridOptions: () => GridOptions = () => {
   return {
@@ -106,13 +78,19 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
     {
       headerName: 'Date',
       field: 'source.date',
+      filter: 'agDateColumnFilter',
       sort: 'desc',
+      valueFormatter: (params: ValueFormatterParams) => {
+        return params.data.source.date
+          ? format(params.data.source.date, 'yyyy-MM-dd')
+          : '';
+      },
       cellRenderer: DateRenderer,
       getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Client',
-      field: 'source.cliver',
+      field: 'source.clientVersion',
       getQuickFilterText: (): string => '',
     },
   ];

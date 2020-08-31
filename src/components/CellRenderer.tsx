@@ -1,5 +1,5 @@
 import { ICellRendererParams } from 'ag-grid-community';
-import { parseISO, differenceInWeeks, isFuture } from 'date-fns';
+import { differenceInWeeks, isFuture } from 'date-fns';
 import ReactGA from 'react-ga';
 
 interface ILinkRenderer extends ICellRendererParams {
@@ -74,11 +74,11 @@ export const DateRenderer: (params: ICellRendererParams) => HTMLElement = (
   const element = document.createElement('div');
   element.className = 'date-col';
   const dateSpan = document.createElement('span');
-  const dateStr = params.value;
-  const date = parseISO(dateStr);
+  const date = params.value;
+  if (!date) return element;
   const now = new Date();
   const isRecentTrack = differenceInWeeks(now, date) < 3 || isFuture(date);
-  dateSpan.innerHTML = dateStr;
+  dateSpan.innerHTML = params.valueFormatted;
   element.appendChild(dateSpan);
   if (isRecentTrack) {
     dateSpan.className = 'recent-track';

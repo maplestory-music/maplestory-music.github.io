@@ -12,15 +12,16 @@ import {
 import { shuffle, padStart } from 'lodash-es';
 import ReactPlayer from 'react-player';
 import ReactGA from 'react-ga';
-import MusicGrid, { IMusicGridData } from '../components/MusicGrid';
+import MusicGrid from '../components/MusicGrid';
 import { useDataSourceState } from '../context/DataSourceContext';
+import { IMusicRecordGrid } from '../DataModel';
 
 const HomePage: React.FC = () => {
   const dataSource = useDataSourceState();
   const [filterText, setFilterText] = useState<string>();
   const [currentSong, setCurrentSong] = useState<string>();
   const player = useRef<ReactPlayer>(null);
-  const shufflePlaylist = useRef<IMusicGridData[]>([]);
+  const shufflePlaylist = useRef<IMusicRecordGrid[]>([]);
   const currentPlaylistSong = useRef<number>(-1);
 
   const onFilterTextChanged: (

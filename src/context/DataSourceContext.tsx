@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
-import { IMusicGridData } from '../components/MusicGrid';
+import { parseISO } from 'date-fns';
+import {
+  IMusicRecordGrid,
+  IMusicRecordJson,
+  IMusicRecordSourceGrid,
+} from '../DataModel';
 
-type State = IMusicGridData[];
+type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };
 
 const DataSourceStateContext = React.createContext<State | undefined>(
@@ -18,14 +23,26 @@ export const DataSourceProvider: ({
       'https://raw.githubusercontent.com/maplestory-music/maplebgm-db/prod/bgm.min.json'
     )
       .then((result) => result.json())
-      .then((rowData) => {
-        const rowDataMod = rowData.map((song: IMusicGridData) => {
-          if (song.source.client && song.source.version) {
-            song.source.cliver = `${song.source.client} ${song.source.version}`;
+      .then((rowData: IMusicRecordJson[]) => {
+        const rowDataGrid: IMusicRecordGrid[] = rowData.map(
+          (song: IMusicRecordJson) => {
+            const source: IMusicRecordSourceGrid = {
+              client: song.source.client,
+              date: song.source.date ? parseISO(song.source.date) : null,
+              structure: song.source.structure,
+              version: song.source.version,
+              clientVersion:
+                song.source.client && song.source.version
+                  ? `${song.source.client} ${song.source.version}`
+                  : '',
+            };
+            const gridRecord: IMusicRecordGrid = Object.assign({}, song, {
+              source: source,
+            });
+            return gridRecord;
           }
-          return song;
-        });
-        setState(rowDataMod);
+        );
+        setState(rowDataGrid);
       });
   }, [setState]);
 
