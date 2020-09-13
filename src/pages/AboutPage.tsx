@@ -31,7 +31,9 @@ const AboutPage: React.FC = () => (
       <p>
         The shuffled playlist feature randomizes the entire music collection and
         plays upcoming songs automatically. Skip to the next track or return to
-        the previous track with the controls under the media player.
+        the previous track with the controls under the media player. When
+        filters are applied to the grid, the song pool is limited to the
+        filtered entries.
       </p>
       <h6>
         <b>Grid Controls</b>

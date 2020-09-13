@@ -13,14 +13,15 @@ import { shuffle, padStart } from 'lodash-es';
 import ReactPlayer from 'react-player';
 import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
-import { useDataSourceState } from '../context/DataSourceContext';
 import { IMusicRecordGrid } from '../DataModel';
 
 const HomePage: React.FC = () => {
-  const dataSource = useDataSourceState();
   const [filterText, setFilterText] = useState<string>();
   const [currentSong, setCurrentSong] = useState<string>();
+  const [gridFiltered, setGridFiltered] = useState<boolean>(false);
+  const [playlistMode, setPlaylistMode] = useState<boolean>(false);
   const player = useRef<ReactPlayer>(null);
+  const shufflePlaylistPool = useRef<IMusicRecordGrid[]>([]);
   const shufflePlaylist = useRef<IMusicRecordGrid[]>([]);
   const currentPlaylistSong = useRef<number>(-1);
 
@@ -40,25 +41,43 @@ const HomePage: React.FC = () => {
     }
   };
 
+  /* Playlist mode check (via refs) */
+  const inPlaylistMode: () => boolean = () => {
+    return (
+      currentPlaylistSong.current !== -1 && shufflePlaylist.current.length > 0
+    );
+  };
+
   const onSongChange: (song: string) => void = (song) => {
     if (inPlaylistMode()) {
       shufflePlaylist.current = [];
       currentPlaylistSong.current = -1;
+      setPlaylistMode(false);
     }
     setCurrentSong(song);
   };
 
+  const setShufflePool: (
+    isGridFiltered: boolean,
+    shufflePool: IMusicRecordGrid[]
+  ) => void = (isGridFiltered, shufflePool) => {
+    setGridFiltered(isGridFiltered);
+    shufflePlaylistPool.current = shufflePool;
+  };
+
   const onShufflePlaylist: () => void = () => {
-    shufflePlaylist.current = shuffle(
-      dataSource.filter(
-        (song) => song.youtube !== '' && song.youtube !== currentSong
-      )
+    const shuffledSongs = shuffle(
+      shufflePlaylistPool.current.filter((song) => song.youtube !== '')
     );
-    setCurrentSong(shufflePlaylist.current[0].youtube);
+    shufflePlaylist.current = shuffledSongs;
+    setPlaylistMode(true);
+    setCurrentSong(shuffledSongs[0].youtube);
     currentPlaylistSong.current = 0;
     ReactGA.event({
       category: 'Playlist',
-      action: 'Start Shuffled Playlist',
+      action: gridFiltered
+        ? 'Start Shuffled Playlist (Filtered)'
+        : 'Start Shuffled Playlist',
       label: 'Shuffle Button',
     });
   };
@@ -77,12 +96,6 @@ const HomePage: React.FC = () => {
     currentPlaylistSong.current += 1;
     setCurrentSong(
       shufflePlaylist.current[currentPlaylistSong.current].youtube
-    );
-  };
-
-  const inPlaylistMode: () => boolean = () => {
-    return (
-      currentPlaylistSong.current !== -1 && shufflePlaylist.current.length > 0
     );
   };
 
@@ -127,7 +140,7 @@ const HomePage: React.FC = () => {
             controls
             onEnded={(): void => {
               if (player.current !== null) {
-                if (!inPlaylistMode()) {
+                if (!playlistMode) {
                   player.current.seekTo(0);
                   ReactGA.event({
                     category: 'Video',
@@ -153,7 +166,7 @@ const HomePage: React.FC = () => {
               }
             }}
           />
-          {inPlaylistMode() && (
+          {playlistMode && (
             <div
               className="text-center"
               css={css`
@@ -217,25 +230,32 @@ const HomePage: React.FC = () => {
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
-          {!inPlaylistMode() && (
-            <InputGroup.Append>
-              <OverlayTrigger
-                delay={{ show: 250, hide: 100 }}
-                overlay={
-                  <Tooltip id={`tooltip-start-playlist`}>
-                    Start Shuffled Playlist
-                  </Tooltip>
-                }
+          <InputGroup.Append>
+            <OverlayTrigger
+              delay={{ show: 250, hide: 100 }}
+              overlay={
+                <Tooltip id={`tooltip-start-playlist`}>
+                  {gridFiltered
+                    ? `Start Shuffled Playlist (Filtered)`
+                    : `Start Shuffled Playlist`}
+                </Tooltip>
+              }
+            >
+              <Button
+                variant={gridFiltered ? 'outline-warning' : 'outline-success'}
+                onClick={onShufflePlaylist}
               >
-                <Button variant="outline-success" onClick={onShufflePlaylist}>
-                  <i className="fa fa-random"></i>
-                </Button>
-              </OverlayTrigger>
-            </InputGroup.Append>
-          )}
+                <i className="fa fa-random"></i>
+              </Button>
+            </OverlayTrigger>
+          </InputGroup.Append>
         </InputGroup>
       </Form.Group>
-      <MusicGrid query={filterText} onSongChange={onSongChange} />
+      <MusicGrid
+        query={filterText}
+        onSongChange={onSongChange}
+        setShufflePool={setShufflePool}
+      />
     </div>
   );
 };

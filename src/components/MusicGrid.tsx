@@ -11,12 +11,15 @@ import {
   ICellRendererParams,
   FirstDataRenderedEvent,
   ValueFormatterParams,
+  FilterChangedEvent,
+  RowNode,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { MarkRenderer, LinkRenderer, DateRenderer } from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
+import { IMusicRecordGrid } from '../DataModel';
 
 const getGridOptions: () => GridOptions = () => {
   return {
@@ -80,7 +83,7 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       field: 'source.date',
       filter: 'agDateColumnFilter',
       sort: 'desc',
-      valueFormatter: (params: ValueFormatterParams) => {
+      valueFormatter: (params: ValueFormatterParams): string => {
         return params.data.source.date
           ? format(params.data.source.date, 'yyyy-MM-dd')
           : '';
@@ -99,7 +102,11 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
 const MusicGrid: React.FC<{
   query: string | undefined;
   onSongChange: (song: string) => void;
-}> = ({ query, onSongChange }) => {
+  setShufflePool: (
+    isGridFiltered: boolean,
+    shufflePool: IMusicRecordGrid[]
+  ) => void;
+}> = ({ query, onSongChange, setShufflePool }) => {
   const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
@@ -119,6 +126,20 @@ const MusicGrid: React.FC<{
 
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
     event.columnApi.autoSizeAllColumns();
+    setShufflePool(false, dataSource);
+  };
+
+  const onFilterChanged = (event: FilterChangedEvent): void => {
+    const filterPresent = event.api.isAnyFilterPresent();
+    if (!filterPresent) {
+      setShufflePool(false, dataSource);
+      return;
+    }
+    const filteredSongs: IMusicRecordGrid[] = [];
+    event.api.forEachNodeAfterFilter((rowNode: RowNode, index: number) => {
+      filteredSongs.push(rowNode.data);
+    });
+    setShufflePool(true, filteredSongs);
   };
 
   return (
@@ -135,6 +156,7 @@ const MusicGrid: React.FC<{
         rowData={dataSource}
         gridOptions={gridOptions.current}
         onFirstDataRendered={onFirstDataRendered}
+        onFilterChanged={onFilterChanged}
         onGridReady={onGridReady}
       ></AgGridReact>
     </div>
