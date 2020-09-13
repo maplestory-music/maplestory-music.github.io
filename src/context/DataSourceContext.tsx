@@ -4,7 +4,7 @@ import {
   IMusicRecordGrid,
   IMusicRecordJson,
   IMusicRecordSourceGrid,
-} from '../DataModel';
+} from '../models/DataModel';
 
 type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };

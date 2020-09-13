@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, CSSProperties } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
@@ -13,13 +13,17 @@ import {
   ValueFormatterParams,
   FilterChangedEvent,
   RowNode,
+  CellClassParams,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { MarkRenderer, LinkRenderer, DateRenderer } from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
-import { IMusicRecordGrid } from '../DataModel';
+import { IMusicRecordGrid } from '../models/DataModel';
+import { MapleClient } from '../models/MapleClient';
+import { complement, rgba } from 'polished';
+import { cornFlowerBlue } from '../constants';
 
 const getGridOptions: () => GridOptions = () => {
   return {
@@ -95,6 +99,15 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Client',
       field: 'source.clientVersion',
       getQuickFilterText: (): string => '',
+      cellStyle: (params: CellClassParams): CSSProperties => {
+        if (!params.value) return {};
+        const color = rgba(cornFlowerBlue, 0.5);
+        return {
+          backgroundColor: params.value.startsWith(MapleClient.Korea)
+            ? color
+            : complement(color),
+        };
+      },
     },
   ];
 };

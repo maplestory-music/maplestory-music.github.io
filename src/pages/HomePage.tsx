@@ -13,7 +13,7 @@ import { shuffle, padStart } from 'lodash-es';
 import ReactPlayer from 'react-player';
 import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
-import { IMusicRecordGrid } from '../DataModel';
+import { IMusicRecordGrid } from '../models/DataModel';
 
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
