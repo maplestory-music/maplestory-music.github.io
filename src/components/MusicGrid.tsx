@@ -14,6 +14,7 @@ import {
   FilterChangedEvent,
   RowNode,
   CellClassParams,
+  ModelUpdatedEvent,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -155,6 +156,15 @@ const MusicGrid: React.FC<{
     setShufflePool(true, filteredSongs);
   };
 
+  const onModelUpdated = (event: ModelUpdatedEvent): void => {
+    const rows = event.api.getDisplayedRowCount();
+    if (rows > 0) {
+      event.api.hideOverlay();
+    } else {
+      event.api.showNoRowsOverlay();
+    }
+  };
+
   return (
     <div
       css={css`
@@ -170,6 +180,7 @@ const MusicGrid: React.FC<{
         gridOptions={gridOptions.current}
         onFirstDataRendered={onFirstDataRendered}
         onFilterChanged={onFilterChanged}
+        onModelUpdated={onModelUpdated}
         onGridReady={onGridReady}
       ></AgGridReact>
     </div>
