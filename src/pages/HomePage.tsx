@@ -69,6 +69,7 @@ const HomePage: React.FC = () => {
     const shuffledSongs = shuffle(
       shufflePlaylistPool.current.filter((song) => song.youtube !== '')
     );
+    if (!shuffledSongs.length) return;
     shufflePlaylist.current = shuffledSongs;
     setPlaylistMode(true);
     setCurrentSong(shuffledSongs[0].youtube);
