@@ -17,8 +17,10 @@ history.listen((location, action) => {
 });
 ReactGA.pageview(window.location.pathname);
 
-const onNavLinkClick: (e: React.MouseEvent) => void = (e) => {
-  const target = e.currentTarget as HTMLAnchorElement;
+const onNavLinkClick: (e: React.MouseEvent<HTMLAnchorElement>) => void = (
+  e
+) => {
+  const target = e.currentTarget;
   if (target.pathname === window.location.pathname) {
     e.preventDefault();
   }
