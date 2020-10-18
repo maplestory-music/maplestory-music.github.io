@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState, Fragment, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { css, jsx } from '@emotion/core';
 import {
   Form,
@@ -7,23 +7,29 @@ import {
   Button,
   OverlayTrigger,
   Tooltip,
-  ButtonGroup,
 } from 'react-bootstrap';
-import { shuffle, padStart } from 'lodash-es';
-import ReactPlayer from 'react-player';
+import { shuffle } from 'lodash-es';
 import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
 import { IMusicRecordGrid } from '../models/DataModel';
+import { MusicPlayer } from '../components/MusicPlayer';
+import { Header } from '../components/Header';
+
+export interface IPlayingState {
+  currentSong: string | undefined;
+  shufflePlaylist: IMusicRecordGrid[];
+  currentPlaylistSong: number;
+}
 
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
-  const [currentSong, setCurrentSong] = useState<string>();
   const [gridFiltered, setGridFiltered] = useState<boolean>(false);
-  const [playlistMode, setPlaylistMode] = useState<boolean>(false);
-  const player = useRef<ReactPlayer>(null);
+  const [playingState, setPlayingState] = useState<IPlayingState>({
+    currentSong: undefined,
+    shufflePlaylist: [],
+    currentPlaylistSong: -1,
+  });
   const shufflePlaylistPool = useRef<IMusicRecordGrid[]>([]);
-  const shufflePlaylist = useRef<IMusicRecordGrid[]>([]);
-  const currentPlaylistSong = useRef<number>(-1);
 
   const onFilterTextChanged: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -41,20 +47,12 @@ const HomePage: React.FC = () => {
     }
   };
 
-  /* Playlist mode check (via refs) */
-  const inPlaylistMode: () => boolean = () => {
-    return (
-      currentPlaylistSong.current !== -1 && shufflePlaylist.current.length > 0
-    );
-  };
-
-  const onSongChange: (song: string) => void = (song) => {
-    if (inPlaylistMode()) {
-      shufflePlaylist.current = [];
-      currentPlaylistSong.current = -1;
-      setPlaylistMode(false);
-    }
-    setCurrentSong(song);
+  const onGridSongChange: (song: string) => void = (song) => {
+    setPlayingState({
+      currentSong: song,
+      shufflePlaylist: [],
+      currentPlaylistSong: -1,
+    });
   };
 
   const setShufflePool: (
@@ -70,10 +68,11 @@ const HomePage: React.FC = () => {
       shufflePlaylistPool.current.filter((song) => song.youtube !== '')
     );
     if (!shuffledSongs.length) return;
-    shufflePlaylist.current = shuffledSongs;
-    setPlaylistMode(true);
-    setCurrentSong(shuffledSongs[0].youtube);
-    currentPlaylistSong.current = 0;
+    setPlayingState({
+      currentSong: shuffledSongs[0].youtube,
+      shufflePlaylist: shuffledSongs,
+      currentPlaylistSong: 0,
+    });
     ReactGA.event({
       category: 'Playlist',
       action: gridFiltered
@@ -83,135 +82,25 @@ const HomePage: React.FC = () => {
     });
   };
 
-  const onPreviousPlaylistSong: () => void = () => {
-    if (currentPlaylistSong.current < 1) return;
-    currentPlaylistSong.current -= 1;
-    setCurrentSong(
-      shufflePlaylist.current[currentPlaylistSong.current].youtube
-    );
-  };
-
-  const onNextPlaylistSong: () => void = () => {
-    if (currentPlaylistSong.current === shufflePlaylist.current.length - 1)
-      return;
-    currentPlaylistSong.current += 1;
-    setCurrentSong(
-      shufflePlaylist.current[currentPlaylistSong.current].youtube
-    );
+  const setCurrentPlaylistSong: (newVal: number) => void = (newVal) => {
+    setPlayingState((state) => {
+      return {
+        ...state,
+        currentSong: state.shufflePlaylist[newVal].youtube,
+        currentPlaylistSong: newVal,
+      };
+    });
   };
 
   return (
     <div>
-      {currentSong === undefined ? (
-        <Fragment>
-          <div>
-            <img
-              css={css`
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 10px;
-              `}
-              id="header-logo"
-              src="assets/pink-bean.png"
-              alt="header logo"
-            />
-          </div>
-          <div>
-            <p>
-              Welcome to the MapleStory Music database. This site provides a
-              complete listing of the background music (BGM) used in MapleStory.
-              Collectively, the songs are also known as MapleStory's original
-              soundtrack (OST).
-            </p>
-          </div>
-        </Fragment>
+      {playingState.currentSong === undefined ? (
+        <Header />
       ) : (
-        <div>
-          <ReactPlayer
-            css={css`
-              display: block;
-              margin-left: auto;
-              margin-right: auto;
-              max-width: 100vw;
-            `}
-            ref={player}
-            url={`https://youtu.be/${currentSong}`}
-            playing
-            controls
-            onEnded={(): void => {
-              if (player.current !== null) {
-                if (!playlistMode) {
-                  player.current.seekTo(0);
-                  ReactGA.event({
-                    category: 'Video',
-                    action: 'Loop Embedded Video',
-                    label: currentSong,
-                  });
-                } else {
-                  ReactGA.event({
-                    category: 'Video',
-                    action: 'Complete Playlist Video',
-                    label: currentSong,
-                  });
-                  if (
-                    currentPlaylistSong.current ===
-                    shufflePlaylist.current.length - 1
-                  )
-                    return;
-                  currentPlaylistSong.current += 1;
-                  setCurrentSong(
-                    shufflePlaylist.current[currentPlaylistSong.current].youtube
-                  );
-                }
-              }
-            }}
-          />
-          {playlistMode && (
-            <div
-              className="text-center"
-              css={css`
-                margin-top: 5px;
-              `}
-            >
-              <ButtonGroup size="sm">
-                <Button
-                  variant="outline-primary"
-                  onClick={onPreviousPlaylistSong}
-                  disabled={currentPlaylistSong.current === 0}
-                >
-                  <i className="fa fa-step-backward"></i>
-                </Button>
-                <span
-                  css={css`
-                    background-color: #343a40;
-                    border-color: #343a40;
-                    color: white;
-                    padding: 0.25rem 0.5rem;
-                    font-size: 0.875rem;
-                    line-height: 1.5;
-                    border: 1px solid transparent;
-                    margin-left: -1px;
-                  `}
-                >{`${padStart(
-                  (currentPlaylistSong.current + 1).toString(),
-                  shufflePlaylist.current.length.toString().length,
-                  '0'
-                )} | ${shufflePlaylist.current.length}`}</span>
-                <Button
-                  variant="outline-primary"
-                  onClick={onNextPlaylistSong}
-                  disabled={
-                    currentPlaylistSong.current + 1 ===
-                    shufflePlaylist.current.length
-                  }
-                >
-                  <i className="fa fa-step-forward"></i>
-                </Button>
-              </ButtonGroup>
-            </div>
-          )}
-        </div>
+        <MusicPlayer
+          playingState={playingState}
+          setCurrentPlaylistSong={setCurrentPlaylistSong}
+        />
       )}
       <Form.Group
         css={css`
@@ -254,7 +143,7 @@ const HomePage: React.FC = () => {
       </Form.Group>
       <MusicGrid
         query={filterText}
-        onSongChange={onSongChange}
+        onGridSongChange={onGridSongChange}
         setShufflePool={setShufflePool}
       />
     </div>

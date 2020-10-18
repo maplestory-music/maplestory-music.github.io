@@ -18,7 +18,12 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import { MarkRenderer, LinkRenderer, DateRenderer } from './CellRenderer';
+import {
+  MarkRenderer,
+  LinkRenderer,
+  DateRenderer,
+  ILinkRendererParams,
+} from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
@@ -43,8 +48,8 @@ const getGridOptions: () => GridOptions = () => {
   };
 };
 
-const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
-  onSongChange
+const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
+  onGridSongChange
 ) => {
   return [
     {
@@ -63,14 +68,10 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
       cellRenderer: LinkRenderer,
       cellRendererParams: (
         props: ICellRendererParams
-      ): {
-        title: string;
-        youtube: string;
-        onSongChange: (song: string) => void;
-      } => ({
+      ): ILinkRendererParams => ({
         title: props.value,
         youtube: props.data.youtube,
-        onSongChange: onSongChange,
+        onGridSongChange: onGridSongChange,
       }),
     },
     {
@@ -115,18 +116,18 @@ const getColDef: (onSongChange: (song: string) => void) => ColDef[] = (
 
 const MusicGrid: React.FC<{
   query: string | undefined;
-  onSongChange: (song: string) => void;
+  onGridSongChange: (song: string) => void;
   setShufflePool: (
     isGridFiltered: boolean,
     shufflePool: IMusicRecordGrid[]
   ) => void;
-}> = ({ query, onSongChange, setShufflePool }) => {
+}> = ({ query, onGridSongChange, setShufflePool }) => {
   const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
   const gridOptions = useRef<GridOptions | undefined>(undefined);
-  colDef.current = getColDef(onSongChange);
+  colDef.current = getColDef(onGridSongChange);
   gridOptions.current = getGridOptions();
 
   useEffect(() => {

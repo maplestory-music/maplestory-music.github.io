@@ -2,11 +2,12 @@ import { ICellRendererParams } from 'ag-grid-community';
 import { differenceInWeeks, isFuture } from 'date-fns';
 import ReactGA from 'react-ga';
 
-interface ILinkRenderer extends ICellRendererParams {
+export interface ILinkRendererParams {
   title: string;
   youtube: string;
-  onSongChange: (song: string) => void;
+  onGridSongChange: (song: string) => void;
 }
+type ILinkRenderer = ILinkRendererParams & ICellRendererParams;
 
 export const MarkRenderer: (params: ICellRendererParams) => HTMLElement = (
   params
@@ -32,7 +33,7 @@ export const LinkRenderer: (params: ILinkRenderer) => HTMLElement = (
         action: 'View Embedded Video',
         label: params.youtube,
       });
-      params.onSongChange(params.youtube);
+      params.onGridSongChange(params.youtube);
       e.preventDefault();
     };
     const onExternalClick: (e: MouseEvent) => void = (e) => {
