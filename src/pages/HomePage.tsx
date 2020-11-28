@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React, { useState, useRef } from 'react';
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/react';
 import {
   Form,
   InputGroup,

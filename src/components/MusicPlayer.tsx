@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import React, { useRef } from 'react';
 import ReactPlayer from 'react-player';
 import ReactGA from 'react-ga';

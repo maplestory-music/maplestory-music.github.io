@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import { Fragment } from 'react';
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/react';
 
 export const Header: React.FC = () => {
   return (

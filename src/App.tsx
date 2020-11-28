@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import './App.scss';
 import { Router, Switch, Route, Link, NavLink } from 'react-router-dom';
 import { createBrowserHistory } from 'history';

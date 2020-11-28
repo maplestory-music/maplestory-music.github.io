@@ -1,5 +1,6 @@
 declare global {
   namespace NodeJS {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     interface ProcessEnv {
       REACT_APP_GA_TOKEN: string;
       REACT_APP_BUILD_HASH: string;
