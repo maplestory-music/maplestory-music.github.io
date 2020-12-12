@@ -7,6 +7,7 @@ import ReactGA from 'react-ga';
 import { Navbar, Nav } from 'react-bootstrap';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
+import StatsPage from './pages/StatsPage';
 import { DataSourceProvider } from './context/DataSourceContext';
 import { ReactElement } from 'react';
 
@@ -54,6 +55,9 @@ const Header = (): ReactElement => (
         <Nav.Link as={NavLink} exact to="/" onClick={onNavLinkClick}>
           Home
         </Nav.Link>
+        <Nav.Link as={NavLink} exact to="/stats" onClick={onNavLinkClick}>
+          Stats
+        </Nav.Link>
         <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
           About
         </Nav.Link>
@@ -62,9 +66,9 @@ const Header = (): ReactElement => (
   </Navbar>
 );
 
-const Footer = (): ReactElement | null => {
-  const buildHash = process.env.REACT_APP_BUILD_HASH;
-  return buildHash ? (
+const Footer = (): ReactElement => {
+  const buildHash = process.env.REACT_APP_BUILD_HASH ?? 'Dev';
+  return (
     <div
       css={css`
         text-align: center;
@@ -74,13 +78,14 @@ const Footer = (): ReactElement | null => {
     >
       <span>{`Build: ${buildHash}`}</span>
     </div>
-  ) : null;
+  );
 };
 
 const Main = (): ReactElement => (
   <main>
     <Switch>
       <Route exact path="/" component={Home} />
+      <Route path="/stats" component={Stats} />
       <Route path="/about" component={About} />
     </Switch>
   </main>
@@ -100,6 +105,17 @@ const About = (): ReactElement => (
     className="About"
   >
     <AboutPage />
+  </div>
+);
+
+const Stats = (): ReactElement => (
+  <div
+    css={css`
+      margin: 2% 3% 3% 3%;
+    `}
+    className="Stats"
+  >
+    <StatsPage />
   </div>
 );
 
