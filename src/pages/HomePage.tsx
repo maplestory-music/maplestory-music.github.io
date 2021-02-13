@@ -115,7 +115,7 @@ const HomePage: React.FC = () => {
             </InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            type="text"
+            type="search"
             placeholder="Song title or keyword"
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
