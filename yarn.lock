@@ -2403,15 +2403,15 @@ adjust-sourcemap-loader@3.0.0:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
 
-ag-grid-community@^25.0.0:
-  version "25.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-25.0.0.tgz#8690fa19b912a05d07504a7aac25d8fdfd5e5ab9"
-  integrity sha512-JWe4CrozZK7BYWnk9cz81h5trJgCZxPv6b8S+qHpE2wynQ2uJxI4HGesocuDMfeuHRX7By2Tq4Gs2HV2Uoy2XA==
+ag-grid-community@^25.1.0:
+  version "25.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-25.1.0.tgz#7e132835789586900e0dd24d18cb71d68e09106f"
+  integrity sha512-sKJp6SZG8J50OlOeECtrLFSp/iwdx1mcG0+BmIkHsXmWoyXv5ZaTJyVg1/hMk6s3JVTm1ipg6LepbTaigWEL2A==
 
-ag-grid-react@^25.0.0:
-  version "25.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-25.0.0.tgz#e79181c1c4d48d3912bd857af27e41bf21eb2129"
-  integrity sha512-nUC9dUQSRArdfXbAv1jB4no3MLoUxlZsEyMSPjT3/51/Ok2ggs/vk1ji+BBRTpEGPg0vVqbyFa8PAlhh6xcIEA==
+ag-grid-react@^25.1.0:
+  version "25.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-25.1.0.tgz#a045071802eabf426a0a652558f7f2e508e63a26"
+  integrity sha512-9xboQWDde2oANitsI/RbsS/rMFVLzXLGyteEBjxSyKGrGDOwAK6XHgvfbGSBL2yWVrYDUD5HRHCdfNejO4FPGA==
   dependencies:
     prop-types "^15.6.2"
 
