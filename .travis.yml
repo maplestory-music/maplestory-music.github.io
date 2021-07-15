@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+  - lts/*
+cache:
+  yarn: true
+  directories:
+    - node_modules
+branches:
+  except:
+    - master
+script:
+  - ./env.sh
+  - yarn build
+  - cp ./.travis.yml ./build
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: build
+  target-branch: master
+  on:
+    branch: source
