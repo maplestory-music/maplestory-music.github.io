@@ -88,7 +88,6 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Date',
       field: 'source.date',
       filter: 'agDateColumnFilter',
-      sort: 'desc',
       valueFormatter: (params: ValueFormatterParams): string => {
         return params.data.source.date
           ? format(params.data.source.date, 'yyyy-MM-dd')
@@ -137,6 +136,8 @@ const MusicGrid: React.FC<{
   const onGridReady = (params: GridReadyEvent): void => {
     gridApi.current = params.api;
     gridColumnApi.current = params.columnApi;
+    const columnState = { state: [{ colId: 'source.date', sort: 'desc' }] };
+    params.columnApi.applyColumnState(columnState);
   };
 
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
