@@ -21,6 +21,10 @@ export interface IPlayingState {
   currentPlaylistSong: number;
 }
 
+export interface ILocateSong {
+  songId: string | undefined;
+}
+
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
   const [gridFiltered, setGridFiltered] = useState<boolean>(false);
@@ -30,6 +34,7 @@ const HomePage: React.FC = () => {
     currentPlaylistSong: -1,
   });
   const shufflePlaylistPool = useRef<IMusicRecordGrid[]>([]);
+  const [locateSong, setLocateSong] = useState<ILocateSong | undefined>();
 
   const onFilterTextChanged: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -110,9 +115,25 @@ const HomePage: React.FC = () => {
       >
         <InputGroup size="lg">
           <InputGroup.Prepend>
-            <InputGroup.Text>
-              <i className="fa fa-search"></i>
-            </InputGroup.Text>
+            <OverlayTrigger
+              delay={{ show: 250, hide: 100 }}
+              overlay={
+                <Tooltip id={`tooltip-locate-song`}>
+                  Locate Current Song
+                </Tooltip>
+              }
+            >
+              <InputGroup.Text
+                css={css`
+                  cursor: pointer;
+                `}
+                onClick={() => {
+                  setLocateSong({ songId: playingState.currentSong });
+                }}
+              >
+                <i className="fa fa-search"></i>
+              </InputGroup.Text>
+            </OverlayTrigger>
           </InputGroup.Prepend>
           <Form.Control
             type="search"
@@ -145,6 +166,7 @@ const HomePage: React.FC = () => {
         query={filterText}
         onGridSongChange={onGridSongChange}
         setShufflePool={setShufflePool}
+        locateSong={locateSong}
       />
     </div>
   );

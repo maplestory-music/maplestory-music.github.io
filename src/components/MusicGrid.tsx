@@ -29,13 +29,14 @@ import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
 import { MapleClient } from '../models/MapleClient';
 import { complement, rgba } from 'polished';
-import { cornFlowerBlue } from '../constants';
+import { cornFlowerBlue, PAGINATION_PAGE_SIZE } from '../constants';
+import { ILocateSong } from '../pages/HomePage';
 
 const getGridOptions: () => GridOptions = () => {
   return {
-    animateRows: true,
+    animateRows: false,
     pagination: true,
-    paginationPageSize: 25,
+    paginationPageSize: PAGINATION_PAGE_SIZE,
     suppressColumnVirtualisation: true,
     suppressMovableColumns: true,
     rowHeight: 45,
@@ -113,6 +114,24 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
   ];
 };
 
+const scrollToLocatedRow = (rowIndex: number | null): void => {
+  if (rowIndex === null) return;
+  const rowElement = document.querySelector<HTMLElement>(
+    `div.ag-theme-balham div[row-index='${rowIndex}']`
+  );
+  const rowTransform = rowElement?.style.transform;
+  if (!rowTransform) return;
+  const regex = new RegExp(/^translateY\((\d+)px\)$/g);
+  const execResult = regex.exec(rowTransform);
+  if (!execResult) return;
+  const [, rowTranslateY] = execResult;
+  const gridOffsetY = document.querySelector<HTMLElement>(`div.ag-theme-balham`)
+    ?.offsetTop;
+  if (gridOffsetY === undefined) return;
+  const scrollPosition = gridOffsetY + Number(rowTranslateY);
+  window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+};
+
 const MusicGrid: React.FC<{
   query: string | undefined;
   onGridSongChange: (song: string) => void;
@@ -120,7 +139,8 @@ const MusicGrid: React.FC<{
     isGridFiltered: boolean,
     shufflePool: IMusicRecordGrid[]
   ) => void;
-}> = ({ query, onGridSongChange, setShufflePool }) => {
+  locateSong: ILocateSong | undefined;
+}> = ({ query, onGridSongChange, setShufflePool, locateSong }) => {
   const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
@@ -132,6 +152,33 @@ const MusicGrid: React.FC<{
   useEffect(() => {
     gridApi.current?.setQuickFilter(query);
   }, [query]);
+
+  // Locate Current Song handler
+  useEffect(() => {
+    if (!locateSong?.songId) return;
+    locateSongInGrid(locateSong.songId);
+  }, [locateSong]);
+
+  const locateSongInGrid = (songId: string | undefined): void => {
+    if (!songId) return;
+    let foundIdx = -1;
+    const foundNode: RowNode[] = [];
+    gridApi.current?.forEachNodeAfterFilterAndSort(
+      (node: RowNode, index: number) => {
+        const data = node.data as IMusicRecordGrid;
+        if (data.youtube === songId) {
+          foundIdx = index;
+          foundNode.push(node);
+        }
+      }
+    );
+    if (foundIdx === -1 || foundNode.length !== 1) return;
+    const pageOffset = Math.ceil((foundIdx + 1) / PAGINATION_PAGE_SIZE) - 1;
+    gridApi.current?.paginationGoToPage(pageOffset);
+    gridApi.current?.ensureIndexVisible(foundIdx, 'middle');
+    foundNode[0].setSelected(true);
+    scrollToLocatedRow(foundNode[0].rowIndex);
+  };
 
   const onGridReady = (params: GridReadyEvent): void => {
     gridApi.current = params.api;
