@@ -10,6 +10,7 @@ import HomePage from './pages/HomePage';
 import StatsPage from './pages/StatsPage';
 import { DataSourceProvider } from './context/DataSourceContext';
 import { ReactElement } from 'react';
+import { formatISO } from 'date-fns';
 
 ReactGA.initialize(process.env.REACT_APP_GA_TOKEN);
 const history = createBrowserHistory();
@@ -68,6 +69,9 @@ const Header = (): ReactElement => (
 
 const Footer = (): ReactElement => {
   const buildHash = process.env.REACT_APP_BUILD_HASH ?? 'Dev';
+  const buildDate =
+    process.env.REACT_APP_BUILD_DATE ??
+    formatISO(new Date(), { representation: 'date' });
   return (
     <div
       css={css`
@@ -76,7 +80,7 @@ const Footer = (): ReactElement => {
       `}
       className="footer"
     >
-      <span>{`Build: ${buildHash}`}</span>
+      <span>{`Build: ${buildHash} (${buildDate})`}</span>
     </div>
   );
 };
