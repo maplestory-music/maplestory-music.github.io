@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useRef, useEffect, CSSProperties } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
@@ -15,6 +15,7 @@ import {
   RowNode,
   CellClassParams,
   ModelUpdatedEvent,
+  CellStyle,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -98,7 +99,7 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Client',
       field: 'source.clientVersion',
       getQuickFilterText: (): string => '',
-      cellStyle: (params: CellClassParams): CSSProperties => {
+      cellStyle: (params: CellClassParams): CellStyle => {
         if (!params.value) return {};
         const color = rgba(cornFlowerBlue, 0.5);
         return {
