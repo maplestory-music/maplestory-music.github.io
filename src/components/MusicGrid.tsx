@@ -18,12 +18,6 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import {
-  MarkRenderer,
-  LinkRenderer,
-  DateRenderer,
-  ILinkRendererParams,
-} from './CellRenderer';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
@@ -31,6 +25,9 @@ import { MapleClient } from '../models/MapleClient';
 import { complement, rgba } from 'polished';
 import { cornFlowerBlue, PAGINATION_PAGE_SIZE } from '../constants';
 import { ILocateSong } from '../pages/HomePage';
+import { MarkRenderer } from './renderers/MarkRenderer';
+import { ILinkRendererParams, LinkRenderer } from './renderers/LinkRenderer';
+import { DateRenderer } from './renderers/DateRenderer';
 
 const getGridOptions: () => GridOptions = () => {
   return {
@@ -59,14 +56,14 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       minWidth: 70,
       maxWidth: 70,
       resizable: false,
-      cellRenderer: MarkRenderer,
+      cellRendererFramework: MarkRenderer,
       getQuickFilterText: (): string => '',
     },
     {
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
-      cellRenderer: LinkRenderer,
+      cellRendererFramework: LinkRenderer,
       cellRendererParams: (
         props: ICellRendererParams
       ): ILinkRendererParams => ({
@@ -94,7 +91,7 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
           ? format(params.data.source.date, 'yyyy-MM-dd')
           : '';
       },
-      cellRenderer: DateRenderer,
+      cellRendererFramework: DateRenderer,
       getQuickFilterText: (): string => '',
     },
     {
