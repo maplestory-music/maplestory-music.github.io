@@ -37,7 +37,14 @@ const Header = (): ReactElement => (
     variant="dark"
     expand="lg"
   >
-    <Navbar.Brand as={Link} to="/" onClick={onNavLinkClick}>
+    <Navbar.Brand
+      css={css`
+        margin-left: 1rem;
+      `}
+      as={Link}
+      to="/"
+      onClick={onNavLinkClick}
+    >
       <img
         css={css`
           margin-right: 8px;

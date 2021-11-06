@@ -24,7 +24,7 @@
     "node-sass": "^4.14.1",
     "polished": "^3.6.7",
     "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
+    "react-bootstrap": "^2.0.2",
     "react-dom": "^17.0.2",
     "react-ga": "^3.3.0",
     "react-github-btn": "^1.2.0",

@@ -25,12 +25,10 @@ const StatsPage: React.FC = () => {
       <h2>Stats</h2>
       <Form>
         <Form.Group controlId="year-select">
-          <Form.Control
+          <Form.Select
             css={css`
               width: 100px;
             `}
-            as="select"
-            custom
             defaultValue={currentYear}
             onChange={onChangeYear}
           >
@@ -39,7 +37,7 @@ const StatsPage: React.FC = () => {
                 {y}
               </option>
             ))}
-          </Form.Control>
+          </Form.Select>
         </Form.Group>
       </Form>
       <div>

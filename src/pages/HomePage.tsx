@@ -114,52 +114,46 @@ const HomePage: React.FC = () => {
         className="filter-text"
       >
         <InputGroup size="lg">
-          <InputGroup.Prepend>
-            <OverlayTrigger
-              delay={{ show: 250, hide: 100 }}
-              overlay={
-                <Tooltip id={`tooltip-locate-song`}>
-                  Locate Current Song
-                </Tooltip>
-              }
+          <OverlayTrigger
+            delay={{ show: 250, hide: 100 }}
+            overlay={
+              <Tooltip id={`tooltip-locate-song`}>Locate Current Song</Tooltip>
+            }
+          >
+            <InputGroup.Text
+              css={css`
+                cursor: pointer;
+              `}
+              onClick={() => {
+                setLocateSong({ songId: playingState.currentSong });
+              }}
             >
-              <InputGroup.Text
-                css={css`
-                  cursor: pointer;
-                `}
-                onClick={() => {
-                  setLocateSong({ songId: playingState.currentSong });
-                }}
-              >
-                <i className="fa fa-search"></i>
-              </InputGroup.Text>
-            </OverlayTrigger>
-          </InputGroup.Prepend>
+              <i className="fa fa-search"></i>
+            </InputGroup.Text>
+          </OverlayTrigger>
           <Form.Control
             type="search"
             placeholder="Song title or keyword"
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
-          <InputGroup.Append>
-            <OverlayTrigger
-              delay={{ show: 250, hide: 100 }}
-              overlay={
-                <Tooltip id={`tooltip-start-playlist`}>
-                  {gridFiltered
-                    ? `Start Shuffled Playlist (Filtered)`
-                    : `Start Shuffled Playlist`}
-                </Tooltip>
-              }
+          <OverlayTrigger
+            delay={{ show: 250, hide: 100 }}
+            overlay={
+              <Tooltip id={`tooltip-start-playlist`}>
+                {gridFiltered
+                  ? `Start Shuffled Playlist (Filtered)`
+                  : `Start Shuffled Playlist`}
+              </Tooltip>
+            }
+          >
+            <Button
+              variant={gridFiltered ? 'outline-warning' : 'outline-success'}
+              onClick={onShufflePlaylist}
             >
-              <Button
-                variant={gridFiltered ? 'outline-warning' : 'outline-success'}
-                onClick={onShufflePlaylist}
-              >
-                <i className="fa fa-random"></i>
-              </Button>
-            </OverlayTrigger>
-          </InputGroup.Append>
+              <i className="fa fa-random"></i>
+            </Button>
+          </OverlayTrigger>
         </InputGroup>
       </Form.Group>
       <MusicGrid
