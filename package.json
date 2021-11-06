@@ -21,7 +21,6 @@
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "lodash-es": "^4.17.21",
-    "node-sass": "^4.14.1",
     "polished": "^3.6.7",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.2",
@@ -31,6 +30,7 @@
     "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "sass": "^1.43.4",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
