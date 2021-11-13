@@ -1,11 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React from 'react';
-import { getMonth } from 'date-fns';
+import { getMonth, getYear } from 'date-fns';
 import { useDataSourceState } from '../../context/DataSourceContext';
 import { IMusicRecordGrid } from '../../models/DataModel';
 import { MusicChart } from '../MusicChart';
 import { ICommonChartProps } from './CommonChartProps';
+
+const removeFutureDates = (values: number[], selectedYear: number) => {
+  const now = Date.now();
+  return selectedYear === getYear(now)
+    ? values.slice(0, getMonth(now) + 1)
+    : values;
+};
 
 const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
   const dataSource: IMusicRecordGrid[] = useDataSourceState();
@@ -58,7 +65,7 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
         yAxis: 0,
         pointStart: Date.UTC(selectedYear, 0, 1),
         pointIntervalUnit: 'month',
-        data: monthlyFreq,
+        data: removeFutureDates(monthlyFreq, selectedYear),
       },
       {
         name: 'Cumulative',
@@ -66,7 +73,7 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
         yAxis: 1,
         pointStart: Date.UTC(selectedYear, 0, 1),
         pointIntervalUnit: 'month',
-        data: cumulativeCount,
+        data: removeFutureDates(cumulativeCount, selectedYear),
       },
     ],
   };
