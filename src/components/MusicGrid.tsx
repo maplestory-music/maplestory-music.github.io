@@ -175,7 +175,9 @@ const MusicGrid: React.FC<{
     gridApi.current?.paginationGoToPage(pageOffset);
     gridApi.current?.ensureIndexVisible(foundIdx, 'middle');
     foundNode[0].setSelected(true);
-    scrollToLocatedRow(foundNode[0].rowIndex);
+    setTimeout(() => {
+      scrollToLocatedRow(foundNode[0].rowIndex);
+    }, 0);
   };
 
   const onGridReady = (params: GridReadyEvent): void => {
@@ -229,6 +231,7 @@ const MusicGrid: React.FC<{
         onFilterChanged={onFilterChanged}
         onModelUpdated={onModelUpdated}
         onGridReady={onGridReady}
+        reactUi={true}
       ></AgGridReact>
     </div>
   );
