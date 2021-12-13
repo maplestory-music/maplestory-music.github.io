@@ -44,6 +44,14 @@ const AboutPage: React.FC = () => (
         users can access the filter dialog by pressing and holding the column
         header.
       </p>
+      <h6>
+        <b>Language</b>
+      </h6>
+      <p>
+        Language support is a work in progress. Changing the language will
+        translate metadata displayed for the songs in the grid. If there are no
+        translations for an entry, English will be used as the default language.
+      </p>
     </div>
     <h2>Source</h2>
     <p>The following GitHub projects power this site.</p>
