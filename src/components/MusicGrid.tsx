@@ -39,11 +39,12 @@ interface IGridContext {
 }
 
 const getJsonLocale = (lang: string): LanguageLocale => {
+  if (!lang) return 'en';
   if (lang.startsWith('en')) return 'en';
   else if (lang.startsWith('ko')) return 'ko';
   else if (lang.startsWith('ja')) return 'ja';
-  else if (lang === 'zh') return 'zh-CN';
-  else if (lang === 'zh-CN' || lang === 'zh-TW') return lang;
+  else if (lang === 'zh-CN') return 'zh-CN';
+  else if (lang.startsWith('zh')) return 'zh-TW';
   return 'en';
 };
 

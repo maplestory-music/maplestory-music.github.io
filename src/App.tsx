@@ -74,19 +74,19 @@ const Header: React.FC = () => {
           </Nav.Link>
           <NavDropdown title={'Language'}>
             <NavDropdown.Item
-              active={i18n.language.startsWith('en')}
+              active={i18n.language?.startsWith('en')}
               onClick={() => i18n.changeLanguage('en')}
             >
               English
             </NavDropdown.Item>
             <NavDropdown.Item
-              active={i18n.language.startsWith('ko')}
+              active={i18n.language?.startsWith('ko')}
               onClick={() => i18n.changeLanguage('ko')}
             >
               Korean
             </NavDropdown.Item>
             <NavDropdown.Item
-              active={i18n.language.startsWith('ja')}
+              active={i18n.language?.startsWith('ja')}
               onClick={() => i18n.changeLanguage('ja')}
             >
               Japanese

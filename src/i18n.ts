@@ -7,7 +7,8 @@ export type Language = typeof supportedLanguages[number];
 export const supportedLocales = ['zh-CN', 'zh-TW'] as const;
 export type LanguageLocale = Language | typeof supportedLocales[number];
 const fallbackLanguage = {
-  zh: ['zh-TW', 'zh-CN'],
+  zh: ['zh-TW', 'zh-CN', 'en'],
+  default: ['en'],
 };
 
 i18n.use(LanguageDectector).use(initReactI18next).init({
