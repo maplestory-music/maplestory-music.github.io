@@ -1,3 +1,5 @@
+import { LanguageLocale } from '../i18n';
+
 interface IMusicRecordMetadataJson {
   albumArtist: string;
   artist: string;
@@ -13,9 +15,24 @@ interface IMusicRecordSourceJson {
   version: string;
 }
 
+interface IMusicRecordLocaleJson {
+  description?: string;
+  filename: string;
+  metadata?: {
+    artist?: string;
+    title?: string;
+  };
+}
+
+type IMusicRecordLocaleGroupJson = Record<
+  LanguageLocale,
+  IMusicRecordLocaleJson
+>;
+
 export interface IMusicRecordJson {
   description: string;
   filename: string;
+  locale?: IMusicRecordLocaleGroupJson;
   mark: string;
   metadata: IMusicRecordMetadataJson;
   source: IMusicRecordSourceJson;

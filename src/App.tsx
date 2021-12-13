@@ -4,13 +4,14 @@ import './App.scss';
 import { Router, Switch, Route, Link, NavLink } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 import StatsPage from './pages/StatsPage';
 import { DataSourceProvider } from './context/DataSourceContext';
 import { ReactElement } from 'react';
 import { formatISO } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 ReactGA.initialize(process.env.REACT_APP_GA_TOKEN);
 const history = createBrowserHistory();
@@ -28,51 +29,86 @@ const onNavLinkClick: (e: React.MouseEvent<HTMLAnchorElement>) => void = (
   }
 };
 
-const Header = (): ReactElement => (
-  <Navbar
-    css={css`
-      margin-bottom: 10px;
-    `}
-    bg="dark"
-    variant="dark"
-    expand="lg"
-  >
-    <Navbar.Brand
+const Header: React.FC = () => {
+  const { i18n } = useTranslation();
+  return (
+    <Navbar
       css={css`
-        margin-left: 1rem;
+        margin-bottom: 10px;
       `}
-      as={Link}
-      to="/"
-      onClick={onNavLinkClick}
+      bg="dark"
+      variant="dark"
+      expand="lg"
     >
-      <img
+      <Navbar.Brand
         css={css`
-          margin-right: 8px;
+          margin-left: 1rem;
         `}
-        alt=""
-        src="./assets/pb-logo.svg"
-        width="30"
-        height="30"
-        className="d-inline-block align-top"
-      />{' '}
-      MapleStory Music
-    </Navbar.Brand>
-    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    <Navbar.Collapse id="basic-navbar-nav">
-      <Nav className="mr-auto">
-        <Nav.Link as={NavLink} exact to="/" onClick={onNavLinkClick}>
-          Home
-        </Nav.Link>
-        <Nav.Link as={NavLink} exact to="/stats" onClick={onNavLinkClick}>
-          Stats
-        </Nav.Link>
-        <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
-          About
-        </Nav.Link>
-      </Nav>
-    </Navbar.Collapse>
-  </Navbar>
-);
+        as={Link}
+        to="/"
+        onClick={onNavLinkClick}
+      >
+        <img
+          css={css`
+            margin-right: 8px;
+          `}
+          alt=""
+          src="./assets/pb-logo.svg"
+          width="30"
+          height="30"
+          className="d-inline-block align-top"
+        />{' '}
+        MapleStory Music
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link as={NavLink} exact to="/" onClick={onNavLinkClick}>
+            Home
+          </Nav.Link>
+          <Nav.Link as={NavLink} exact to="/stats" onClick={onNavLinkClick}>
+            Stats
+          </Nav.Link>
+          <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
+            About
+          </Nav.Link>
+          <NavDropdown title={'Language'}>
+            <NavDropdown.Item
+              active={i18n.language.startsWith('en')}
+              onClick={() => i18n.changeLanguage('en')}
+            >
+              English
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              active={i18n.language.startsWith('ko')}
+              onClick={() => i18n.changeLanguage('ko')}
+            >
+              Korean
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              active={i18n.language.startsWith('ja')}
+              onClick={() => i18n.changeLanguage('ja')}
+            >
+              Japanese
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              active={i18n.language === 'zh-CN'}
+              onClick={() => i18n.changeLanguage('zh-CN')}
+            >
+              Chinese (Simplified)
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              active={i18n.language === 'zh-TW'}
+              onClick={() => i18n.changeLanguage('zh-TW')}
+            >
+              Chinese (Traditional)
+            </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+};
 
 const Footer = (): ReactElement => {
   const buildHash = process.env.REACT_APP_BUILD_HASH ?? 'Dev';

@@ -16,6 +16,7 @@ import {
   CellClassParams,
   ModelUpdatedEvent,
   CellStyle,
+  ValueGetterParams,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -29,6 +30,22 @@ import { ILocateSong } from '../pages/HomePage';
 import { MarkRenderer } from './renderers/MarkRenderer';
 import { ILinkRendererParams, LinkRenderer } from './renderers/LinkRenderer';
 import { DateRenderer } from './renderers/DateRenderer';
+import { useTranslation } from 'react-i18next';
+import { i18n } from 'i18next';
+import { LanguageLocale } from '../i18n';
+
+interface IGridContext {
+  i18n: i18n;
+}
+
+const getJsonLocale = (lang: string): LanguageLocale => {
+  if (lang.startsWith('en')) return 'en';
+  else if (lang.startsWith('ko')) return 'ko';
+  else if (lang.startsWith('ja')) return 'ja';
+  else if (lang === 'zh') return 'zh-CN';
+  else if (lang === 'zh-CN' || lang === 'zh-TW') return lang;
+  return 'en';
+};
 
 const getGridOptions: () => GridOptions = () => {
   return {
@@ -64,6 +81,16 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
+      valueGetter: (params: ValueGetterParams) => {
+        const { i18n } = params.context as IGridContext;
+        const data = params.data as IMusicRecordGrid;
+        const lang = getJsonLocale(i18n.language);
+        if (lang === 'en') {
+          return data.metadata.title;
+        } else {
+          return data.locale?.[lang]?.metadata?.title ?? data.metadata.title;
+        }
+      },
       cellRendererFramework: LinkRenderer,
       cellRendererParams: (
         props: ICellRendererParams
@@ -77,6 +104,16 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Description',
       minWidth: 375,
       field: 'description',
+      valueGetter: (params: ValueGetterParams) => {
+        const { i18n } = params.context as IGridContext;
+        const data = params.data as IMusicRecordGrid;
+        const lang = getJsonLocale(i18n.language);
+        if (lang === 'en') {
+          return data.description;
+        } else {
+          return data.locale?.[lang]?.description ?? data.description;
+        }
+      },
     },
     {
       headerName: 'Folder',
@@ -139,6 +176,7 @@ const MusicGrid: React.FC<{
   ) => void;
   locateSong: ILocateSong | undefined;
 }> = ({ query, onGridSongChange, setShufflePool, locateSong }) => {
+  const { i18n } = useTranslation();
   const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
@@ -214,6 +252,10 @@ const MusicGrid: React.FC<{
     }
   };
 
+  const gridContext: IGridContext = {
+    i18n,
+  };
+
   return (
     <div
       css={css`
@@ -232,6 +274,7 @@ const MusicGrid: React.FC<{
         onModelUpdated={onModelUpdated}
         onGridReady={onGridReady}
         reactUi={true}
+        context={gridContext}
       ></AgGridReact>
     </div>
   );
