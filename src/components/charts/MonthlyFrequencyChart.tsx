@@ -9,8 +9,9 @@ import { ICommonChartProps } from './CommonChartProps';
 
 const removeFutureDates = (values: number[], selectedYear: number) => {
   const now = Date.now();
+  const currentMonth = getMonth(now) + 1;
   return selectedYear === getYear(now)
-    ? values.slice(0, getMonth(now) + 1)
+    ? values.slice(0, currentMonth === 1 ? currentMonth + 1 : currentMonth)
     : values;
 };
 
@@ -50,11 +51,13 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
         title: {
           text: 'Songs',
         },
+        allowDecimals: false,
       },
       {
         title: {
           text: 'Cumulative',
         },
+        allowDecimals: false,
         opposite: true,
       },
     ],
