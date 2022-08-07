@@ -12,6 +12,7 @@ import { DataSourceProvider } from './context/DataSourceContext';
 import { ReactElement } from 'react';
 import { formatISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 ReactGA.initialize(process.env.REACT_APP_GA_TOKEN);
 const history = createBrowserHistory();
@@ -31,6 +32,7 @@ const onNavLinkClick: (e: React.MouseEvent<HTMLAnchorElement>) => void = (
 
 const Header: React.FC = () => {
   const { i18n } = useTranslation();
+  const appTheme = useTheme();
   return (
     <Navbar
       css={css`
@@ -72,6 +74,36 @@ const Header: React.FC = () => {
           <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
             About
           </Nav.Link>
+          <NavDropdown title={'Theme'}>
+            <NavDropdown.Item
+              active={!appTheme.darkMode}
+              onClick={() => {
+                if (!appTheme.darkMode) return;
+                darkmode.setDarkMode(false);
+                ReactGA.event({
+                  category: 'UI',
+                  action: 'Switch to Light Mode',
+                  label: 'Navbar',
+                });
+              }}
+            >
+              Light
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              active={appTheme.darkMode}
+              onClick={() => {
+                if (appTheme.darkMode) return;
+                darkmode.setDarkMode(true);
+                ReactGA.event({
+                  category: 'UI',
+                  action: 'Switch to Dark Mode',
+                  label: 'Navbar',
+                });
+              }}
+            >
+              Dark
+            </NavDropdown.Item>
+          </NavDropdown>
           <NavDropdown title={'Language'}>
             <NavDropdown.Item
               active={i18n.language?.startsWith('en')}
@@ -167,15 +199,17 @@ const Stats = (): ReactElement => (
 );
 
 const App = (): ReactElement => (
-  <DataSourceProvider>
-    <Router history={history}>
-      <div>
-        <Header />
-        <Main />
-        <Footer />
-      </div>
-    </Router>
-  </DataSourceProvider>
+  <ThemeProvider>
+    <DataSourceProvider>
+      <Router history={history}>
+        <div>
+          <Header />
+          <Main />
+          <Footer />
+        </div>
+      </Router>
+    </DataSourceProvider>
+  </ThemeProvider>
 );
 
 export default App;

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDataSourceState } from '../../context/DataSourceContext';
 import { IMusicRecordGrid } from '../../models/DataModel';
 import Highcharts, { DataLabelsOptions } from 'highcharts';
@@ -9,8 +9,10 @@ import { ICommonChartProps } from './CommonChartProps';
 import { cornFlowerBlue } from '../../constants';
 import { MapleClient } from '../../models/MapleClient';
 import { MusicChart } from '../MusicChart';
+import HighchartsReact from 'highcharts-react-official';
 
 const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
+  const chartComponent = useRef<HighchartsReact.RefObject>(null);
   const dataSource: IMusicRecordGrid[] = useDataSourceState();
   const selectedYear = props.selectedYear;
   const songsInYear = dataSource.filter(
@@ -85,6 +87,7 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
         width: 35%;
       `}
       options={options}
+      chartComponent={chartComponent}
     />
   );
 };

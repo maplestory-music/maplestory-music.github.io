@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { getMonth, getYear } from 'date-fns';
 import { useDataSourceState } from '../../context/DataSourceContext';
 import { IMusicRecordGrid } from '../../models/DataModel';
 import { MusicChart } from '../MusicChart';
 import { ICommonChartProps } from './CommonChartProps';
+import HighchartsReact from 'highcharts-react-official';
+import Highcharts from 'highcharts';
 
 const removeFutureDates = (values: number[], selectedYear: number) => {
   const now = Date.now();
@@ -16,6 +18,7 @@ const removeFutureDates = (values: number[], selectedYear: number) => {
 };
 
 const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
+  const chartComponent = useRef<HighchartsReact.RefObject>(null);
   const dataSource: IMusicRecordGrid[] = useDataSourceState();
   const selectedYear = props.selectedYear;
   const monthlyFreq = dataSource.reduce((prev: number[], current) => {
@@ -87,6 +90,7 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
         width: 60%;
       `}
       options={options}
+      chartComponent={chartComponent}
     />
   );
 };

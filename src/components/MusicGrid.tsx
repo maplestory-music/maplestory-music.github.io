@@ -20,6 +20,7 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
@@ -33,6 +34,7 @@ import { DateRenderer } from './renderers/DateRenderer';
 import { useTranslation } from 'react-i18next';
 import { i18n } from 'i18next';
 import { LanguageLocale } from '../i18n';
+import { useTheme } from '../context/ThemeContext';
 
 interface IGridContext {
   i18n: i18n;
@@ -183,6 +185,7 @@ const MusicGrid: React.FC<{
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
   const gridOptions = useRef<GridOptions | undefined>(undefined);
+  const appTheme = useTheme();
   colDef.current = getColDef(onGridSongChange);
   gridOptions.current = getGridOptions();
 
@@ -264,7 +267,7 @@ const MusicGrid: React.FC<{
         width: 95vw;
         margin-bottom: 15px;
       `}
-      className="ag-theme-balham"
+      className={appTheme.darkMode ? 'ag-theme-balham-dark' : 'ag-theme-balham'}
     >
       <AgGridReact
         columnDefs={colDef.current}

@@ -43,9 +43,9 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
       >
         <a
           css={css`
-            color: inherit;
             margin-right: 3px;
           `}
+          className="bgm-external-link-icon"
           href={`https://youtu.be/${youtube}`}
           rel={'noopener noreferrer'}
           target={'_blank'}

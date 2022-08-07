@@ -3,7 +3,7 @@
     margin: 2vh 4vw;
   }
 
-  .ag-theme-balham {
+  .ag-theme-balham, .ag-theme-balham-dark {
     .date-col > {
       .fa.fa-star {
         color: palevioletred;
@@ -16,14 +16,27 @@
       justify-content: center;
     }
 
+    .ag-paging-number,
+    .ag-paging-row-summary-panel-number {
+      font-weight: 700;
+    }
+
+    .bgm-external-link-icon {
+      color: inherit;
+    }
+  }
+
+  .ag-theme-balham {
     a {
       text-decoration: underline;
       font-weight: 500;
     }
+  }
 
-    .ag-paging-number,
-    .ag-paging-row-summary-panel-number {
-      font-weight: 700;
+  .ag-theme-balham-dark {
+    a {
+      text-decoration: underline;
+      color: inherit;
     }
   }
 }
