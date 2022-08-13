@@ -231,20 +231,35 @@ const MusicGrid: React.FC<{
 
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
     event.columnApi.autoSizeAllColumns();
-    setShufflePool(false, dataSource);
   };
 
-  const onFilterChanged = (event: FilterChangedEvent): void => {
-    const filterPresent = event.api.isAnyFilterPresent();
+  const updateShufflePool = (
+    gridApi: GridApi,
+    dataSource: IMusicRecordGrid[],
+    setShufflePool: (
+      isGridFiltered: boolean,
+      shufflePool: IMusicRecordGrid[]
+    ) => void
+  ): void => {
+    const filterPresent = gridApi.isAnyFilterPresent();
     if (!filterPresent) {
       setShufflePool(false, dataSource);
       return;
     }
     const filteredSongs: IMusicRecordGrid[] = [];
-    event.api.forEachNodeAfterFilter((rowNode: RowNode, index: number) => {
+    gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
       filteredSongs.push(rowNode.data);
     });
     setShufflePool(true, filteredSongs);
+  };
+
+  useEffect(() => {
+    if (!gridApi.current) return;
+    updateShufflePool(gridApi.current, dataSource, setShufflePool);
+  }, [dataSource, setShufflePool]);
+
+  const onFilterChanged = (event: FilterChangedEvent): void => {
+    updateShufflePool(event.api, dataSource, setShufflePool);
   };
 
   const onModelUpdated = (event: ModelUpdatedEvent): void => {

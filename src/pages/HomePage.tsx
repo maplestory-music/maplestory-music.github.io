@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { css } from '@emotion/react';
 import {
   Form,
@@ -63,10 +63,10 @@ const HomePage: React.FC = () => {
   const setShufflePool: (
     isGridFiltered: boolean,
     shufflePool: IMusicRecordGrid[]
-  ) => void = (isGridFiltered, shufflePool) => {
+  ) => void = useCallback((isGridFiltered, shufflePool) => {
     setGridFiltered(isGridFiltered);
     shufflePlaylistPool.current = shufflePool;
-  };
+  }, []);
 
   const onShufflePlaylist: () => void = () => {
     const shuffledSongs = shuffle(
