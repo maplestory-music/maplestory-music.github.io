@@ -5,6 +5,7 @@ import {
   IMusicRecordJson,
   IMusicRecordSourceGrid,
 } from '../models/DataModel';
+import { useSettings } from './SettingsContext';
 
 type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };
@@ -17,6 +18,7 @@ export const DataSourceProvider: ({
   children,
 }: DataSourceProviderProps) => React.ReactElement = ({ children }) => {
   const [state, setState] = React.useState<State>([]);
+  const { settings } = useSettings();
 
   useEffect(() => {
     fetch(
@@ -24,8 +26,13 @@ export const DataSourceProvider: ({
     )
       .then((result) => result.json())
       .then((rowData: IMusicRecordJson[]) => {
-        const rowDataGrid: IMusicRecordGrid[] = rowData.map(
-          (song: IMusicRecordJson) => {
+        const rowDataGrid: IMusicRecordGrid[] = rowData
+          .filter((song) => {
+            return settings.hideMinorTracks
+              ? !song.decoration?.minorTrack ?? true
+              : true;
+          })
+          .map((song: IMusicRecordJson) => {
             const source: IMusicRecordSourceGrid = {
               client: song.source.client,
               date: song.source.date ? parseISO(song.source.date) : null,
@@ -40,11 +47,10 @@ export const DataSourceProvider: ({
               source: source,
             });
             return gridRecord;
-          }
-        );
+          });
         setState(rowDataGrid);
       });
-  }, [setState]);
+  }, [setState, settings.hideMinorTracks]);
 
   return (
     <DataSourceStateContext.Provider value={state}>

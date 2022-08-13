@@ -24,12 +24,17 @@ interface IMusicRecordLocaleJson {
   };
 }
 
+interface IMusicRecordDecorationJson {
+  minorTrack?: boolean;
+}
+
 type IMusicRecordLocaleGroupJson = Record<
   LanguageLocale,
   IMusicRecordLocaleJson
 >;
 
 export interface IMusicRecordJson {
+  decoration?: IMusicRecordDecorationJson;
   description: string;
   filename: string;
   locale?: IMusicRecordLocaleGroupJson;
