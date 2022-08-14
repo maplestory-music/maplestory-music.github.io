@@ -155,7 +155,7 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
 const scrollToLocatedRow = (rowIndex: number | null): void => {
   if (rowIndex === null) return;
   const rowElement = document.querySelector<HTMLElement>(
-    `div.ag-theme-balham div[row-index='${rowIndex}']`
+    `div.ag-root-wrapper div[row-index='${rowIndex}']`
   );
   const rowTransform = rowElement?.style.transform;
   if (!rowTransform) return;
@@ -163,7 +163,7 @@ const scrollToLocatedRow = (rowIndex: number | null): void => {
   const execResult = regex.exec(rowTransform);
   if (!execResult) return;
   const [, rowTranslateY] = execResult;
-  const gridOffsetY = document.querySelector<HTMLElement>(`div.ag-theme-balham`)
+  const gridOffsetY = document.querySelector<HTMLElement>(`div.ag-root-wrapper`)
     ?.offsetTop;
   if (gridOffsetY === undefined) return;
   const scrollPosition = gridOffsetY + Number(rowTranslateY);
