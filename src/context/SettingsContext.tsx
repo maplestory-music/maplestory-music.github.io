@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useEffect } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 
 const LOCAL_STORAGE_KEY = 'site-preferences';
 
@@ -15,10 +15,20 @@ const SettingsContext = React.createContext<SettingsContextOutput | undefined>(
   undefined
 );
 
+const defaultSettings: ISettings = {
+  hideMinorTracks: false,
+};
+
 function getDefaultSettings(): ISettings {
-  return {
-    hideMinorTracks: false,
-  };
+  const prefsJson = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (prefsJson === null) {
+    const defaultPrefs = defaultSettings;
+    setLocalStorage(defaultPrefs);
+    return defaultPrefs;
+  } else {
+    const parsedPrefs = JSON.parse(prefsJson) as ISettings;
+    return parsedPrefs;
+  }
 }
 
 function setLocalStorage(prefs: ISettings): void {
@@ -36,18 +46,6 @@ export const SettingsProvider = ({
     setPrefs(prefs);
     setLocalStorage(prefs);
   };
-
-  useEffect(() => {
-    const prefsJson = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (prefsJson === null) {
-      const defaultPrefs = getDefaultSettings();
-      setLocalStorage(defaultPrefs);
-      setPrefs(defaultPrefs);
-    } else {
-      const parsedPrefs = JSON.parse(prefsJson) as ISettings;
-      setPrefs(parsedPrefs);
-    }
-  }, []);
 
   return (
     <SettingsContext.Provider
