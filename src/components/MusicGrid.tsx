@@ -234,27 +234,26 @@ const MusicGrid: React.FC<{
   };
 
   const updateShufflePool = (
-    gridApi: GridApi,
+    gridApi: GridApi | null,
     dataSource: IMusicRecordGrid[],
     setShufflePool: (
       isGridFiltered: boolean,
       shufflePool: IMusicRecordGrid[]
     ) => void
   ): void => {
-    const filterPresent = gridApi.isAnyFilterPresent();
+    const filterPresent = gridApi?.isAnyFilterPresent();
     if (!filterPresent) {
       setShufflePool(false, dataSource);
       return;
     }
     const filteredSongs: IMusicRecordGrid[] = [];
-    gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
+    gridApi?.forEachNodeAfterFilter((rowNode: RowNode) => {
       filteredSongs.push(rowNode.data);
     });
     setShufflePool(true, filteredSongs);
   };
 
   useEffect(() => {
-    if (!gridApi.current) return;
     updateShufflePool(gridApi.current, dataSource, setShufflePool);
   }, [dataSource, setShufflePool]);
 
