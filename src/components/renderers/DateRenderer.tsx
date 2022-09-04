@@ -5,7 +5,13 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ICellRendererParams } from 'ag-grid-community';
 import { differenceInWeeks, isFuture } from 'date-fns';
 
-export const DateRenderer: React.FC<ICellRendererParams> = (params) => {
+export type IDateRendererParams = ICellRendererParams &
+  IDateRendererLocalParams;
+interface IDateRendererLocalParams {
+  disableRecentTrack?: boolean;
+}
+
+export const DateRenderer: React.FC<IDateRendererParams> = (params) => {
   const date = params.value;
   const now = new Date();
   const isRecentTrack = differenceInWeeks(now, date) < 3 || isFuture(date);
@@ -19,7 +25,7 @@ export const DateRenderer: React.FC<ICellRendererParams> = (params) => {
       >
         {params.valueFormatted}
       </span>
-      {isRecentTrack && (
+      {!params.disableRecentTrack && isRecentTrack && (
         <OverlayTrigger
           delay={{ show: 250, hide: 100 }}
           overlay={<Tooltip id={`tooltip-recent-track`}>Recent Track</Tooltip>}

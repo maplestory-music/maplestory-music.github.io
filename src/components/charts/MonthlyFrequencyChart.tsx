@@ -87,7 +87,8 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
   return (
     <MusicChart
       styles={css`
-        width: 60%;
+        width: 55vw;
+        flex: 2;
       `}
       options={options}
       chartComponent={chartComponent}

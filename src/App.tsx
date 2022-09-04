@@ -206,7 +206,7 @@ const About = (): ReactElement => (
 const Stats = (): ReactElement => (
   <div
     css={css`
-      margin: 2% 3% 3% 3%;
+      margin: 2% 3% 1% 3%;
     `}
     className="Stats"
   >

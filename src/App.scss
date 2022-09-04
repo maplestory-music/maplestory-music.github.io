@@ -3,29 +3,6 @@
     margin: 2vh 4vw;
   }
 
-  .ag-theme-balham, .ag-theme-balham-dark {
-    .date-col > {
-      .fa.fa-star {
-        color: palevioletred;
-      }
-    }
-
-    .ag-cell[col-id='mark'] {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .ag-paging-number,
-    .ag-paging-row-summary-panel-number {
-      font-weight: 700;
-    }
-
-    .bgm-external-link-icon {
-      color: inherit;
-    }
-  }
-
   .ag-theme-balham {
     a {
       text-decoration: underline;
@@ -48,5 +25,30 @@
 
   .gh-project-entry {
     margin-top: 20px;
+  }
+}
+
+.App, .Stats {
+  .ag-theme-balham, .ag-theme-balham-dark {
+    .date-col > {
+      .fa.fa-star {
+        color: palevioletred;
+      }
+    }
+
+    .ag-cell[col-id='mark'] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ag-paging-number,
+    .ag-paging-row-summary-panel-number {
+      font-weight: 700;
+    }
+
+    .bgm-external-link-icon {
+      color: inherit;
+    }
   }
 }

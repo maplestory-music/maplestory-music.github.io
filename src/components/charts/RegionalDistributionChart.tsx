@@ -84,7 +84,8 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
   return (
     <MusicChart
       styles={css`
-        width: 35%;
+        width: 35vw;
+        flex: 1;
       `}
       options={options}
       chartComponent={chartComponent}

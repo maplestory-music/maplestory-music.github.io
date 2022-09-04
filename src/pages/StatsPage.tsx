@@ -5,6 +5,7 @@ import { Form } from 'react-bootstrap';
 import { getYear } from 'date-fns';
 import MonthlyFrequencyChart from '../components/charts/MonthlyFrequencyChart';
 import RegionalDistributionChart from '../components/charts/RegionalDistributionChart';
+import { FolderStructureGrid } from '../components/FolderStructureGrid';
 
 const StatsPage: React.FC = () => {
   const currentYear = getYear(new Date());
@@ -40,9 +41,19 @@ const StatsPage: React.FC = () => {
           </Form.Select>
         </Form.Group>
       </Form>
-      <div>
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          flex-wrap: wrap;
+        `}
+      >
         <MonthlyFrequencyChart selectedYear={selectedYear} />
         <RegionalDistributionChart selectedYear={selectedYear} />
+      </div>
+      <div>
+        <FolderStructureGrid />
       </div>
     </div>
   );
