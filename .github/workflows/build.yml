@@ -1,0 +1,44 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [source]
+  pull_request:
+    branches: [source]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --prefer-offline
+
+      - name: Set up env
+        env:
+          GA_TOKEN: ${{ secrets.GA_TOKEN }}
+        run: bash ./env.sh
+
+      - name: Build
+        run: yarn build
+
+      - name: Set build date
+        run: echo "COMMIT_MSG_BUILD_DATE=$(date "+%b %d %Y")" >> $GITHUB_OUTPUT
+        id: date
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: master
+          git-config-name: github-actions[bot]
+          git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit-message: 'GitHub Actions: ${{ steps.date.outputs.COMMIT_MSG_BUILD_DATE }} (Build ${{ github.run_number }})'
