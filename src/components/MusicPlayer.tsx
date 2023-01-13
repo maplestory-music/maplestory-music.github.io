@@ -43,38 +43,36 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
         url={`https://youtu.be/${playingState.currentSong}`}
         playing
         controls
-        loop={
-          playingState.repeatPlaylist &&
-          playingState.shufflePlaylist.length === 1
-        }
         onEnded={(): void => {
           if (player.current !== null) {
-            let newVal;
-            if (
-              playingState.repeatPlaylist &&
-              playingState.currentPlaylistSong ===
-                playingState.shufflePlaylist.length - 1
-            ) {
+            if (!playingState.shufflePlaylist.length) {
+              player.current.seekTo(0);
               ReactGA.event({
                 category: 'Video',
                 action: 'Loop Embedded Video',
                 label: playingState.currentSong,
               });
-              newVal = 0;
             } else {
               ReactGA.event({
                 category: 'Video',
                 action: 'Complete Playlist Video',
                 label: playingState.currentSong,
               });
+              let newVal;
               if (
                 playingState.currentPlaylistSong ===
                 playingState.shufflePlaylist.length - 1
-              )
-                return;
-              newVal = playingState.currentPlaylistSong + 1;
+              ) {
+                if (playingState.repeatPlaylist) {
+                  newVal = 0;
+                } else {
+                  return;
+                }
+              } else {
+                newVal = playingState.currentPlaylistSong + 1;
+              }
+              setCurrentPlaylistSong(newVal);
             }
-            setCurrentPlaylistSong(newVal);
           }
         }}
       />
