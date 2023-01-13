@@ -19,6 +19,7 @@ export interface IPlayingState {
   currentSong: string | undefined;
   shufflePlaylist: IMusicRecordGrid[];
   currentPlaylistSong: number;
+  repeatPlaylist: boolean;
 }
 
 export interface ILocateSong {
@@ -28,10 +29,12 @@ export interface ILocateSong {
 const HomePage: React.FC = () => {
   const [filterText, setFilterText] = useState<string>();
   const [gridFiltered, setGridFiltered] = useState<boolean>(false);
+  const [playlistRepeat, setPlaylistRepeat] = useState<boolean>(false);
   const [playingState, setPlayingState] = useState<IPlayingState>({
     currentSong: undefined,
     shufflePlaylist: [],
     currentPlaylistSong: -1,
+    repeatPlaylist: false,
   });
   const shufflePlaylistPool = useRef<IMusicRecordGrid[]>([]);
   const [locateSong, setLocateSong] = useState<ILocateSong | undefined>();
@@ -52,11 +55,23 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const onRepeatPlaylist: () => void = () => {
+    const newPlaylistRepeatVal = !playlistRepeat;
+    setPlaylistRepeat(newPlaylistRepeatVal);
+    setPlayingState((state) => {
+      return {
+        ...state,
+        repeatPlaylist: newPlaylistRepeatVal,
+      };
+    });
+  };
+
   const onGridSongChange: (song: string) => void = (song) => {
     setPlayingState({
       currentSong: song,
       shufflePlaylist: [],
       currentPlaylistSong: -1,
+      repeatPlaylist: playlistRepeat,
     });
   };
 
@@ -77,6 +92,7 @@ const HomePage: React.FC = () => {
       currentSong: shuffledSongs[0].youtube,
       shufflePlaylist: shuffledSongs,
       currentPlaylistSong: 0,
+      repeatPlaylist: playlistRepeat,
     });
     ReactGA.event({
       category: 'Playlist',
@@ -137,6 +153,35 @@ const HomePage: React.FC = () => {
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
+          <OverlayTrigger
+            delay={{ show: 250, hide: 100 }}
+            overlay={
+              <Tooltip id={`tooltip-start-playlist`}>
+                {playlistRepeat
+                  ? gridFiltered
+                    ? `Turn off repeat for Playlist (Filtered)`
+                    : `Turn off repeat for Playlist`
+                  : gridFiltered
+                  ? `Turn on repeat for Playlist (Filtered)`
+                  : `Turn on repeat for Playlist`}
+              </Tooltip>
+            }
+          >
+            <Button
+              variant={
+                playlistRepeat
+                  ? gridFiltered
+                    ? 'warning'
+                    : 'success'
+                  : gridFiltered
+                  ? 'outline-warning'
+                  : 'outline-success'
+              }
+              onClick={onRepeatPlaylist}
+            >
+              <i className="fa fa-repeat"></i>
+            </Button>
+          </OverlayTrigger>
           <OverlayTrigger
             delay={{ show: 250, hide: 100 }}
             overlay={
