@@ -1,3 +1,6 @@
+[![Build Status](https://github.com/maplestory-music/maplestory-music.github.io/actions/workflows/build.yml/badge.svg)](https://github.com/maplestory-music/maplestory-music.github.io/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 # maplestory-music
 
 MapleStory Music website
