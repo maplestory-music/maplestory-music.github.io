@@ -24,7 +24,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const onNextPlaylistSong: () => void = () => {
     if (
       playingState.currentPlaylistSong ===
-      playingState.shufflePlaylist.length - 1
+      playingState.currentPlaylist.length - 1
     )
       return;
     setCurrentPlaylistSong(playingState.currentPlaylistSong + 1);
@@ -45,7 +45,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
         controls
         onEnded={(): void => {
           if (player.current !== null) {
-            if (!playingState.shufflePlaylist.length) {
+            if (!playingState.currentPlaylist.length) {
               player.current.seekTo(0);
               ReactGA.event({
                 category: 'Video',
@@ -61,7 +61,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
               let newVal;
               if (
                 playingState.currentPlaylistSong ===
-                playingState.shufflePlaylist.length - 1
+                playingState.currentPlaylist.length - 1
               ) {
                 if (playingState.repeatPlaylist) {
                   newVal = 0;
@@ -76,7 +76,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
           }
         }}
       />
-      {playingState.shufflePlaylist.length > 0 && (
+      {playingState.currentPlaylist.length > 0 && (
         <div
           className="text-center"
           css={css`
@@ -104,15 +104,15 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
               `}
             >{`${padStart(
               (playingState.currentPlaylistSong + 1).toString(),
-              playingState.shufflePlaylist.length.toString().length,
+              playingState.currentPlaylist.length.toString().length,
               '0'
-            )} | ${playingState.shufflePlaylist.length}`}</span>
+            )} | ${playingState.currentPlaylist.length}`}</span>
             <Button
               variant="outline-primary"
               onClick={onNextPlaylistSong}
               disabled={
                 playingState.currentPlaylistSong + 1 ===
-                playingState.shufflePlaylist.length
+                playingState.currentPlaylist.length
               }
             >
               <i className="fa fa-step-forward"></i>

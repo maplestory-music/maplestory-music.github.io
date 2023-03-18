@@ -4,9 +4,9 @@ import { css } from '@emotion/react';
 import {
   Form,
   InputGroup,
-  Button,
   OverlayTrigger,
   Tooltip,
+  Dropdown,
 } from 'react-bootstrap';
 import { shuffle } from 'lodash-es';
 import ReactGA from 'react-ga';
@@ -14,10 +14,11 @@ import MusicGrid from '../components/MusicGrid';
 import { IMusicRecordGrid } from '../models/DataModel';
 import { MusicPlayer } from '../components/MusicPlayer';
 import { Header } from '../components/Header';
+import { PlaylistActionButton } from '../components/PlaylistActionButton';
 
 export interface IPlayingState {
   currentSong: string | undefined;
-  shufflePlaylist: IMusicRecordGrid[];
+  currentPlaylist: IMusicRecordGrid[];
   currentPlaylistSong: number;
   repeatPlaylist: boolean;
 }
@@ -32,11 +33,11 @@ const HomePage: React.FC = () => {
   const [playlistRepeat, setPlaylistRepeat] = useState<boolean>(false);
   const [playingState, setPlayingState] = useState<IPlayingState>({
     currentSong: undefined,
-    shufflePlaylist: [],
+    currentPlaylist: [],
     currentPlaylistSong: -1,
     repeatPlaylist: false,
   });
-  const shufflePlaylistPool = useRef<IMusicRecordGrid[]>([]);
+  const appPlaylistPool = useRef<IMusicRecordGrid[]>([]);
   const [locateSong, setLocateSong] = useState<ILocateSong | undefined>();
 
   const onFilterTextChanged: (
@@ -69,28 +70,28 @@ const HomePage: React.FC = () => {
   const onGridSongChange: (song: string) => void = (song) => {
     setPlayingState({
       currentSong: song,
-      shufflePlaylist: [],
+      currentPlaylist: [],
       currentPlaylistSong: -1,
       repeatPlaylist: playlistRepeat,
     });
   };
 
-  const setShufflePool: (
+  const setPlaylistPool: (
     isGridFiltered: boolean,
-    shufflePool: IMusicRecordGrid[]
-  ) => void = useCallback((isGridFiltered, shufflePool) => {
+    playlistPool: IMusicRecordGrid[]
+  ) => void = useCallback((isGridFiltered, playlistPool) => {
     setGridFiltered(isGridFiltered);
-    shufflePlaylistPool.current = shufflePool;
+    appPlaylistPool.current = playlistPool;
   }, []);
 
   const onShufflePlaylist: () => void = () => {
     const shuffledSongs = shuffle(
-      shufflePlaylistPool.current.filter((song) => song.youtube !== '')
+      appPlaylistPool.current.filter((song) => song.youtube !== '')
     );
     if (!shuffledSongs.length) return;
     setPlayingState({
       currentSong: shuffledSongs[0].youtube,
-      shufflePlaylist: shuffledSongs,
+      currentPlaylist: shuffledSongs,
       currentPlaylistSong: 0,
       repeatPlaylist: playlistRepeat,
     });
@@ -103,11 +104,29 @@ const HomePage: React.FC = () => {
     });
   };
 
+  const onStartPlaylist = () => {
+    const playlistSongs = appPlaylistPool.current.filter(
+      (song) => song.youtube !== ''
+    );
+    if (!playlistSongs.length) return;
+    setPlayingState({
+      currentSong: playlistSongs[0].youtube,
+      currentPlaylist: playlistSongs,
+      currentPlaylistSong: 0,
+      repeatPlaylist: playlistRepeat,
+    });
+    ReactGA.event({
+      category: 'Playlist',
+      action: gridFiltered ? 'Start Playlist (Filtered)' : 'Start Playlist',
+      label: 'Play Button',
+    });
+  };
+
   const setCurrentPlaylistSong: (newVal: number) => void = (newVal) => {
     setPlayingState((state) => {
       return {
         ...state,
-        currentSong: state.shufflePlaylist[newVal].youtube,
+        currentSong: state.currentPlaylist[newVal].youtube,
         currentPlaylistSong: newVal,
       };
     });
@@ -153,58 +172,54 @@ const HomePage: React.FC = () => {
             onChange={onFilterTextChanged}
             onKeyPress={onFilterTextKeyPress}
           />
-          <OverlayTrigger
-            delay={{ show: 250, hide: 100 }}
-            overlay={
-              <Tooltip id={`tooltip-start-playlist`}>
-                {playlistRepeat
-                  ? gridFiltered
-                    ? `Turn off repeat for Playlist (Filtered)`
-                    : `Turn off repeat for Playlist`
-                  : gridFiltered
-                  ? `Turn on repeat for Playlist (Filtered)`
-                  : `Turn on repeat for Playlist`}
-              </Tooltip>
-            }
-          >
-            <Button
-              variant={
-                playlistRepeat
-                  ? gridFiltered
-                    ? 'warning'
-                    : 'success'
-                  : gridFiltered
-                  ? 'outline-warning'
-                  : 'outline-success'
+          <Dropdown>
+            <OverlayTrigger
+              delay={{ show: 250, hide: 100 }}
+              overlay={
+                <Tooltip id={`tooltip-playlist-actions`}>
+                  {gridFiltered
+                    ? 'Playlist Actions (Filtered)'
+                    : 'Playlist Actions'}
+                </Tooltip>
               }
-              onClick={onRepeatPlaylist}
             >
-              <i className="fa fa-repeat"></i>
-            </Button>
-          </OverlayTrigger>
-          <OverlayTrigger
-            delay={{ show: 250, hide: 100 }}
-            overlay={
-              <Tooltip id={`tooltip-start-playlist`}>
-                {gridFiltered
-                  ? `Start Shuffled Playlist (Filtered)`
-                  : `Start Shuffled Playlist`}
-              </Tooltip>
-            }
-          >
-            <Button
-              variant={gridFiltered ? 'outline-warning' : 'outline-success'}
-              onClick={onShufflePlaylist}
-            >
-              <i className="fa fa-random"></i>
-            </Button>
-          </OverlayTrigger>
+              <Dropdown.Toggle
+                variant={gridFiltered ? 'outline-warning' : 'outline-success'}
+                id="dropdown-playlist-actions"
+              >
+                <i className="fa fa-play"></i>
+              </Dropdown.Toggle>
+            </OverlayTrigger>
+            <Dropdown.Menu>
+              <PlaylistActionButton
+                actionName="Start Playlist"
+                iconClass="fa fa-play"
+                onClick={onStartPlaylist}
+              />
+              <PlaylistActionButton
+                actionName="Start Shuffled Playlist"
+                iconClass="fa fa-random"
+                onClick={onShufflePlaylist}
+              />
+              <Dropdown.Divider />
+              <PlaylistActionButton
+                actionName={
+                  playlistRepeat
+                    ? 'Turn Off Playlist Repeat'
+                    : 'Turn On Playlist Repeat'
+                }
+                iconClass="fa fa-repeat"
+                onClick={onRepeatPlaylist}
+                active={playlistRepeat}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
         </InputGroup>
       </Form.Group>
       <MusicGrid
         query={filterText}
         onGridSongChange={onGridSongChange}
-        setShufflePool={setShufflePool}
+        setPlaylistPool={setPlaylistPool}
         locateSong={locateSong}
       />
     </div>

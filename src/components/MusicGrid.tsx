@@ -17,6 +17,7 @@ import {
   ModelUpdatedEvent,
   CellStyle,
   ValueGetterParams,
+  SortChangedEvent,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -173,12 +174,12 @@ const scrollToLocatedRow = (rowIndex: number | null): void => {
 const MusicGrid: React.FC<{
   query: string | undefined;
   onGridSongChange: (song: string) => void;
-  setShufflePool: (
+  setPlaylistPool: (
     isGridFiltered: boolean,
-    shufflePool: IMusicRecordGrid[]
+    playlistPool: IMusicRecordGrid[]
   ) => void;
   locateSong: ILocateSong | undefined;
-}> = ({ query, onGridSongChange, setShufflePool, locateSong }) => {
+}> = ({ query, onGridSongChange, setPlaylistPool, locateSong }) => {
   const { i18n } = useTranslation();
   const dataSource = useDataSourceState();
   const gridApi = useRef<GridApi | null>(null);
@@ -233,32 +234,31 @@ const MusicGrid: React.FC<{
     event.columnApi.autoSizeAllColumns();
   };
 
-  const updateShufflePool = (
+  const updatePlaylistPool = (
     gridApi: GridApi | null,
-    dataSource: IMusicRecordGrid[],
-    setShufflePool: (
+    setPlaylistPool: (
       isGridFiltered: boolean,
-      shufflePool: IMusicRecordGrid[]
+      playlistPool: IMusicRecordGrid[]
     ) => void
   ): void => {
-    const filterPresent = gridApi?.isAnyFilterPresent();
-    if (!filterPresent) {
-      setShufflePool(false, dataSource);
-      return;
-    }
+    const filterPresent = gridApi?.isAnyFilterPresent() ?? false;
     const filteredSongs: IMusicRecordGrid[] = [];
-    gridApi?.forEachNodeAfterFilter((rowNode: RowNode) => {
+    gridApi?.forEachNodeAfterFilterAndSort((rowNode: RowNode) => {
       filteredSongs.push(rowNode.data);
     });
-    setShufflePool(true, filteredSongs);
+    setPlaylistPool(filterPresent, filteredSongs);
   };
 
   useEffect(() => {
-    updateShufflePool(gridApi.current, dataSource, setShufflePool);
-  }, [dataSource, setShufflePool]);
+    updatePlaylistPool(gridApi.current, setPlaylistPool);
+  }, [dataSource, setPlaylistPool]);
 
   const onFilterChanged = (event: FilterChangedEvent): void => {
-    updateShufflePool(event.api, dataSource, setShufflePool);
+    updatePlaylistPool(event.api, setPlaylistPool);
+  };
+
+  const onSortChanged = (event: SortChangedEvent): void => {
+    updatePlaylistPool(event.api, setPlaylistPool);
   };
 
   const onModelUpdated = (event: ModelUpdatedEvent): void => {
@@ -289,6 +289,7 @@ const MusicGrid: React.FC<{
         gridOptions={gridOptions.current}
         onFirstDataRendered={onFirstDataRendered}
         onFilterChanged={onFilterChanged}
+        onSortChanged={onSortChanged}
         onModelUpdated={onModelUpdated}
         onGridReady={onGridReady}
         reactUi={true}
