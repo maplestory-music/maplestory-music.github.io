@@ -19,7 +19,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
-    "types": ["@emotion/react/types/css-prop"]
   },
   "include": [
     "src"

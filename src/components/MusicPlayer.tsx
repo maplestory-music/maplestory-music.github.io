@@ -52,11 +52,19 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
                 action: 'Loop Embedded Video',
                 label: playingState.currentSong,
               });
+              gtag('event', 'ce_loop_embedded_video', {
+                ce_category: 'video',
+                ce_youtube: playingState.currentSong,
+              });
             } else {
               ReactGA.event({
                 category: 'Video',
                 action: 'Complete Playlist Video',
                 label: playingState.currentSong,
+              });
+              gtag('event', 'ce_complete_playlist_video', {
+                ce_category: 'video',
+                ce_youtube: playingState.currentSong,
               });
               let newVal;
               if (

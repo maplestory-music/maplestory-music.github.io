@@ -102,6 +102,11 @@ const HomePage: React.FC = () => {
         : 'Start Shuffled Playlist',
       label: 'Shuffle Button',
     });
+    gtag('event', 'ce_start_shuffled_playlist', {
+      ce_category: 'playlist',
+      ce_source: 'shuffle_button',
+      ce_filtered: gridFiltered,
+    });
   };
 
   const onStartPlaylist = () => {
@@ -119,6 +124,11 @@ const HomePage: React.FC = () => {
       category: 'Playlist',
       action: gridFiltered ? 'Start Playlist (Filtered)' : 'Start Playlist',
       label: 'Play Button',
+    });
+    gtag('event', 'ce_start_playlist', {
+      ce_category: 'playlist',
+      ce_source: 'play_button',
+      ce_filtered: gridFiltered,
     });
   };
 

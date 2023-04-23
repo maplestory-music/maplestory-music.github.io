@@ -3,6 +3,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     interface ProcessEnv {
       REACT_APP_GA_TOKEN: string;
+      REACT_APP_GA4_TOKEN: string;
       REACT_APP_BUILD_HASH: string;
       REACT_APP_BUILD_DATE: string;
       NODE_ENV: 'development' | 'production';

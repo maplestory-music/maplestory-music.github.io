@@ -25,6 +25,7 @@ jobs:
       - name: Set up env
         env:
           GA_TOKEN: ${{ secrets.GA_TOKEN }}
+          GA4_TOKEN: ${{ secrets.GA4_TOKEN }}
         run: bash ./env.sh
 
       - name: Build

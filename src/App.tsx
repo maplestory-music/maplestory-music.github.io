@@ -1,7 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import './App.scss';
-import { Router, Switch, Route, Link, NavLink } from 'react-router-dom';
+import {
+  Router,
+  Switch,
+  Route,
+  Link,
+  NavLink,
+  useLocation,
+} from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
@@ -9,7 +16,7 @@ import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 import StatsPage from './pages/StatsPage';
 import { DataSourceProvider } from './context/DataSourceContext';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { formatISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -89,6 +96,10 @@ const Header: React.FC = () => {
                     action: 'Switch to Light Mode',
                     label: 'Navbar',
                   });
+                  gtag('event', 'ce_ui_light', {
+                    ce_category: 'ui',
+                    ce_source: 'navbar',
+                  });
                 }}
               >
                 Light
@@ -102,6 +113,10 @@ const Header: React.FC = () => {
                     category: 'UI',
                     action: 'Switch to Dark Mode',
                     label: 'Navbar',
+                  });
+                  gtag('event', 'ce_ui_dark', {
+                    ce_category: 'ui',
+                    ce_source: 'navbar',
                   });
                 }}
               >
@@ -176,15 +191,28 @@ const Footer = (): ReactElement => {
   );
 };
 
-const Main = (): ReactElement => (
-  <main>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/stats" component={Stats} />
-      <Route path="/about" component={About} />
-    </Switch>
-  </main>
-);
+const siteTitle = 'MapleStory Music - BGM & OST Database';
+const pageTitles: { [name: string]: string } = {
+  '/': siteTitle,
+  '/stats': `${siteTitle} - Stats`,
+  '/about': `${siteTitle} - About`,
+};
+
+const Main = (): ReactElement => {
+  const location = useLocation();
+  useEffect(() => {
+    document.title = pageTitles[location.pathname] ?? siteTitle;
+  }, [location]);
+  return (
+    <main>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/stats" component={Stats} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </main>
+  );
+};
 
 const Home = (): ReactElement => (
   <div className="App">

@@ -24,6 +24,10 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
       action: 'View Embedded Video',
       label: params.youtube,
     });
+    gtag('event', 'ce_view_embedded_video', {
+      ce_category: 'video',
+      ce_youtube: params.youtube,
+    });
     params.onGridSongChange(params.youtube);
     e.preventDefault();
   };
@@ -32,6 +36,10 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
       category: 'Video',
       action: 'View External Video',
       label: params.youtube,
+    });
+    gtag('event', 'ce_view_external_video', {
+      ce_category: 'video',
+      ce_youtube: params.youtube,
     });
   };
 
