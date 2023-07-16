@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ICellRendererParams } from 'ag-grid-community';
-import ReactGA from 'react-ga';
 
 export interface ILinkRendererParams {
   title: string;
@@ -19,11 +18,6 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
   const onEmbeddedClick: (e: React.MouseEvent<HTMLAnchorElement>) => void = (
     e
   ) => {
-    ReactGA.event({
-      category: 'Video',
-      action: 'View Embedded Video',
-      label: params.youtube,
-    });
     gtag('event', 'ce_view_embedded_video', {
       ce_category: 'video',
       ce_youtube: params.youtube,
@@ -32,11 +26,6 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
     e.preventDefault();
   };
   const onExternalClick: () => void = () => {
-    ReactGA.event({
-      category: 'Video',
-      action: 'View External Video',
-      label: params.youtube,
-    });
     gtag('event', 'ce_view_external_video', {
       ce_category: 'video',
       ce_youtube: params.youtube,

@@ -9,7 +9,6 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { shuffle } from 'lodash-es';
-import ReactGA from 'react-ga';
 import MusicGrid from '../components/MusicGrid';
 import { IMusicRecordGrid } from '../models/DataModel';
 import { MusicPlayer } from '../components/MusicPlayer';
@@ -95,13 +94,6 @@ const HomePage: React.FC = () => {
       currentPlaylistSong: 0,
       repeatPlaylist: playlistRepeat,
     });
-    ReactGA.event({
-      category: 'Playlist',
-      action: gridFiltered
-        ? 'Start Shuffled Playlist (Filtered)'
-        : 'Start Shuffled Playlist',
-      label: 'Shuffle Button',
-    });
     gtag('event', 'ce_start_shuffled_playlist', {
       ce_category: 'playlist',
       ce_source: 'shuffle_button',
@@ -119,11 +111,6 @@ const HomePage: React.FC = () => {
       currentPlaylist: playlistSongs,
       currentPlaylistSong: 0,
       repeatPlaylist: playlistRepeat,
-    });
-    ReactGA.event({
-      category: 'Playlist',
-      action: gridFiltered ? 'Start Playlist (Filtered)' : 'Start Playlist',
-      label: 'Play Button',
     });
     gtag('event', 'ce_start_playlist', {
       ce_category: 'playlist',

@@ -10,7 +10,6 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import ReactGA from 'react-ga';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
@@ -23,12 +22,7 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { SettingsModal } from './components/SettingsModal';
 import { SettingsProvider } from './context/SettingsContext';
 
-ReactGA.initialize(process.env.REACT_APP_GA_TOKEN);
 const history = createBrowserHistory();
-history.listen((location, action) => {
-  ReactGA.pageview(window.location.pathname);
-});
-ReactGA.pageview(window.location.pathname);
 
 const onNavLinkClick: (e: React.MouseEvent<HTMLAnchorElement>) => void = (
   e
@@ -91,11 +85,6 @@ const Header: React.FC = () => {
                 onClick={() => {
                   if (!appTheme.darkMode) return;
                   darkmode.setDarkMode(false);
-                  ReactGA.event({
-                    category: 'UI',
-                    action: 'Switch to Light Mode',
-                    label: 'Navbar',
-                  });
                   gtag('event', 'ce_ui_light', {
                     ce_category: 'ui',
                     ce_source: 'navbar',
@@ -109,11 +98,6 @@ const Header: React.FC = () => {
                 onClick={() => {
                   if (appTheme.darkMode) return;
                   darkmode.setDarkMode(true);
-                  ReactGA.event({
-                    category: 'UI',
-                    action: 'Switch to Dark Mode',
-                    label: 'Navbar',
-                  });
                   gtag('event', 'ce_ui_dark', {
                     ce_category: 'ui',
                     ce_source: 'navbar',

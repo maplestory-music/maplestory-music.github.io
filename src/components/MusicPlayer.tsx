@@ -2,7 +2,6 @@
 import { css } from '@emotion/react';
 import React, { useRef } from 'react';
 import ReactPlayer from 'react-player';
-import ReactGA from 'react-ga';
 import { padStart } from 'lodash-es';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { IPlayingState } from '../pages/HomePage';
@@ -47,21 +46,11 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
           if (player.current !== null) {
             if (!playingState.currentPlaylist.length) {
               player.current.seekTo(0);
-              ReactGA.event({
-                category: 'Video',
-                action: 'Loop Embedded Video',
-                label: playingState.currentSong,
-              });
               gtag('event', 'ce_loop_embedded_video', {
                 ce_category: 'video',
                 ce_youtube: playingState.currentSong,
               });
             } else {
-              ReactGA.event({
-                category: 'Video',
-                action: 'Complete Playlist Video',
-                label: playingState.currentSong,
-              });
               gtag('event', 'ce_complete_playlist_video', {
                 ce_category: 'video',
                 ce_youtube: playingState.currentSong,
