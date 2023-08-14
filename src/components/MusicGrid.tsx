@@ -13,9 +13,7 @@ import {
   ValueFormatterParams,
   FilterChangedEvent,
   RowNode,
-  CellClassParams,
   ModelUpdatedEvent,
-  CellStyle,
   ValueGetterParams,
   SortChangedEvent,
 } from 'ag-grid-community';
@@ -25,9 +23,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
-import { MapleClient } from '../models/MapleClient';
-import { complement, rgba } from 'polished';
-import { cornFlowerBlue, PAGINATION_PAGE_SIZE } from '../constants';
+import { PAGINATION_PAGE_SIZE } from '../constants';
 import { ILocateSong } from '../pages/HomePage';
 import { MarkRenderer } from './renderers/MarkRenderer';
 import { ILinkRendererParams, LinkRenderer } from './renderers/LinkRenderer';
@@ -36,6 +32,7 @@ import { useTranslation } from 'react-i18next';
 import { i18n } from 'i18next';
 import { LanguageLocale } from '../i18n';
 import { useTheme } from '../context/ThemeContext';
+import { ClientVersionCellStyle } from './utils/GridUtils';
 
 interface IGridContext {
   i18n: i18n;
@@ -140,15 +137,7 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       headerName: 'Client',
       field: 'source.clientVersion',
       getQuickFilterText: (): string => '',
-      cellStyle: (params: CellClassParams): CellStyle => {
-        if (!params.value) return {};
-        const color = rgba(cornFlowerBlue, 0.5);
-        return {
-          backgroundColor: params.value.startsWith(MapleClient.Korea)
-            ? color
-            : complement(color),
-        };
-      },
+      cellStyle: ClientVersionCellStyle,
     },
   ];
 };

@@ -15,6 +15,7 @@ import { useTheme } from '../context/ThemeContext';
 import { IMusicRecordGrid } from '../models/DataModel';
 import { DateRenderer, IDateRendererParams } from './renderers/DateRenderer';
 import { MarkRenderer } from './renderers/MarkRenderer';
+import { ClientVersionCellStyle } from './utils/GridUtils';
 
 const getGridOptions = (): GridOptions => {
   return {
@@ -49,7 +50,7 @@ const getColDef = (): ColDef[] => {
     },
     {
       headerName: 'Creation',
-      field: 'creationDate',
+      field: 'creation',
       initialWidth: 145,
       cellRendererFramework: DateRenderer,
       cellRendererParams: {
@@ -57,10 +58,16 @@ const getColDef = (): ColDef[] => {
       } as IDateRendererParams,
       filter: 'agDateColumnFilter',
       valueFormatter: (params: ValueFormatterParams): string => {
-        return !Number.isNaN(params.data.creationDate.valueOf())
-          ? format(params.data.creationDate, 'yyyy-MM-dd')
+        return !Number.isNaN(params.data.creation.valueOf())
+          ? format(params.data.creation, 'yyyy-MM-dd')
           : '';
       },
+    },
+    {
+      headerName: 'Creation Client',
+      field: 'creationClient',
+      initialWidth: 125,
+      cellStyle: ClientVersionCellStyle,
     },
     {
       headerName: 'Last Update',
@@ -78,6 +85,12 @@ const getColDef = (): ColDef[] => {
       },
     },
     {
+      headerName: 'Last Update Client',
+      field: 'lastUpdateClient',
+      initialWidth: 140,
+      cellStyle: ClientVersionCellStyle,
+    },
+    {
       headerName: 'Track Count',
       field: 'trackCount',
       initialWidth: 110,
@@ -88,8 +101,10 @@ const getColDef = (): ColDef[] => {
 type FolderStructure = {
   mark: string;
   folderName: string;
-  creationDate: Date;
+  creation: Date;
+  creationClient: string;
   lastUpdate: Date;
+  lastUpdateClient: string;
   trackCount: number;
 };
 
@@ -115,18 +130,24 @@ export const FolderStructureGrid: React.FC = () => {
     const transformToFolderStructure = Array.from(
       folderToTracks.entries()
     ).reduce((prev: FolderStructure[], [currentKey, currentValue]) => {
-      const dates = currentValue
-        .map((t) => t.source.date?.valueOf() ?? -1)
-        .filter((t) => t !== -1);
+      const records = currentValue.map((t) => ({
+        date: t.source.date?.valueOf() ?? Number.NaN,
+        clientVersion: t.source.clientVersion,
+      }));
+      const sortedRecords = records.sort((a, b) => a.date - b.date);
       const icons = Object.entries(
         countBy(currentValue.map((t) => t.mark))
       ).sort((a, b) => b[1] - a[1]);
+      const first = sortedRecords[0];
+      const last = sortedRecords[sortedRecords.length - 1];
       const folderInfo: FolderStructure = {
         folderName: currentKey,
         trackCount: currentValue.length,
         mark: icons[0][0],
-        creationDate: new Date(dates.sort((a, b) => a - b)[0]),
-        lastUpdate: new Date(dates.sort((a, b) => b - a)[0]),
+        creation: new Date(first.date),
+        creationClient: first.clientVersion,
+        lastUpdate: new Date(last.date),
+        lastUpdateClient: last.clientVersion,
       };
       prev.push(folderInfo);
       return prev;
