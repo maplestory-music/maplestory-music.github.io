@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { SettingsModal } from './components/SettingsModal';
 import { SettingsProvider } from './context/SettingsContext';
+import { ThemeIcon } from './components/ThemeIcon';
 
 const history = createBrowserHistory();
 
@@ -79,7 +80,15 @@ const Header: React.FC = () => {
             <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
               About
             </Nav.Link>
-            <NavDropdown title={'Theme'}>
+            <NavDropdown
+              title={
+                appTheme.darkMode ? (
+                  <ThemeIcon theme="dark" />
+                ) : (
+                  <ThemeIcon theme="light" />
+                )
+              }
+            >
               <NavDropdown.Item
                 active={!appTheme.darkMode}
                 onClick={() => {
@@ -91,6 +100,7 @@ const Header: React.FC = () => {
                   });
                 }}
               >
+                <ThemeIcon theme="light" margin />
                 Light
               </NavDropdown.Item>
               <NavDropdown.Item
@@ -104,10 +114,11 @@ const Header: React.FC = () => {
                   });
                 }}
               >
+                <ThemeIcon theme="dark" margin />
                 Dark
               </NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title={'Language'}>
+            <NavDropdown title={<i className="fa fa-earth-americas" />}>
               <NavDropdown.Item
                 active={i18n.language?.startsWith('en')}
                 onClick={() => i18n.changeLanguage('en')}
@@ -144,7 +155,7 @@ const Header: React.FC = () => {
               to="#"
               onClick={() => setSettingModalVisible(true)}
             >
-              ⚙️
+              <i className="fa fa-cog"></i>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
