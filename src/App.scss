@@ -52,3 +52,62 @@
     }
   }
 }
+
+.playlist-select {
+  &__control {
+    padding: 4px;
+  }
+}
+
+.playlist-select-dark {
+  &__control {
+    background-color: #222 !important;
+    border-color: #515151 !important;
+    padding: 4px;
+  }
+
+  &__placeholder {
+    color: #d1d5db !important;
+  }
+
+  &__multi-value {
+    background-color: slategray !important;
+    color: #fff !important;
+  }
+
+  &__input-container {
+    color: #dbd1d1 !important;
+    border: none !important;
+  }
+
+  &__input-container:focus {
+    border: none !important;
+    outline: none !important;
+  }
+
+  &__input:focus {
+    border: none !important;
+    outline: none !important;
+  }
+
+  &__input::after {
+    border: none !important;
+    display: none;
+  }
+
+  &__multi-value__label {
+    color: #fff !important;
+  }
+
+  &__menu {
+    background-color: #2d3748 !important;
+  }
+
+  &__option {
+    color: #fff !important;
+  }
+
+  &__option--is-focused {
+    background-color: slategray !important;
+  }
+}

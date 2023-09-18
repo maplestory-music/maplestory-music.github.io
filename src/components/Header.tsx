@@ -2,7 +2,11 @@
 import { Fragment } from 'react';
 import { css } from '@emotion/react';
 
-export const Header: React.FC = () => {
+interface IHeader {
+  noText?: boolean;
+}
+
+export const Header: React.FC<IHeader> = ({ noText }) => {
   return (
     <Fragment>
       <div>
@@ -18,14 +22,16 @@ export const Header: React.FC = () => {
           alt="header logo"
         />
       </div>
-      <div>
-        <p>
-          Welcome to the MapleStory Music database. This site provides a
-          complete listing of the background music (BGM) used in MapleStory.
-          Collectively, the songs are also known as MapleStory's original
-          soundtrack (OST).
-        </p>
-      </div>
+      {noText ? null : (
+        <div>
+          <p>
+            Welcome to the MapleStory Music database. This site provides a
+            complete listing of the background music (BGM) used in MapleStory.
+            Collectively, the songs are also known as MapleStory's original
+            soundtrack (OST).
+          </p>
+        </div>
+      )}
     </Fragment>
   );
 };

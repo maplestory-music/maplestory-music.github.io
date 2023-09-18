@@ -5,6 +5,8 @@ import ReactPlayer from 'react-player';
 import { padStart } from 'lodash-es';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { IPlayingState } from '../pages/HomePage';
+import { selectedPlaylistAtom } from '../state/playlist';
+import { useAtomValue } from 'jotai';
 
 interface IMusicPlayerProps {
   playingState: IPlayingState;
@@ -14,6 +16,7 @@ interface IMusicPlayerProps {
 export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const player = useRef<ReactPlayer>(null);
   const { playingState, setCurrentPlaylistSong } = props;
+  const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
 
   const onPreviousPlaylistSong: () => void = () => {
     if (playingState.currentPlaylistSong < 1) return;
@@ -54,6 +57,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
               gtag('event', 'ce_complete_playlist_video', {
                 ce_category: 'video',
                 ce_youtube: playingState.currentSong,
+                ce_playlist_name: selectedPlaylist,
               });
               let newVal;
               if (

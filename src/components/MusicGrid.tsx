@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
   ColDef,
@@ -20,11 +20,9 @@ import {
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import { useDataSourceState } from '../context/DataSourceContext';
 import { format } from 'date-fns';
 import { IMusicRecordGrid } from '../models/DataModel';
 import { PAGINATION_PAGE_SIZE } from '../constants';
-import { ILocateSong } from '../pages/HomePage';
 import { MarkRenderer } from './renderers/MarkRenderer';
 import { ILinkRendererParams, LinkRenderer } from './renderers/LinkRenderer';
 import { DateRenderer } from './renderers/DateRenderer';
@@ -33,6 +31,15 @@ import { i18n } from 'i18next';
 import { LanguageLocale } from '../i18n';
 import { useTheme } from '../context/ThemeContext';
 import { ClientVersionCellStyle } from './utils/GridUtils';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  appPlaylistPoolAtom,
+  filterTextAtom,
+  gridFilteredAtom,
+  locateSongAtom,
+  playingStateAtom,
+  playlistRepeatAtom,
+} from '../state/player';
 
 interface IGridContext {
   i18n: i18n;
@@ -161,21 +168,30 @@ const scrollToLocatedRow = (rowIndex: number | null): void => {
 };
 
 const MusicGrid: React.FC<{
-  query: string | undefined;
-  onGridSongChange: (song: string) => void;
-  setPlaylistPool: (
-    isGridFiltered: boolean,
-    playlistPool: IMusicRecordGrid[]
-  ) => void;
-  locateSong: ILocateSong | undefined;
-}> = ({ query, onGridSongChange, setPlaylistPool, locateSong }) => {
+  dataSource: IMusicRecordGrid[];
+}> = ({ dataSource }) => {
   const { i18n } = useTranslation();
-  const dataSource = useDataSourceState();
+  const query = useAtomValue(filterTextAtom);
   const gridApi = useRef<GridApi | null>(null);
   const gridColumnApi = useRef<ColumnApi | null>(null);
   const colDef = useRef<ColDef[]>([]);
   const gridOptions = useRef<GridOptions | undefined>(undefined);
   const appTheme = useTheme();
+  const setPlayingState = useSetAtom(playingStateAtom);
+  const playlistRepeat = useAtomValue(playlistRepeatAtom);
+  const locateSong = useAtomValue(locateSongAtom);
+  const setGridFiltered = useSetAtom(gridFilteredAtom);
+  const setAppPlaylistPool = useSetAtom(appPlaylistPoolAtom);
+
+  const onGridSongChange: (song: string) => void = (song) => {
+    setPlayingState({
+      currentSong: song,
+      currentPlaylist: [],
+      currentPlaylistSong: -1,
+      repeatPlaylist: playlistRepeat,
+    });
+  };
+
   colDef.current = getColDef(onGridSongChange);
   gridOptions.current = getGridOptions();
 
@@ -222,6 +238,17 @@ const MusicGrid: React.FC<{
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
     event.columnApi.autoSizeAllColumns();
   };
+
+  const setPlaylistPool: (
+    isGridFiltered: boolean,
+    playlistPool: IMusicRecordGrid[]
+  ) => void = useCallback(
+    (isGridFiltered, playlistPool) => {
+      setGridFiltered(isGridFiltered);
+      setAppPlaylistPool(playlistPool);
+    },
+    [setGridFiltered, setAppPlaylistPool]
+  );
 
   const updatePlaylistPool = (
     gridApi: GridApi | null,

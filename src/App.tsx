@@ -22,6 +22,7 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { SettingsModal } from './components/SettingsModal';
 import { SettingsProvider } from './context/SettingsContext';
 import { ThemeIcon } from './components/ThemeIcon';
+import PlaylistPage from './pages/PlaylistPage';
 
 const history = createBrowserHistory();
 
@@ -73,6 +74,14 @@ const Header: React.FC = () => {
           <Nav className="mr-auto">
             <Nav.Link as={NavLink} exact to="/" onClick={onNavLinkClick}>
               Home
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              exact
+              to="/playlist"
+              onClick={onNavLinkClick}
+            >
+              Playlist
             </Nav.Link>
             <Nav.Link as={NavLink} exact to="/stats" onClick={onNavLinkClick}>
               Stats
@@ -189,6 +198,7 @@ const Footer = (): ReactElement => {
 const siteTitle = 'MapleStory Music - BGM & OST Database';
 const pageTitles: { [name: string]: string } = {
   '/': siteTitle,
+  '/playlist': `${siteTitle} - Playlist`,
   '/stats': `${siteTitle} - Stats`,
   '/about': `${siteTitle} - About`,
 };
@@ -202,6 +212,7 @@ const Main = (): ReactElement => {
     <main>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route path="/playlist" component={Playlist} />
         <Route path="/stats" component={Stats} />
         <Route path="/about" component={About} />
       </Switch>
@@ -212,6 +223,12 @@ const Main = (): ReactElement => {
 const Home = (): ReactElement => (
   <div className="App">
     <HomePage />
+  </div>
+);
+
+const Playlist = (): ReactElement => (
+  <div className="App">
+    <PlaylistPage />
   </div>
 );
 

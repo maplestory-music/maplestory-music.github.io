@@ -6,6 +6,9 @@ import {
   IMusicRecordSourceGrid,
 } from '../models/DataModel';
 import { useSettings } from './SettingsContext';
+import { useSetAtom } from 'jotai';
+import { IPlaylist } from '../models/Playlist';
+import { playlistMapAtom } from '../state/playlist';
 
 type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };
@@ -18,6 +21,7 @@ export const DataSourceProvider: ({
   children,
 }: DataSourceProviderProps) => React.ReactElement = ({ children }) => {
   const [state, setState] = React.useState<State>([]);
+  const setPlaylistMap = useSetAtom(playlistMapAtom);
   const { settings } = useSettings();
 
   useEffect(() => {
@@ -50,7 +54,18 @@ export const DataSourceProvider: ({
           });
         setState(rowDataGrid);
       });
-  }, [setState, settings.hideMinorTracks]);
+    fetch(
+      'https://raw.githubusercontent.com/maplestory-music/maplebgm-db/prod/playlist.min.json'
+    )
+      .then((result) => result.json())
+      .then((playlist: IPlaylist[]) => {
+        const plMap = new Map<string, IPlaylist>();
+        for (const pl of playlist) {
+          plMap.set(pl.name, pl);
+        }
+        setPlaylistMap(plMap);
+      });
+  }, [setState, settings.hideMinorTracks, setPlaylistMap]);
 
   return (
     <DataSourceStateContext.Provider value={state}>
