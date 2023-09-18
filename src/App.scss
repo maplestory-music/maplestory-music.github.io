@@ -57,6 +57,10 @@
   &__control {
     padding: 4px;
   }
+
+  &__menu {
+    z-index: 3 !important;
+  }
 }
 
 .playlist-select-dark {
@@ -101,6 +105,7 @@
 
   &__menu {
     background-color: #2d3748 !important;
+    z-index: 3 !important;
   }
 
   &__option {
