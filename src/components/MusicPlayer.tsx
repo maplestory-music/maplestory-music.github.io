@@ -51,7 +51,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
                 ce_youtube: playingState.currentSong,
               });
             } else {
-              gtag('event', 'ce_complete_playlist_video', {
+              gtag('event', 'ce_complete_queue_video', {
                 ce_category: 'video',
                 ce_youtube: playingState.currentSong,
                 ce_playlist_name: selectedPlaylist,

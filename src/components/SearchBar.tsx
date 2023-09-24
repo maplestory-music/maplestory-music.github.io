@@ -56,8 +56,8 @@ const SearchBar: React.FC = () => {
       currentQueueSong: 0,
       repeatQueue: queueRepeat,
     });
-    gtag('event', 'ce_start_playlist', {
-      ce_category: 'playlist',
+    gtag('event', 'ce_start_queue', {
+      ce_category: 'queue',
       ce_source: 'play_button',
       ce_filtered: gridFiltered,
       ce_playlist_name: selectedPlaylist,
@@ -75,8 +75,8 @@ const SearchBar: React.FC = () => {
       currentQueueSong: 0,
       repeatQueue: queueRepeat,
     });
-    gtag('event', 'ce_start_shuffled_playlist', {
-      ce_category: 'playlist',
+    gtag('event', 'ce_start_shuffled_queue', {
+      ce_category: 'queue',
       ce_source: 'shuffle_button',
       ce_filtered: gridFiltered,
       ce_playlist_name: selectedPlaylist,
