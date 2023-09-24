@@ -86,12 +86,14 @@ const SearchBar: React.FC = () => {
   const onRepeatQueue: () => void = () => {
     const newQueueRepeatVal = !queueRepeat;
     setQueueRepeat(newQueueRepeatVal);
-    setPlayingState((state) => {
-      return {
-        ...state,
-        repeatQueue: newQueueRepeatVal,
-      };
-    });
+    setPlayingState(
+      (state): IPlayingState => {
+        return {
+          ...state,
+          repeatQueue: newQueueRepeatVal,
+        };
+      }
+    );
   };
 
   return (

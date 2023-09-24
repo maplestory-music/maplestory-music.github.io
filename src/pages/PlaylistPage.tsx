@@ -11,6 +11,7 @@ import Select from 'react-select';
 import { playlistMapAtom, selectedPlaylistsAtom } from '../state/playlist';
 import { css } from '@emotion/react';
 import { useTheme } from '../context/ThemeContext';
+import { IPlayingState } from './HomePage';
 
 export interface ILocateSong {
   songId: string | undefined;
@@ -59,13 +60,15 @@ const PlaylistPage: React.FC = () => {
   }, [dbFromWire, dbPlaylistMap, selectedOption]);
 
   const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
-    setPlayingState((state) => {
-      return {
-        ...state,
-        currentSong: state.currentQueue[newVal].youtube,
-        currentQueueSong: newVal,
-      };
-    });
+    setPlayingState(
+      (state): IPlayingState => {
+        return {
+          ...state,
+          currentSong: state.currentQueue[newVal].youtube,
+          currentQueueSong: newVal,
+        };
+      }
+    );
   };
 
   const onSelectChange = (
