@@ -20,7 +20,7 @@ import {
 } from '../state/player';
 import { shuffle } from 'lodash-es';
 import { selectedPlaylistAtom } from '../state/playlist';
-import { IPlayingState } from '../pages/HomePage';
+import { IPlayingState } from '../models/Player';
 
 const SearchBar: React.FC = () => {
   const setFilterText = useSetAtom(filterTextAtom);

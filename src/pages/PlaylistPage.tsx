@@ -11,11 +11,7 @@ import Select from 'react-select';
 import { playlistMapAtom, selectedPlaylistsAtom } from '../state/playlist';
 import { css } from '@emotion/react';
 import { useTheme } from '../context/ThemeContext';
-import { IPlayingState } from './HomePage';
-
-export interface ILocateSong {
-  songId: string | undefined;
-}
+import { IPlayingState } from '../models/Player';
 
 const PlaylistPage: React.FC = () => {
   const appTheme = useTheme();

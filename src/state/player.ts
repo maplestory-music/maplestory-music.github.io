@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { ILocateSong, IPlayingState } from '../pages/HomePage';
+import { ILocateSong, IPlayingState } from '../models/Player';
 import { IMusicRecordGrid } from '../models/DataModel';
 
 export const emptyPlayingState = {

@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { padStart } from 'lodash-es';
 import { ButtonGroup, Button } from 'react-bootstrap';
-import { IPlayingState } from '../pages/HomePage';
+import { IPlayingState } from '../models/Player';
 import { selectedPlaylistAtom } from '../state/playlist';
 import { useAtomValue } from 'jotai';
 
