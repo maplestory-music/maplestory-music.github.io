@@ -10,26 +10,23 @@ import { useAtomValue } from 'jotai';
 
 interface IMusicPlayerProps {
   playingState: IPlayingState;
-  setCurrentPlaylistSong: (num: number) => void;
+  setCurrentQueueSong: (num: number) => void;
 }
 
 export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const player = useRef<ReactPlayer>(null);
-  const { playingState, setCurrentPlaylistSong } = props;
+  const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
 
-  const onPreviousPlaylistSong: () => void = () => {
-    if (playingState.currentPlaylistSong < 1) return;
-    setCurrentPlaylistSong(playingState.currentPlaylistSong - 1);
+  const onPreviousQueueSong: () => void = () => {
+    if (playingState.currentQueueSong < 1) return;
+    setCurrentQueueSong(playingState.currentQueueSong - 1);
   };
 
-  const onNextPlaylistSong: () => void = () => {
-    if (
-      playingState.currentPlaylistSong ===
-      playingState.currentPlaylist.length - 1
-    )
+  const onNextQueueSong: () => void = () => {
+    if (playingState.currentQueueSong === playingState.currentQueue.length - 1)
       return;
-    setCurrentPlaylistSong(playingState.currentPlaylistSong + 1);
+    setCurrentQueueSong(playingState.currentQueueSong + 1);
   };
 
   return (
@@ -47,7 +44,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
         controls
         onEnded={(): void => {
           if (player.current !== null) {
-            if (!playingState.currentPlaylist.length) {
+            if (!playingState.currentQueue.length) {
               player.current.seekTo(0);
               gtag('event', 'ce_loop_embedded_video', {
                 ce_category: 'video',
@@ -61,23 +58,23 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
               });
               let newVal;
               if (
-                playingState.currentPlaylistSong ===
-                playingState.currentPlaylist.length - 1
+                playingState.currentQueueSong ===
+                playingState.currentQueue.length - 1
               ) {
-                if (playingState.repeatPlaylist) {
+                if (playingState.repeatQueue) {
                   newVal = 0;
                 } else {
                   return;
                 }
               } else {
-                newVal = playingState.currentPlaylistSong + 1;
+                newVal = playingState.currentQueueSong + 1;
               }
-              setCurrentPlaylistSong(newVal);
+              setCurrentQueueSong(newVal);
             }
           }
         }}
       />
-      {playingState.currentPlaylist.length > 0 && (
+      {playingState.currentQueue.length > 0 && (
         <div
           className="text-center"
           css={css`
@@ -87,8 +84,8 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
           <ButtonGroup size="sm">
             <Button
               variant="outline-primary"
-              onClick={onPreviousPlaylistSong}
-              disabled={playingState.currentPlaylistSong === 0}
+              onClick={onPreviousQueueSong}
+              disabled={playingState.currentQueueSong === 0}
             >
               <i className="fa fa-step-backward"></i>
             </Button>
@@ -104,16 +101,16 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
                 margin-left: -1px;
               `}
             >{`${padStart(
-              (playingState.currentPlaylistSong + 1).toString(),
-              playingState.currentPlaylist.length.toString().length,
+              (playingState.currentQueueSong + 1).toString(),
+              playingState.currentQueue.length.toString().length,
               '0'
-            )} | ${playingState.currentPlaylist.length}`}</span>
+            )} | ${playingState.currentQueue.length}`}</span>
             <Button
               variant="outline-primary"
-              onClick={onNextPlaylistSong}
+              onClick={onNextQueueSong}
               disabled={
-                playingState.currentPlaylistSong + 1 ===
-                playingState.currentPlaylist.length
+                playingState.currentQueueSong + 1 ===
+                playingState.currentQueue.length
               }
             >
               <i className="fa fa-step-forward"></i>

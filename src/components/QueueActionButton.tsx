@@ -2,16 +2,14 @@
 import { css } from '@emotion/react';
 import { Dropdown } from 'react-bootstrap';
 
-interface IPlaylistActionButtonProps {
+interface IQueueActionButtonProps {
   iconClass: string;
   actionName: string;
   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
   active?: boolean;
 }
 
-export const PlaylistActionButton: React.FC<IPlaylistActionButtonProps> = (
-  props
-) => {
+export const QueueActionButton: React.FC<IQueueActionButtonProps> = (props) => {
   const { iconClass, actionName, onClick, active } = props;
   return (
     <Dropdown.Item onClick={onClick} active={active}>

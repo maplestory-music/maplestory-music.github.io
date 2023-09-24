@@ -8,25 +8,26 @@ import {
   Tooltip,
   Dropdown,
 } from 'react-bootstrap';
-import { PlaylistActionButton } from '../components/PlaylistActionButton';
+import { QueueActionButton } from './QueueActionButton';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import {
-  appPlaylistPoolAtom,
+  appQueuePoolAtom,
   filterTextAtom,
   gridFilteredAtom,
   locateSongAtom,
   playingStateAtom,
-  playlistRepeatAtom,
+  queueRepeatAtom,
 } from '../state/player';
 import { shuffle } from 'lodash-es';
 import { selectedPlaylistAtom } from '../state/playlist';
+import { IPlayingState } from '../pages/HomePage';
 
 const SearchBar: React.FC = () => {
   const setFilterText = useSetAtom(filterTextAtom);
   const setLocateSong = useSetAtom(locateSongAtom);
-  const [playlistRepeat, setPlaylistRepeat] = useAtom(playlistRepeatAtom);
+  const [queueRepeat, setQueueRepeat] = useAtom(queueRepeatAtom);
   const [playingState, setPlayingState] = useAtom(playingStateAtom);
-  const appPlaylistPool = useAtomValue(appPlaylistPoolAtom);
+  const appQueuePool = useAtomValue(appQueuePoolAtom);
   const gridFiltered = useAtomValue(gridFilteredAtom);
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
 
@@ -46,14 +47,14 @@ const SearchBar: React.FC = () => {
     }
   };
 
-  const onStartPlaylist = () => {
-    const playlistSongs = appPlaylistPool.filter((song) => song.youtube !== '');
-    if (!playlistSongs.length) return;
+  const onStartQueue = () => {
+    const queueSongs = appQueuePool.filter((song) => song.youtube !== '');
+    if (!queueSongs.length) return;
     setPlayingState({
-      currentSong: playlistSongs[0].youtube,
-      currentPlaylist: playlistSongs,
-      currentPlaylistSong: 0,
-      repeatPlaylist: playlistRepeat,
+      currentSong: queueSongs[0].youtube,
+      currentQueue: queueSongs,
+      currentQueueSong: 0,
+      repeatQueue: queueRepeat,
     });
     gtag('event', 'ce_start_playlist', {
       ce_category: 'playlist',
@@ -63,16 +64,16 @@ const SearchBar: React.FC = () => {
     });
   };
 
-  const onShufflePlaylist: () => void = () => {
+  const onShuffleQueue: () => void = () => {
     const shuffledSongs = shuffle(
-      appPlaylistPool.filter((song) => song.youtube !== '')
+      appQueuePool.filter((song) => song.youtube !== '')
     );
     if (!shuffledSongs.length) return;
     setPlayingState({
       currentSong: shuffledSongs[0].youtube,
-      currentPlaylist: shuffledSongs,
-      currentPlaylistSong: 0,
-      repeatPlaylist: playlistRepeat,
+      currentQueue: shuffledSongs,
+      currentQueueSong: 0,
+      repeatQueue: queueRepeat,
     });
     gtag('event', 'ce_start_shuffled_playlist', {
       ce_category: 'playlist',
@@ -82,13 +83,13 @@ const SearchBar: React.FC = () => {
     });
   };
 
-  const onRepeatPlaylist: () => void = () => {
-    const newPlaylistRepeatVal = !playlistRepeat;
-    setPlaylistRepeat(newPlaylistRepeatVal);
+  const onRepeatQueue: () => void = () => {
+    const newQueueRepeatVal = !queueRepeat;
+    setQueueRepeat(newQueueRepeatVal);
     setPlayingState((state) => {
       return {
         ...state,
-        repeatPlaylist: newPlaylistRepeatVal,
+        repeatQueue: newQueueRepeatVal,
       };
     });
   };
@@ -128,41 +129,37 @@ const SearchBar: React.FC = () => {
           <OverlayTrigger
             delay={{ show: 250, hide: 100 }}
             overlay={
-              <Tooltip id={`tooltip-playlist-actions`}>
-                {gridFiltered
-                  ? 'Playlist Actions (Filtered)'
-                  : 'Playlist Actions'}
+              <Tooltip id={`tooltip-queue-actions`}>
+                {gridFiltered ? 'Queue Actions (Filtered)' : 'Queue Actions'}
               </Tooltip>
             }
           >
             <Dropdown.Toggle
               variant={gridFiltered ? 'outline-warning' : 'outline-success'}
-              id="dropdown-playlist-actions"
+              id="dropdown-queue-actions"
             >
               <i className="fa fa-play"></i>
             </Dropdown.Toggle>
           </OverlayTrigger>
           <Dropdown.Menu>
-            <PlaylistActionButton
-              actionName="Start Playlist"
+            <QueueActionButton
+              actionName="Start Queue"
               iconClass="fa fa-play"
-              onClick={onStartPlaylist}
+              onClick={onStartQueue}
             />
-            <PlaylistActionButton
-              actionName="Start Shuffled Playlist"
+            <QueueActionButton
+              actionName="Start Shuffled Queue"
               iconClass="fa fa-random"
-              onClick={onShufflePlaylist}
+              onClick={onShuffleQueue}
             />
             <Dropdown.Divider />
-            <PlaylistActionButton
+            <QueueActionButton
               actionName={
-                playlistRepeat
-                  ? 'Turn Off Playlist Repeat'
-                  : 'Turn On Playlist Repeat'
+                queueRepeat ? 'Turn Off Queue Repeat' : 'Turn On Queue Repeat'
               }
               iconClass="fa fa-repeat"
-              onClick={onRepeatPlaylist}
-              active={playlistRepeat}
+              onClick={onRepeatQueue}
+              active={queueRepeat}
             />
           </Dropdown.Menu>
         </Dropdown>

@@ -33,12 +33,12 @@ import { useTheme } from '../context/ThemeContext';
 import { ClientVersionCellStyle } from './utils/GridUtils';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
-  appPlaylistPoolAtom,
+  appQueuePoolAtom,
   filterTextAtom,
   gridFilteredAtom,
   locateSongAtom,
   playingStateAtom,
-  playlistRepeatAtom,
+  queueRepeatAtom,
 } from '../state/player';
 
 interface IGridContext {
@@ -178,17 +178,17 @@ const MusicGrid: React.FC<{
   const gridOptions = useRef<GridOptions | undefined>(undefined);
   const appTheme = useTheme();
   const setPlayingState = useSetAtom(playingStateAtom);
-  const playlistRepeat = useAtomValue(playlistRepeatAtom);
+  const queueRepeat = useAtomValue(queueRepeatAtom);
   const locateSong = useAtomValue(locateSongAtom);
   const setGridFiltered = useSetAtom(gridFilteredAtom);
-  const setAppPlaylistPool = useSetAtom(appPlaylistPoolAtom);
+  const setAppQueuePool = useSetAtom(appQueuePoolAtom);
 
   const onGridSongChange: (song: string) => void = (song) => {
     setPlayingState({
       currentSong: song,
-      currentPlaylist: [],
-      currentPlaylistSong: -1,
-      repeatPlaylist: playlistRepeat,
+      currentQueue: [],
+      currentQueueSong: -1,
+      repeatQueue: queueRepeat,
     });
   };
 
@@ -239,22 +239,22 @@ const MusicGrid: React.FC<{
     event.columnApi.autoSizeAllColumns();
   };
 
-  const setPlaylistPool: (
+  const setQueuePool: (
     isGridFiltered: boolean,
-    playlistPool: IMusicRecordGrid[]
+    queuePool: IMusicRecordGrid[]
   ) => void = useCallback(
-    (isGridFiltered, playlistPool) => {
+    (isGridFiltered, queuePool) => {
       setGridFiltered(isGridFiltered);
-      setAppPlaylistPool(playlistPool);
+      setAppQueuePool(queuePool);
     },
-    [setGridFiltered, setAppPlaylistPool]
+    [setGridFiltered, setAppQueuePool]
   );
 
-  const updatePlaylistPool = (
+  const updateQueuePool = (
     gridApi: GridApi | null,
-    setPlaylistPool: (
+    setQueuePool: (
       isGridFiltered: boolean,
-      playlistPool: IMusicRecordGrid[]
+      queuePool: IMusicRecordGrid[]
     ) => void
   ): void => {
     const filterPresent = gridApi?.isAnyFilterPresent() ?? false;
@@ -262,19 +262,19 @@ const MusicGrid: React.FC<{
     gridApi?.forEachNodeAfterFilterAndSort((rowNode: RowNode) => {
       filteredSongs.push(rowNode.data);
     });
-    setPlaylistPool(filterPresent, filteredSongs);
+    setQueuePool(filterPresent, filteredSongs);
   };
 
   useEffect(() => {
-    updatePlaylistPool(gridApi.current, setPlaylistPool);
-  }, [dataSource, setPlaylistPool]);
+    updateQueuePool(gridApi.current, setQueuePool);
+  }, [dataSource, setQueuePool]);
 
   const onFilterChanged = (event: FilterChangedEvent): void => {
-    updatePlaylistPool(event.api, setPlaylistPool);
+    updateQueuePool(event.api, setQueuePool);
   };
 
   const onSortChanged = (event: SortChangedEvent): void => {
-    updatePlaylistPool(event.api, setPlaylistPool);
+    updateQueuePool(event.api, setQueuePool);
   };
 
   const onModelUpdated = (event: ModelUpdatedEvent): void => {

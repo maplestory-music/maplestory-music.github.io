@@ -4,14 +4,14 @@ import { IMusicRecordGrid } from '../models/DataModel';
 
 export const emptyPlayingState = {
   currentSong: undefined,
-  currentPlaylist: [],
-  currentPlaylistSong: -1,
-  repeatPlaylist: false,
+  currentQueue: [],
+  currentQueueSong: -1,
+  repeatQueue: false,
 };
 
 export const filterTextAtom = atom<string | undefined>(undefined);
 export const locateSongAtom = atom<ILocateSong | undefined>(undefined);
-export const playlistRepeatAtom = atom<boolean>(false);
+export const queueRepeatAtom = atom<boolean>(false);
 export const playingStateAtom = atom<IPlayingState>(emptyPlayingState);
 export const gridFilteredAtom = atom<boolean>(false);
-export const appPlaylistPoolAtom = atom<IMusicRecordGrid[]>([]);
+export const appQueuePoolAtom = atom<IMusicRecordGrid[]>([]);

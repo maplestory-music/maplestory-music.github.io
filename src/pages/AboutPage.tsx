@@ -23,13 +23,13 @@ const AboutPage: React.FC = () => (
       </h6>
       <p>
         Music is played within an embedded YouTube player. The track is looped
-        upon completion, unless in the shuffled playlist mode (see below).
+        upon completion, unless in the shuffled queue mode (see below).
       </p>
       <h6>
-        <b>Shuffled Playlist</b>
+        <b>Shuffled Queue</b>
       </h6>
       <p>
-        The shuffled playlist feature randomizes the entire music collection and
+        The shuffled queue feature randomizes the entire music collection and
         plays upcoming songs automatically. Skip to the next track or return to
         the previous track with the controls under the media player. When
         filters are applied to the grid, the song pool is limited to the

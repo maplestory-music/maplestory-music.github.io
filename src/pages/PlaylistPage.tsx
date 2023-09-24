@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import MusicGrid from '../components/MusicGrid';
-import { IMusicRecordGrid } from '../models/DataModel';
 import { MusicPlayer } from '../components/MusicPlayer';
 import { Header } from '../components/Header';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -12,13 +11,6 @@ import Select from 'react-select';
 import { playlistMapAtom, selectedPlaylistsAtom } from '../state/playlist';
 import { css } from '@emotion/react';
 import { useTheme } from '../context/ThemeContext';
-
-export interface IPlayingState {
-  currentSong: string | undefined;
-  currentPlaylist: IMusicRecordGrid[];
-  currentPlaylistSong: number;
-  repeatPlaylist: boolean;
-}
 
 export interface ILocateSong {
   songId: string | undefined;
@@ -66,12 +58,12 @@ const PlaylistPage: React.FC = () => {
     setDataSource(filtered);
   }, [dbFromWire, dbPlaylistMap, selectedOption]);
 
-  const setCurrentPlaylistSong: (newVal: number) => void = (newVal) => {
+  const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
     setPlayingState((state) => {
       return {
         ...state,
-        currentSong: state.currentPlaylist[newVal].youtube,
-        currentPlaylistSong: newVal,
+        currentSong: state.currentQueue[newVal].youtube,
+        currentQueueSong: newVal,
       };
     });
   };
@@ -90,7 +82,7 @@ const PlaylistPage: React.FC = () => {
       ) : (
         <MusicPlayer
           playingState={playingState}
-          setCurrentPlaylistSong={setCurrentPlaylistSong}
+          setCurrentQueueSong={setCurrentQueueSong}
         />
       )}
       <Select

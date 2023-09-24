@@ -11,9 +11,9 @@ import { useDataSourceState } from '../context/DataSourceContext';
 
 export interface IPlayingState {
   currentSong: string | undefined;
-  currentPlaylist: IMusicRecordGrid[];
-  currentPlaylistSong: number;
-  repeatPlaylist: boolean;
+  currentQueue: IMusicRecordGrid[];
+  currentQueueSong: number;
+  repeatQueue: boolean;
 }
 
 export interface ILocateSong {
@@ -28,12 +28,12 @@ const HomePage: React.FC = () => {
     setPlayingState(emptyPlayingState);
   }, [setPlayingState]);
 
-  const setCurrentPlaylistSong: (newVal: number) => void = (newVal) => {
+  const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
     setPlayingState((state) => {
       return {
         ...state,
-        currentSong: state.currentPlaylist[newVal].youtube,
-        currentPlaylistSong: newVal,
+        currentSong: state.currentQueue[newVal].youtube,
+        currentQueueSong: newVal,
       };
     });
   };
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
       ) : (
         <MusicPlayer
           playingState={playingState}
-          setCurrentPlaylistSong={setCurrentPlaylistSong}
+          setCurrentQueueSong={setCurrentQueueSong}
         />
       )}
       <SearchBar />
