@@ -4,6 +4,7 @@ const LOCAL_STORAGE_KEY = 'site-preferences';
 
 interface ISettings {
   hideMinorTracks: boolean;
+  distinctKmstVersion: boolean;
 }
 
 type SettingsContextOutput = {
@@ -17,6 +18,7 @@ const SettingsContext = React.createContext<SettingsContextOutput | undefined>(
 
 const defaultSettings: ISettings = {
   hideMinorTracks: false,
+  distinctKmstVersion: false,
 };
 
 function getDefaultSettings(): ISettings {

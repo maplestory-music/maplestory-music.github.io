@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useSettings } from '../context/SettingsContext';
+import { SettingsModalToggle } from './SettingsModalToggle';
 
 interface ISettingsModalProps {
   show: boolean;
@@ -17,14 +18,18 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
   const [hideMinorTracks, setHideMinorTracks] = useState(
     settings.hideMinorTracks
   );
+  const [distinctKmstVersion, setDistinctKmstVersion] = useState(
+    settings.distinctKmstVersion
+  );
 
   const onModalSave = () => {
-    setSettings({ hideMinorTracks });
+    setSettings({ hideMinorTracks, distinctKmstVersion });
     onModalClose();
   };
 
   const onModalShow = () => {
     setHideMinorTracks(settings.hideMinorTracks);
+    setDistinctKmstVersion(settings.distinctKmstVersion);
   };
 
   return (
@@ -38,35 +43,27 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
             <div
               css={css`
                 display: flex;
-                align-items: center;
+                flex-direction: column;
               `}
             >
-              <Form.Check
-                type="switch"
-                id="minorTrack-switch"
+              <SettingsModalToggle
+                id="minorTrack"
                 label="Hide Minor Tracks"
                 checked={hideMinorTracks}
+                tooltip="Minor tracks feature segments of another song"
                 onChange={() => {
                   setHideMinorTracks((prev) => !prev);
                 }}
               />
-              <OverlayTrigger
-                delay={{ show: 250, hide: 100 }}
-                placement="right"
-                overlay={
-                  <Tooltip id={`tooltip-minorTrack`}>
-                    Minor tracks feature segments of another song
-                  </Tooltip>
-                }
-              >
-                <i
-                  css={css`
-                    margin: 0 4px;
-                  `}
-                  className="fa fa-question-circle"
-                  aria-hidden={true}
-                ></i>
-              </OverlayTrigger>
+              <SettingsModalToggle
+                id="distinctKmstVersion"
+                label="Distinct KMST Version"
+                checked={distinctKmstVersion}
+                tooltip="Prevent collisions resulting from KMST version reset"
+                onChange={() => {
+                  setDistinctKmstVersion((prev) => !prev);
+                }}
+              />
             </div>
           </>
         </Form>
