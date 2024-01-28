@@ -23,6 +23,7 @@ import { SettingsModal } from './components/SettingsModal';
 import { SettingsProvider } from './context/SettingsContext';
 import { ThemeIcon } from './components/ThemeIcon';
 import PlaylistPage from './pages/PlaylistPage';
+import PlaylistBuilderPage from './pages/PlaylistBuilderPage';
 
 const history = createBrowserHistory();
 
@@ -89,6 +90,16 @@ const Header: React.FC = () => {
             <Nav.Link as={NavLink} exact to="/about" onClick={onNavLinkClick}>
               About
             </Nav.Link>
+            <NavDropdown title="Extras">
+              <NavDropdown.Item
+                as={NavLink}
+                exact
+                to="/playlist-builder"
+                onClick={onNavLinkClick}
+              >
+                Playlist Builder
+              </NavDropdown.Item>
+            </NavDropdown>
             <NavDropdown
               title={
                 appTheme.darkMode ? (
@@ -201,6 +212,7 @@ const pageTitles: { [name: string]: string } = {
   '/playlist': `${siteTitle} - Playlist`,
   '/stats': `${siteTitle} - Stats`,
   '/about': `${siteTitle} - About`,
+  '/playlist-builder': `${siteTitle} - Playlist Builder`,
 };
 
 const Main = (): ReactElement => {
@@ -215,6 +227,7 @@ const Main = (): ReactElement => {
         <Route path="/playlist" component={Playlist} />
         <Route path="/stats" component={Stats} />
         <Route path="/about" component={About} />
+        <Route path="/playlist-builder" component={PlaylistBuilder} />
       </Switch>
     </main>
   );
@@ -251,6 +264,17 @@ const Stats = (): ReactElement => (
     className="Stats"
   >
     <StatsPage />
+  </div>
+);
+
+const PlaylistBuilder = (): ReactElement => (
+  <div
+    css={css`
+      margin: 2% 3% 3% 3%;
+    `}
+    className="About"
+  >
+    <PlaylistBuilderPage />
   </div>
 );
 

@@ -40,6 +40,7 @@ import {
   playingStateAtom,
   queueRepeatAtom,
 } from '../state/player';
+import { TrackIdRenderer } from './renderers/TrackIdRenderer';
 
 interface IGridContext {
   i18n: i18n;
@@ -72,9 +73,10 @@ const getGridOptions: () => GridOptions = () => {
   };
 };
 
-const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
-  onGridSongChange
-) => {
+const getColDef: (
+  onGridSongChange: (song: string) => void,
+  enableTrackIdCol?: boolean
+) => ColDef[] = (onGridSongChange, enableTrackIdCol) => {
   return [
     {
       headerName: '',
@@ -146,6 +148,13 @@ const getColDef: (onGridSongChange: (song: string) => void) => ColDef[] = (
       getQuickFilterText: (): string => '',
       cellStyle: ClientVersionCellStyle,
     },
+    {
+      headerName: 'ID',
+      hide: !enableTrackIdCol,
+      cellRendererFramework: TrackIdRenderer,
+      resizable: false,
+      maxWidth: 60,
+    },
   ];
 };
 
@@ -169,7 +178,9 @@ const scrollToLocatedRow = (rowIndex: number | null): void => {
 
 const MusicGrid: React.FC<{
   dataSource: IMusicRecordGrid[];
-}> = ({ dataSource }) => {
+  disableInitSort?: boolean;
+  enableTrackIdCol?: boolean;
+}> = ({ dataSource, disableInitSort, enableTrackIdCol }) => {
   const { i18n } = useTranslation();
   const query = useAtomValue(filterTextAtom);
   const gridApi = useRef<GridApi | null>(null);
@@ -192,7 +203,7 @@ const MusicGrid: React.FC<{
     });
   };
 
-  colDef.current = getColDef(onGridSongChange);
+  colDef.current = getColDef(onGridSongChange, enableTrackIdCol);
   gridOptions.current = getGridOptions();
 
   useEffect(() => {
@@ -231,8 +242,10 @@ const MusicGrid: React.FC<{
   const onGridReady = (params: GridReadyEvent): void => {
     gridApi.current = params.api;
     gridColumnApi.current = params.columnApi;
-    const columnState = { state: [{ colId: 'source.date', sort: 'desc' }] };
-    params.columnApi.applyColumnState(columnState);
+    if (!disableInitSort) {
+      const columnState = { state: [{ colId: 'source.date', sort: 'desc' }] };
+      params.columnApi.applyColumnState(columnState);
+    }
   };
 
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {

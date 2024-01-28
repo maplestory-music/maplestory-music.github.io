@@ -12,16 +12,24 @@ import { playlistMapAtom, selectedPlaylistsAtom } from '../state/playlist';
 import { css } from '@emotion/react';
 import { useTheme } from '../context/ThemeContext';
 import { IPlayingState } from '../models/Player';
+import {
+  getCustomPlaylistsMap,
+  getKey,
+} from '../components/utils/PlaylistUtils';
+import { sortBy } from 'lodash-es';
 
 const PlaylistPage: React.FC = () => {
   const appTheme = useTheme();
   const dbFromWire = useDataSourceState();
   const [dataSource, setDataSource] = useState(dbFromWire);
   const dbPlaylistMap = useAtomValue(playlistMapAtom);
+  const customPlaylistsMap = useMemo(() => {
+    return getCustomPlaylistsMap();
+  }, []);
   const [playingState, setPlayingState] = useAtom(playingStateAtom);
   const selectRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState<
-    readonly { value: string; label: string }[]
+    readonly { value: string; label: string; custom?: boolean }[]
   >([]);
   const dbPlaylists = useMemo(() => {
     return Array.from(dbPlaylistMap.values()).map((pl) => ({
@@ -29,6 +37,16 @@ const PlaylistPage: React.FC = () => {
       label: pl.name,
     }));
   }, [dbPlaylistMap]);
+  const customPlaylists = useMemo(() => {
+    return Array.from(customPlaylistsMap.values()).map((pl) => ({
+      value: pl.name,
+      label: `[Custom] ${pl.name}`,
+      custom: true,
+    }));
+  }, [customPlaylistsMap]);
+  const allPlaylists = useMemo(() => {
+    return [...dbPlaylists, ...customPlaylists];
+  }, [dbPlaylists, customPlaylists]);
   const setSelectedPlaylists = useSetAtom(selectedPlaylistsAtom);
 
   useEffect(() => {
@@ -44,16 +62,22 @@ const PlaylistPage: React.FC = () => {
     }
     const allPlaylistTracks: Set<string> = new Set();
     for (const pl of selectedOption) {
-      const playlist = dbPlaylistMap.get(pl.value);
+      const playlistMap = pl.custom ? customPlaylistsMap : dbPlaylistMap;
+      const playlist = playlistMap.get(pl.value);
       if (!playlist) return;
       playlist.tracks.forEach((t) => allPlaylistTracks.add(t));
     }
+    const allPlaylistTracksArr = Array.from(allPlaylistTracks);
     const filtered = dbFromWire.filter((track) => {
-      const key = `${track.source.structure}/${track.filename}`;
+      const key = getKey(track.source.structure, track.filename);
       return allPlaylistTracks.has(key);
     });
-    setDataSource(filtered);
-  }, [dbFromWire, dbPlaylistMap, selectedOption]);
+    const sorted = sortBy(filtered, (t) => {
+      const key = getKey(t.source.structure, t.filename);
+      return allPlaylistTracksArr.indexOf(key);
+    });
+    setDataSource(sorted);
+  }, [dbFromWire, dbPlaylistMap, customPlaylistsMap, selectedOption]);
 
   const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
     setPlayingState(
@@ -92,14 +116,14 @@ const PlaylistPage: React.FC = () => {
           appTheme.darkMode ? 'playlist-select-dark' : 'playlist-select'
         }
         isMulti
-        options={dbPlaylists}
+        options={allPlaylists}
         ref={selectRef}
         value={selectedOption}
         onChange={onSelectChange}
         placeholder="Select playlist"
       />
       <SearchBar />
-      <MusicGrid dataSource={dataSource} />
+      <MusicGrid dataSource={dataSource} disableInitSort enableTrackIdCol />
     </div>
   );
 };

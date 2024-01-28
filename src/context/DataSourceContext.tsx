@@ -10,6 +10,7 @@ import { useSetAtom } from 'jotai';
 import { IPlaylist } from '../models/Playlist';
 import { playlistMapAtom } from '../state/playlist';
 import { KMST_GENERATION_CUTOFF_DATE } from '../constants';
+import { convertToPlaylistMap } from '../components/utils/PlaylistUtils';
 
 type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };
@@ -81,11 +82,7 @@ export const DataSourceProvider: ({
     )
       .then((result) => result.json())
       .then((playlist: IPlaylist[]) => {
-        const plMap = new Map<string, IPlaylist>();
-        for (const pl of playlist) {
-          plMap.set(pl.name, pl);
-        }
-        setPlaylistMap(plMap);
+        setPlaylistMap(convertToPlaylistMap(playlist));
       });
   }, [
     setState,
