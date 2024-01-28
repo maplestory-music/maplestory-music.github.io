@@ -9,11 +9,16 @@ export const TrackIdRenderer: React.FC<ICellRendererParams> = (params) => {
   const { data } = params;
 
   return (
-    <span>
+    <span
+      css={css`
+        display: flex;
+        justify-content: center;
+      `}
+    >
       <div
         onClick={() => {
           navigator.clipboard.writeText(
-            `"${getKey(data.source.structure, data.filename)}"`
+            `"${getKey(data.source.structure, data.filename)}",\n`
           );
         }}
       >

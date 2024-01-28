@@ -88,6 +88,13 @@ const getColDef: (
       getQuickFilterText: (): string => '',
     },
     {
+      headerName: 'ID',
+      hide: !enableTrackIdCol,
+      cellRendererFramework: TrackIdRenderer,
+      resizable: false,
+      maxWidth: 20,
+    },
+    {
       headerName: 'Title',
       field: 'metadata.title',
       minWidth: 250,
@@ -147,13 +154,6 @@ const getColDef: (
       field: 'source.clientVersion',
       getQuickFilterText: (): string => '',
       cellStyle: ClientVersionCellStyle,
-    },
-    {
-      headerName: 'ID',
-      hide: !enableTrackIdCol,
-      cellRendererFramework: TrackIdRenderer,
-      resizable: false,
-      maxWidth: 60,
     },
   ];
 };
