@@ -96,7 +96,13 @@ const PlaylistBuilderPage: React.FC = () => {
 
   return (
     <div>
-      <div>
+      <div
+        css={css`
+          @media (min-width: 1024px) {
+            margin-right: 33vw;
+          }
+        `}
+      >
         <h2>Playlist Builder</h2>
         <p>
           Import and export custom playlists. JSON structure can be found{' '}
@@ -107,7 +113,10 @@ const PlaylistBuilderPage: React.FC = () => {
           >
             here
           </a>
-          ; track IDs may be copied from the Playlist page.
+          ; track IDs may be copied from the Playlist page. Tracks can also be
+          added to and removed from the Export Set on the Playlist page. The
+          Export Set can be copied and cleared from the Playlist Settings
+          dropdown.
         </p>
         <p
           css={css`

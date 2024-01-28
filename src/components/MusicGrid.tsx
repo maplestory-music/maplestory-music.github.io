@@ -88,11 +88,10 @@ const getColDef: (
       getQuickFilterText: (): string => '',
     },
     {
-      headerName: 'ID',
       hide: !enableTrackIdCol,
       cellRendererFramework: TrackIdRenderer,
       resizable: false,
-      maxWidth: 20,
+      maxWidth: 35,
     },
     {
       headerName: 'Title',

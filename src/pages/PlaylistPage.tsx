@@ -8,7 +8,11 @@ import { emptyPlayingState, playingStateAtom } from '../state/player';
 import SearchBar from '../components/SearchBar';
 import { useDataSourceState } from '../context/DataSourceContext';
 import Select from 'react-select';
-import { playlistMapAtom, selectedPlaylistsAtom } from '../state/playlist';
+import {
+  playlistMapAtom,
+  selectedPlaylistsAtom,
+  trackExportSetAtom,
+} from '../state/playlist';
 import { css } from '@emotion/react';
 import { useTheme } from '../context/ThemeContext';
 import { IPlayingState } from '../models/Player';
@@ -17,6 +21,8 @@ import {
   getKey,
 } from '../components/utils/PlaylistUtils';
 import { sortBy } from 'lodash-es';
+import { Dropdown } from 'react-bootstrap';
+import { QueueActionButton } from '../components/QueueActionButton';
 
 const PlaylistPage: React.FC = () => {
   const appTheme = useTheme();
@@ -48,6 +54,7 @@ const PlaylistPage: React.FC = () => {
     return [...dbPlaylists, ...customPlaylists];
   }, [dbPlaylists, customPlaylists]);
   const setSelectedPlaylists = useSetAtom(selectedPlaylistsAtom);
+  const [trackExportSet, setTrackExportSet] = useAtom(trackExportSetAtom);
 
   useEffect(() => {
     setPlayingState(emptyPlayingState);
@@ -98,6 +105,16 @@ const PlaylistPage: React.FC = () => {
     setSelectedPlaylists(newValue.map((pl) => pl.value));
   };
 
+  const onCopyExportSet = () => {
+    const strArr = Array.from(trackExportSet);
+    const str = JSON.stringify(strArr, null, 2);
+    navigator.clipboard.writeText(str);
+  };
+
+  const onClearExportSet = () => {
+    setTrackExportSet(new Set());
+  };
+
   return (
     <div>
       {playingState.currentSong === undefined ? (
@@ -108,20 +125,56 @@ const PlaylistPage: React.FC = () => {
           setCurrentQueueSong={setCurrentQueueSong}
         />
       )}
-      <Select
+      <div
         css={css`
+          display: flex;
           margin: 10px 25vw;
+          justify-content: center;
+          align-items: center;
+          height: 46px;
         `}
-        classNamePrefix={
-          appTheme.darkMode ? 'playlist-select-dark' : 'playlist-select'
-        }
-        isMulti
-        options={allPlaylists}
-        ref={selectRef}
-        value={selectedOption}
-        onChange={onSelectChange}
-        placeholder="Select playlist"
-      />
+      >
+        <Select
+          css={css`
+            width: 100%;
+          `}
+          classNamePrefix={
+            appTheme.darkMode ? 'playlist-select-dark' : 'playlist-select'
+          }
+          isMulti
+          options={allPlaylists}
+          ref={selectRef}
+          value={selectedOption}
+          onChange={onSelectChange}
+          placeholder="Select playlist"
+        />
+        <Dropdown
+          css={css`
+            height: 100%;
+          `}
+        >
+          <Dropdown.Toggle
+            css={css`
+              height: 100%;
+            `}
+            variant="outline-primary"
+          >
+            <i className="fa fa-cog"></i>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <QueueActionButton
+              actionName="Copy Export Set"
+              iconClass="fa fa-copy"
+              onClick={onCopyExportSet}
+            />
+            <QueueActionButton
+              actionName="Clear Export Set"
+              iconClass="fa fa-trash"
+              onClick={onClearExportSet}
+            />
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
       <SearchBar />
       <MusicGrid dataSource={dataSource} disableInitSort enableTrackIdCol />
     </div>

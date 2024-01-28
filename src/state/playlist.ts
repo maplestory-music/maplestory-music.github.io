@@ -12,3 +12,4 @@ export const selectedPlaylistAtom = atom((get) => {
     ? 'multi'
     : selectedPlaylists[0];
 });
+export const trackExportSetAtom = atom<Set<string>>(new Set<string>());

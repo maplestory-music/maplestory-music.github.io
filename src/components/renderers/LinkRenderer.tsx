@@ -35,7 +35,7 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
   return hasLink ? (
     <span>
       <OverlayTrigger
-        delay={{ show: 250, hide: 100 }}
+        delay={{ show: 1000, hide: 100 }}
         overlay={<Tooltip id={`tooltip-ext-link`}>View on YouTube</Tooltip>}
       >
         <a
