@@ -144,6 +144,7 @@ const PlaylistBuilderPage: React.FC = () => {
         <div>
           <input
             type="file"
+            accept=".json"
             onChange={onFileChange}
             onClick={onFileInputClick}
           />
