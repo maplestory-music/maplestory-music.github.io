@@ -21,15 +21,23 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
   const [distinctKmstVersion, setDistinctKmstVersion] = useState(
     settings.distinctKmstVersion
   );
+  const [jsonOptimizedTrackIdCopy, setJsonOptimizedTrackIdCopy] = useState(
+    settings.jsonOptimizedTrackIdCopy
+  );
 
   const onModalSave = () => {
-    setSettings({ hideMinorTracks, distinctKmstVersion });
+    setSettings({
+      hideMinorTracks,
+      distinctKmstVersion,
+      jsonOptimizedTrackIdCopy,
+    });
     onModalClose();
   };
 
   const onModalShow = () => {
     setHideMinorTracks(settings.hideMinorTracks);
     setDistinctKmstVersion(settings.distinctKmstVersion);
+    setJsonOptimizedTrackIdCopy(settings.jsonOptimizedTrackIdCopy);
   };
 
   return (
@@ -62,6 +70,15 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
                 tooltip="Prevent collisions resulting from KMST version reset"
                 onChange={() => {
                   setDistinctKmstVersion((prev) => !prev);
+                }}
+              />
+              <SettingsModalToggle
+                id="jsonOptimizedTrackIdCopy"
+                label="JSON Optimized Track ID Copy"
+                checked={jsonOptimizedTrackIdCopy}
+                tooltip="Wrap track ID in JSON compatible syntax"
+                onChange={() => {
+                  setJsonOptimizedTrackIdCopy((prev) => !prev);
                 }}
               />
             </div>

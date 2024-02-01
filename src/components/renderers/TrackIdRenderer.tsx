@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { css } from '@emotion/react';
 import { getKey } from '../utils/PlaylistUtils';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useAtom } from 'jotai';
 import { trackExportSetAtom } from '../../state/playlist';
+import { useSettings } from '../../context/SettingsContext';
 
 export const TrackIdRenderer: React.FC<ICellRendererParams> = (params) => {
+  const { settings } = useSettings();
   const { data } = params;
   const key = useMemo(() => getKey(data.source.structure, data.filename), [
     data.source.structure,
@@ -18,6 +20,14 @@ export const TrackIdRenderer: React.FC<ICellRendererParams> = (params) => {
     key,
     trackExportSet,
   ]);
+
+  const onCopyTrackId = useCallback(() => {
+    if (settings.jsonOptimizedTrackIdCopy) {
+      navigator.clipboard.writeText(`"${key}",\n`);
+    } else {
+      navigator.clipboard.writeText(key);
+    }
+  }, [key, settings.jsonOptimizedTrackIdCopy]);
 
   const onExportSetChange = () => {
     if (trackInExportSet) {
@@ -40,9 +50,7 @@ export const TrackIdRenderer: React.FC<ICellRendererParams> = (params) => {
         css={css`
           margin: 0 5px;
         `}
-        onClick={() => {
-          navigator.clipboard.writeText(`"${key}",\n`);
-        }}
+        onClick={onCopyTrackId}
       >
         <OverlayTrigger
           delay={{ show: 1000, hide: 100 }}
