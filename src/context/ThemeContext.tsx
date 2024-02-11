@@ -27,6 +27,8 @@ export const ThemeProvider = ({
   }, []);
 
   useEffect(() => {
+    // Observe theme change and update React state
+    // Reactive switching of theme for React components that use the context
     const targetNode = document.documentElement;
     const observer = new MutationObserver((x) => {
       const node = x?.[0].target as HTMLElement;
