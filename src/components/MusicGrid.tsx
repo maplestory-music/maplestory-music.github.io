@@ -36,6 +36,7 @@ import {
   appQueuePoolAtom,
   filterTextAtom,
   gridFilteredAtom,
+  isPlayingAtom,
   locateSongAtom,
   playingStateAtom,
   queueRepeatAtom,
@@ -192,8 +193,10 @@ const MusicGrid: React.FC<{
   const locateSong = useAtomValue(locateSongAtom);
   const setGridFiltered = useSetAtom(gridFilteredAtom);
   const setAppQueuePool = useSetAtom(appQueuePoolAtom);
+  const setIsPlaying = useSetAtom(isPlayingAtom);
 
   const onGridSongChange: (song: string) => void = (song) => {
+    setIsPlaying(true);
     setPlayingState({
       currentSong: song,
       currentQueue: [],

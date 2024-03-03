@@ -6,7 +6,9 @@ import { padStart } from 'lodash-es';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { IPlayingState } from '../models/Player';
 import { selectedPlaylistAtom } from '../state/playlist';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { useEvent } from 'react-use';
+import { isPlayingAtom } from '../state/player';
 
 interface IMusicPlayerProps {
   playingState: IPlayingState;
@@ -17,6 +19,11 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const player = useRef<ReactPlayer>(null);
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
+  const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
+
+  useEvent('pausevideo', () => {
+    setIsPlaying(false);
+  });
 
   const onPreviousQueueSong: () => void = () => {
     if (playingState.currentQueueSong < 1) return;
@@ -40,8 +47,10 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
         `}
         ref={player}
         url={`https://youtu.be/${playingState.currentSong}`}
-        playing
+        playing={isPlaying}
         controls
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         onEnded={(): void => {
           if (player.current !== null) {
             if (!playingState.currentQueue.length) {

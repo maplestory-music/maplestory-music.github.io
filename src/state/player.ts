@@ -15,3 +15,4 @@ export const queueRepeatAtom = atom<boolean>(false);
 export const playingStateAtom = atom<IPlayingState>(emptyPlayingState);
 export const gridFilteredAtom = atom<boolean>(false);
 export const appQueuePoolAtom = atom<IMusicRecordGrid[]>([]);
+export const isPlayingAtom = atom<boolean>(false);

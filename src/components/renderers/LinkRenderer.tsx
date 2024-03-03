@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ICellRendererParams } from 'ag-grid-community';
+import { pauseVideoEvent } from '../../events/events';
 
 export interface ILinkRendererParams {
   title: string;
@@ -26,6 +27,7 @@ export const LinkRenderer: React.FC<ILinkRenderer> = (params) => {
     e.preventDefault();
   };
   const onExternalClick: () => void = () => {
+    window.dispatchEvent(pauseVideoEvent);
     gtag('event', 'ce_view_external_video', {
       ce_category: 'video',
       ce_youtube: params.youtube,

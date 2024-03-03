@@ -4,7 +4,11 @@ import MusicGrid from '../components/MusicGrid';
 import { MusicPlayer } from '../components/MusicPlayer';
 import { Header } from '../components/Header';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { emptyPlayingState, playingStateAtom } from '../state/player';
+import {
+  emptyPlayingState,
+  isPlayingAtom,
+  playingStateAtom,
+} from '../state/player';
 import SearchBar from '../components/SearchBar';
 import { useDataSourceState } from '../context/DataSourceContext';
 import Select from 'react-select';
@@ -33,6 +37,7 @@ const PlaylistPage: React.FC = () => {
     return getCustomPlaylistsMap();
   }, []);
   const [playingState, setPlayingState] = useAtom(playingStateAtom);
+  const setIsPlaying = useSetAtom(isPlayingAtom);
   const selectRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState<
     readonly { value: string; label: string; custom?: boolean }[]
@@ -87,6 +92,7 @@ const PlaylistPage: React.FC = () => {
   }, [dbFromWire, dbPlaylistMap, customPlaylistsMap, selectedOption]);
 
   const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
+    setIsPlaying(true);
     setPlayingState(
       (state): IPlayingState => {
         return {

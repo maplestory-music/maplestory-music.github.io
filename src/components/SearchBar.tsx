@@ -14,6 +14,7 @@ import {
   appQueuePoolAtom,
   filterTextAtom,
   gridFilteredAtom,
+  isPlayingAtom,
   locateSongAtom,
   playingStateAtom,
   queueRepeatAtom,
@@ -30,6 +31,7 @@ const SearchBar: React.FC = () => {
   const appQueuePool = useAtomValue(appQueuePoolAtom);
   const gridFiltered = useAtomValue(gridFilteredAtom);
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
+  const setIsPlaying = useSetAtom(isPlayingAtom);
 
   const onFilterTextChanged: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -50,6 +52,7 @@ const SearchBar: React.FC = () => {
   const onStartQueue = () => {
     const queueSongs = appQueuePool.filter((song) => song.youtube !== '');
     if (!queueSongs.length) return;
+    setIsPlaying(true);
     setPlayingState({
       currentSong: queueSongs[0].youtube,
       currentQueue: queueSongs,
@@ -69,6 +72,7 @@ const SearchBar: React.FC = () => {
       appQueuePool.filter((song) => song.youtube !== '')
     );
     if (!shuffledSongs.length) return;
+    setIsPlaying(true);
     setPlayingState({
       currentSong: shuffledSongs[0].youtube,
       currentQueue: shuffledSongs,
@@ -86,6 +90,7 @@ const SearchBar: React.FC = () => {
   const onRepeatQueue: () => void = () => {
     const newQueueRepeatVal = !queueRepeat;
     setQueueRepeat(newQueueRepeatVal);
+    setIsPlaying(true);
     setPlayingState(
       (state): IPlayingState => {
         return {
