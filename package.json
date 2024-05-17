@@ -40,15 +40,16 @@
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.12",
+    "cross-env": "^7.0.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.1.2",
     "source-map-explorer": "^2.5.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "analyze": "react-scripts build && source-map-explorer 'build/static/js/*.js'",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "cross-env GENERATE_SOURCEMAP=false NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "analyze": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build && source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
