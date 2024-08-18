@@ -25,6 +25,7 @@ import { ThemeIcon } from './components/ThemeIcon';
 import PlaylistPage from './pages/PlaylistPage';
 import PlaylistBuilderPage from './pages/PlaylistBuilderPage';
 import HotPage from './pages/HotPage';
+import { startCase } from 'lodash-es';
 
 const history = createBrowserHistory();
 
@@ -211,18 +212,17 @@ const Footer = (): ReactElement => {
 };
 
 const siteTitle = 'MapleStory Music - BGM & OST Database';
-const pageTitles: { [name: string]: string } = {
-  '/': siteTitle,
-  '/playlist': `${siteTitle} - Playlist`,
-  '/stats': `${siteTitle} - Stats`,
-  '/about': `${siteTitle} - About`,
-  '/playlist-builder': `${siteTitle} - Playlist Builder`,
+const getPageTitle = (path: string): string => {
+  if (path === '/') {
+    return siteTitle;
+  }
+  return `${siteTitle} | ${startCase(path)}`;
 };
 
 const Main = (): ReactElement => {
   const location = useLocation();
   useEffect(() => {
-    document.title = pageTitles[location.pathname] ?? siteTitle;
+    document.title = getPageTitle(location.pathname);
   }, [location]);
   return (
     <main>
