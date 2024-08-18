@@ -182,7 +182,7 @@ const PlaylistPage: React.FC = () => {
         </Dropdown>
       </div>
       <SearchBar />
-      <MusicGrid dataSource={dataSource} disableInitSort enableTrackIdCol />
+      <MusicGrid dataSource={dataSource} enableTrackIdCol />
     </div>
   );
 };

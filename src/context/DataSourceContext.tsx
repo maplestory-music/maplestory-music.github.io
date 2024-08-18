@@ -11,6 +11,8 @@ import { IPlaylist } from '../models/Playlist';
 import { playlistMapAtom } from '../state/playlist';
 import { KMST_GENERATION_CUTOFF_DATE } from '../constants';
 import { convertToPlaylistMap } from '../components/utils/PlaylistUtils';
+import { hotTracksAtom } from '../state/hot';
+import { IHotTrackResponse } from '../models/HotTracks';
 
 type State = IMusicRecordGrid[];
 type DataSourceProviderProps = { children: React.ReactNode };
@@ -39,6 +41,7 @@ export const DataSourceProvider: ({
 }: DataSourceProviderProps) => React.ReactElement = ({ children }) => {
   const [state, setState] = React.useState<State>([]);
   const setPlaylistMap = useSetAtom(playlistMapAtom);
+  const setHotTracks = useSetAtom(hotTracksAtom);
   const { settings } = useSettings();
 
   useEffect(() => {
@@ -84,11 +87,22 @@ export const DataSourceProvider: ({
       .then((playlist: IPlaylist[]) => {
         setPlaylistMap(convertToPlaylistMap(playlist));
       });
+    fetch(
+      'https://raw.githubusercontent.com/maplestory-music/stats/prod/top25.json'
+    )
+      .then((result) => result.json())
+      .then((response: IHotTrackResponse) => {
+        setHotTracks(response.data);
+      })
+      .catch((e) => {
+        console.error('Error parsing hot tracks.', e);
+      });
   }, [
     setState,
     settings.hideMinorTracks,
     settings.distinctKmstVersion,
     setPlaylistMap,
+    setHotTracks,
   ]);
 
   return (

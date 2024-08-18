@@ -24,6 +24,7 @@ import { SettingsProvider } from './context/SettingsContext';
 import { ThemeIcon } from './components/ThemeIcon';
 import PlaylistPage from './pages/PlaylistPage';
 import PlaylistBuilderPage from './pages/PlaylistBuilderPage';
+import HotPage from './pages/HotPage';
 
 const history = createBrowserHistory();
 
@@ -75,6 +76,9 @@ const Header: React.FC = () => {
           <Nav className="mr-auto">
             <Nav.Link as={NavLink} exact to="/" onClick={onNavLinkClick}>
               Home
+            </Nav.Link>
+            <Nav.Link as={NavLink} exact to="/hot" onClick={onNavLinkClick}>
+              Hot
             </Nav.Link>
             <Nav.Link
               as={NavLink}
@@ -228,6 +232,7 @@ const Main = (): ReactElement => {
         <Route path="/stats" component={Stats} />
         <Route path="/about" component={About} />
         <Route path="/playlist-builder" component={PlaylistBuilder} />
+        <Route path="/hot" component={Hot} />
       </Switch>
     </main>
   );
@@ -275,6 +280,12 @@ const PlaylistBuilder = (): ReactElement => (
     className="About"
   >
     <PlaylistBuilderPage />
+  </div>
+);
+
+const Hot = (): ReactElement => (
+  <div className="App">
+    <HotPage />
   </div>
 );
 

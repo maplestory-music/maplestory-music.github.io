@@ -43,7 +43,10 @@ const HomePage: React.FC = () => {
         />
       )}
       <SearchBar />
-      <MusicGrid dataSource={dataSource} />
+      <MusicGrid
+        dataSource={dataSource}
+        colState={[{ colId: 'source.date', sort: 'desc' }]}
+      />
     </div>
   );
 };

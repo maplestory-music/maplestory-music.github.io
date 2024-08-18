@@ -16,6 +16,7 @@ import {
   ModelUpdatedEvent,
   ValueGetterParams,
   SortChangedEvent,
+  ColumnState,
 } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -76,9 +77,10 @@ const getGridOptions: () => GridOptions = () => {
 
 const getColDef: (
   onGridSongChange: (song: string) => void,
-  enableTrackIdCol?: boolean
-) => ColDef[] = (onGridSongChange, enableTrackIdCol) => {
-  return [
+  enableTrackIdCol?: boolean,
+  enableHotCountCol?: boolean
+) => ColDef[] = (onGridSongChange, enableTrackIdCol, enableHotCountCol) => {
+  const output: ColDef[] = [
     {
       headerName: '',
       field: 'mark',
@@ -156,6 +158,16 @@ const getColDef: (
       cellStyle: ClientVersionCellStyle,
     },
   ];
+  if (enableHotCountCol) {
+    output.splice(1, 0, {
+      headerName: '',
+      field: 'count',
+      width: 55,
+      minWidth: 25,
+      maxWidth: 75,
+    });
+  }
+  return output;
 };
 
 const scrollToLocatedRow = (rowIndex: number | null): void => {
@@ -178,9 +190,10 @@ const scrollToLocatedRow = (rowIndex: number | null): void => {
 
 const MusicGrid: React.FC<{
   dataSource: IMusicRecordGrid[];
-  disableInitSort?: boolean;
+  colState?: ColumnState[];
   enableTrackIdCol?: boolean;
-}> = ({ dataSource, disableInitSort, enableTrackIdCol }) => {
+  enableHotCountCol?: boolean;
+}> = ({ dataSource, colState, enableTrackIdCol, enableHotCountCol }) => {
   const { i18n } = useTranslation();
   const query = useAtomValue(filterTextAtom);
   const gridApi = useRef<GridApi | null>(null);
@@ -205,7 +218,11 @@ const MusicGrid: React.FC<{
     });
   };
 
-  colDef.current = getColDef(onGridSongChange, enableTrackIdCol);
+  colDef.current = getColDef(
+    onGridSongChange,
+    enableTrackIdCol,
+    enableHotCountCol
+  );
   gridOptions.current = getGridOptions();
 
   useEffect(() => {
@@ -244,14 +261,17 @@ const MusicGrid: React.FC<{
   const onGridReady = (params: GridReadyEvent): void => {
     gridApi.current = params.api;
     gridColumnApi.current = params.columnApi;
-    if (!disableInitSort) {
-      const columnState = { state: [{ colId: 'source.date', sort: 'desc' }] };
+    if (colState) {
+      const columnState = { state: colState };
       params.columnApi.applyColumnState(columnState);
     }
   };
 
   const onFirstDataRendered = (event: FirstDataRenderedEvent): void => {
-    event.columnApi.autoSizeAllColumns();
+    const cols = event.columnApi
+      .getAllDisplayedColumns()
+      .filter((c) => c.getId() !== 'count');
+    event.columnApi.autoSizeColumns(cols);
   };
 
   const setQueuePool: (
