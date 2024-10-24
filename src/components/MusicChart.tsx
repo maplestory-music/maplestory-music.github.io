@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useTheme } from '../context/ThemeContext';
-import { themeGlobalDark, themeGlobalLight } from './charts/ChartTheme';
 
 interface IMusicChartProps {
   styles?: SerializedStyles;
@@ -14,15 +13,14 @@ interface IMusicChartProps {
 
 export const MusicChart: React.FC<IMusicChartProps> = (props) => {
   const appTheme = useTheme();
+  const [classTheme, setClassTheme] = useState('');
 
   useEffect(() => {
-    const themeConfig = appTheme.darkMode ? themeGlobalDark : themeGlobalLight;
-    const newOptions = {
-      ...props.options,
-      ...themeConfig,
-    };
-    props.chartComponent.current?.chart?.update(newOptions);
-  }, [props.chartComponent, props.options, appTheme]);
+    const themeClass = appTheme.darkMode
+      ? 'highcharts-dark'
+      : 'highcharts-light';
+    setClassTheme(themeClass);
+  }, [appTheme]);
 
   return (
     <div
@@ -39,7 +37,7 @@ export const MusicChart: React.FC<IMusicChartProps> = (props) => {
     >
       <HighchartsReact
         containerProps={{
-          className: 'react-highcharts-container',
+          className: `react-highcharts-container ${classTheme}`,
           style: { width: '100%', height: '100%' },
         }}
         highcharts={Highcharts}

@@ -42,6 +42,7 @@ const MonthlyFrequencyChart: React.FC<ICommonChartProps> = (props) => {
   const options: Highcharts.Options = {
     chart: {
       type: 'line',
+      styledMode: true,
     },
     title: {
       text: 'Song frequency per month',

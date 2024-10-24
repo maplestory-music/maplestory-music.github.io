@@ -4,9 +4,8 @@ import React, { useRef } from 'react';
 import { useDataSourceState } from '../../context/DataSourceContext';
 import { IMusicRecordGrid } from '../../models/DataModel';
 import Highcharts, { DataLabelsOptions } from 'highcharts';
-import { complement } from 'polished';
 import { ICommonChartProps } from './CommonChartProps';
-import { cornFlowerBlue } from '../../constants';
+import { cornFlowerBlueComplIdx, cornFlowerBlueIdx } from '../../constants';
 import { MapleClient } from '../../models/MapleClient';
 import { MusicChart } from '../MusicChart';
 import HighchartsReact from 'highcharts-react-official';
@@ -29,6 +28,7 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
   const options: Highcharts.Options = {
     chart: {
       type: 'pie',
+      styledMode: true,
     },
     title: {
       text: 'Distribution of song region',
@@ -39,10 +39,10 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
         name: 'Total Songs',
         type: 'pie',
         data: [
-          { name: 'Domestic', color: cornFlowerBlue, y: yearlyKorea },
+          { name: 'Domestic', colorIndex: cornFlowerBlueIdx, y: yearlyKorea },
           {
             name: 'Overseas',
-            color: complement(cornFlowerBlue),
+            colorIndex: cornFlowerBlueComplIdx,
             y: yearlyOverseas,
           },
         ],
@@ -58,7 +58,7 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
         data: [
           {
             name: 'Korea',
-            color: cornFlowerBlue,
+            colorIndex: cornFlowerBlueIdx,
             y: yearlyKorea,
           },
           { name: 'Japan', y: getYearlyRegionalCount(MapleClient.Japan) },

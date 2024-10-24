@@ -60,6 +60,7 @@ const MonthlyFrequencyStackedChart: React.FC = () => {
   const options: Highcharts.Options = {
     chart: {
       type: 'area',
+      styledMode: true,
     },
     title: {
       text: 'Song frequency per month (all years)',
