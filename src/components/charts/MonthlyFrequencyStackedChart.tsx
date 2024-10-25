@@ -10,6 +10,7 @@ import Highcharts from 'highcharts';
 import { MapleClient } from '../../models/MapleClient';
 import { get } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
+import { START_YEAR } from '../utils/ChartUtils';
 
 type ClientBucket = { [key in MapleClient]: number[] };
 const getEmptyBucket = (): ClientBucket => ({
@@ -37,7 +38,7 @@ function getClient(clientSource: string) {
 function getMonthsForLocale(locale = 'en-US') {
   const format = new Intl.DateTimeFormat(locale, { month: 'long' }).format;
   return [...Array(12).keys()].map((m) =>
-    format(new Date(Date.UTC(2003, (m + 1) % 12)))
+    format(new Date(Date.UTC(START_YEAR, (m + 1) % 12)))
   );
 }
 
@@ -99,7 +100,7 @@ const MonthlyFrequencyStackedChart: React.FC = () => {
   return (
     <MusicChart
       styles={css`
-        width: 55vw;
+        width: 35vw;
         flex: 2;
       `}
       options={options}

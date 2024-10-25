@@ -7,13 +7,15 @@ import MonthlyFrequencyChart from '../components/charts/MonthlyFrequencyChart';
 import RegionalDistributionChart from '../components/charts/RegionalDistributionChart';
 import { FolderStructureGrid } from '../components/FolderStructureGrid';
 import MonthlyFrequencyStackedChart from '../components/charts/MonthlyFrequencyStackedChart';
+import { START_YEAR } from '../components/utils/ChartUtils';
+import YearlyFrequencyChart from '../components/charts/YearlyFrequencyChart';
 
 const StatsPage: React.FC = () => {
   const currentYear = getYear(new Date());
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const years = Array(getYear(new Date()) - 2003 + 1)
+  const years = Array(getYear(new Date()) - START_YEAR + 1)
     .fill(0)
-    .map((_, idx) => 2003 + idx);
+    .map((_, idx) => START_YEAR + idx);
 
   const onChangeYear: (e: React.ChangeEvent<HTMLSelectElement>) => void = (
     e
@@ -63,6 +65,7 @@ const StatsPage: React.FC = () => {
         <Tab eventKey="overview" title="Overview">
           <>
             <MonthlyFrequencyStackedChart />
+            <YearlyFrequencyChart />
           </>
         </Tab>
       </Tabs>
