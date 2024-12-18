@@ -344,6 +344,7 @@ const MusicGrid: React.FC<{
         onModelUpdated={onModelUpdated}
         onGridReady={onGridReady}
         reactUi={true}
+        popupParent={document.querySelector('body') || undefined}
         context={gridContext}
       ></AgGridReact>
     </div>

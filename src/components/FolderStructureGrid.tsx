@@ -172,6 +172,7 @@ export const FolderStructureGrid: React.FC = () => {
         gridOptions={gridOptions.current}
         onGridReady={onGridReady}
         reactUi={true}
+        popupParent={document.querySelector('body') || undefined}
       ></AgGridReact>
     </div>
   );
