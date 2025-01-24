@@ -19,8 +19,8 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
-  const [inputValue, setInputValue] = useState<string>(
-    (playingState.currentQueueSong + 1).toString()
+  const [inputValue, setInputValue] = useState(
+    playingState.currentQueueSong + 1
   );
 
   useEvent('pausevideo', () => {
@@ -30,34 +30,30 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const onPreviousQueueSong = () => {
     if (playingState.currentQueueSong < 1) return;
     setCurrentQueueSong(playingState.currentQueueSong - 1);
-    setInputValue(playingState.currentQueueSong.toString());
+    setInputValue(playingState.currentQueueSong);
   };
 
   const onNextQueueSong = () => {
     if (playingState.currentQueueSong === playingState.currentQueue.length - 1)
       return;
     setCurrentQueueSong(playingState.currentQueueSong + 1);
-    setInputValue((playingState.currentQueueSong + 2).toString());
+    setInputValue(playingState.currentQueueSong + 2);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    if (Number.isInteger(Number(newValue))) {
-      setInputValue(newValue);
-    }
-  };
-
-  const handleInputBlur = () => {
-    const userInput = parseInt(inputValue, 10) - 1;
+    const userInput = parseInt(e.target.value, 10);
     if (isNaN(userInput)) {
       return;
     }
-    const newQueueSong = Math.max(
-      0,
-      Math.min(userInput, playingState.currentQueue.length - 1)
+    const newInputValue = Math.max(
+      1,
+      Math.min(userInput, playingState.currentQueue.length)
     );
-    setCurrentQueueSong(newQueueSong);
-    setInputValue((newQueueSong + 1).toString());
+    setInputValue(newInputValue);
+  };
+
+  const handleInputBlur = () => {
+    setCurrentQueueSong(inputValue - 1);
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
