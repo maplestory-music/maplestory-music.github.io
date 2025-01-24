@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { ButtonGroup, Button, FormControl } from 'react-bootstrap';
 import { IPlayingState } from '../models/Player';
@@ -23,6 +23,10 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
     playingState.currentQueueSong + 1
   );
 
+  useEffect(() => {
+    setInputValue(playingState.currentQueueSong + 1);
+  }, [playingState.currentQueueSong]);
+
   useEvent('pausevideo', () => {
     setIsPlaying(false);
   });
@@ -30,14 +34,12 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const onPreviousQueueSong = () => {
     if (playingState.currentQueueSong < 1) return;
     setCurrentQueueSong(playingState.currentQueueSong - 1);
-    setInputValue(playingState.currentQueueSong);
   };
 
   const onNextQueueSong = () => {
     if (playingState.currentQueueSong === playingState.currentQueue.length - 1)
       return;
     setCurrentQueueSong(playingState.currentQueueSong + 1);
-    setInputValue(playingState.currentQueueSong + 2);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
