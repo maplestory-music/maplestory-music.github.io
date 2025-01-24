@@ -19,6 +19,10 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
+
+  useEffect(() => {
+    localStorage.setItem('playingState', JSON.stringify(playingState));
+  }, [playingState.currentQueueSong]);
   const [inputValue, setInputValue] = useState(
     playingState.currentQueueSong + 1
   );
