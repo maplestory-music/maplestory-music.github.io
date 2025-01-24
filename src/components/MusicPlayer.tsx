@@ -49,6 +49,9 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
 
   const handleInputBlur = () => {
     const userInput = parseInt(inputValue, 10) - 1;
+    if (isNaN(userInput)) {
+      return;
+    }
     const newQueueSong = Math.max(
       0,
       Math.min(userInput, playingState.currentQueue.length - 1)
