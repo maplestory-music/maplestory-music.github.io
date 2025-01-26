@@ -59,7 +59,7 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || e.key === 'Escape') {
       (e.target as HTMLInputElement).blur();
     }
   };
