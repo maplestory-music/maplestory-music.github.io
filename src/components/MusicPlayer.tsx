@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { padStart } from 'lodash-es';
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { ButtonGroup, Button, FormControl } from 'react-bootstrap';
 import { IPlayingState } from '../models/Player';
 import { selectedPlaylistAtom } from '../state/playlist';
 import { useAtom, useAtomValue } from 'jotai';
@@ -20,20 +19,49 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
+  const [inputValue, setInputValue] = useState(
+    playingState.currentQueueSong + 1
+  );
+
+  useEffect(() => {
+    setInputValue(playingState.currentQueueSong + 1);
+  }, [playingState.currentQueueSong]);
 
   useEvent('pausevideo', () => {
     setIsPlaying(false);
   });
 
-  const onPreviousQueueSong: () => void = () => {
+  const onPreviousQueueSong = () => {
     if (playingState.currentQueueSong < 1) return;
     setCurrentQueueSong(playingState.currentQueueSong - 1);
   };
 
-  const onNextQueueSong: () => void = () => {
+  const onNextQueueSong = () => {
     if (playingState.currentQueueSong === playingState.currentQueue.length - 1)
       return;
     setCurrentQueueSong(playingState.currentQueueSong + 1);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const userInput = parseInt(e.target.value, 10);
+    if (isNaN(userInput)) {
+      return;
+    }
+    const newInputValue = Math.max(
+      1,
+      Math.min(userInput, playingState.currentQueue.length)
+    );
+    setInputValue(newInputValue);
+  };
+
+  const handleInputBlur = () => {
+    setCurrentQueueSong(inputValue - 1);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Escape') {
+      (e.target as HTMLInputElement).blur();
+    }
   };
 
   return (
@@ -98,22 +126,40 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
             >
               <i className="fa fa-step-backward"></i>
             </Button>
-            <span
+            <div
               css={css`
-                background-color: #343a40;
-                border-color: #343a40;
-                color: white;
+                display: inline-flex;
+                align-items: center;
                 padding: 0.25rem 0.5rem;
+                background-color: #343a40;
+                color: white;
                 font-size: 0.875rem;
-                line-height: 1.5;
-                border: 1px solid transparent;
-                margin-left: -1px;
               `}
-            >{`${padStart(
-              (playingState.currentQueueSong + 1).toString(),
-              playingState.currentQueue.length.toString().length,
-              '0'
-            )} | ${playingState.currentQueue.length}`}</span>
+            >
+              <FormControl
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                onBlur={handleInputBlur}
+                onKeyDown={handleInputKeyDown}
+                css={css`
+                  height: 100%;
+                  width: 6ch;
+                  padding: 0.25rem;
+                  background-color: inherit;
+                  color: inherit;
+                  font-size: 0.875rem;
+                  text-align: center;
+                `}
+              />
+              <span
+                css={css`
+                  margin-left: 5px;
+                `}
+              >
+                / {playingState.currentQueue.length}
+              </span>
+            </div>
             <Button
               variant="outline-primary"
               onClick={onNextQueueSong}
