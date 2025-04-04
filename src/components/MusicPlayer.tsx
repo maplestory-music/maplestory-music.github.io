@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { padStart } from 'lodash-es';
 import { ButtonGroup, Button } from 'react-bootstrap';
@@ -20,6 +20,10 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
   const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
+
+  useEffect(() => {
+    localStorage.setItem('playingState', JSON.stringify(playingState));
+  }, [playingState]);
 
   useEvent('pausevideo', () => {
     setIsPlaying(false);

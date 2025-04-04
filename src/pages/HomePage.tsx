@@ -18,7 +18,10 @@ const HomePage: React.FC = () => {
   const setIsPlaying = useSetAtom(isPlayingAtom);
 
   useEffect(() => {
-    setPlayingState(emptyPlayingState);
+    const savedPlayingState = localStorage.getItem('playingState');
+    setPlayingState(
+      savedPlayingState ? JSON.parse(savedPlayingState) : emptyPlayingState
+    );
   }, [setPlayingState]);
 
   const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
