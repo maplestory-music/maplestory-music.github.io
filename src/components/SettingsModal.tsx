@@ -24,12 +24,16 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
   const [jsonOptimizedTrackIdCopy, setJsonOptimizedTrackIdCopy] = useState(
     settings.jsonOptimizedTrackIdCopy
   );
+  const [savePlaylistState, setSavePlaylistState] = useState(
+    settings.savePlaylistState
+  );
 
   const onModalSave = () => {
     setSettings({
       hideMinorTracks,
       distinctKmstVersion,
       jsonOptimizedTrackIdCopy,
+      savePlaylistState,
     });
     onModalClose();
   };
@@ -38,6 +42,7 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
     setHideMinorTracks(settings.hideMinorTracks);
     setDistinctKmstVersion(settings.distinctKmstVersion);
     setJsonOptimizedTrackIdCopy(settings.jsonOptimizedTrackIdCopy);
+    setSavePlaylistState(settings.savePlaylistState);
   };
 
   return (
@@ -79,6 +84,15 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({
                 tooltip="Wrap track ID in JSON compatible syntax"
                 onChange={() => {
                   setJsonOptimizedTrackIdCopy((prev) => !prev);
+                }}
+              />
+              <SettingsModalToggle
+                id="savePlaylistState"
+                label="Save Current Playlist"
+                checked={savePlaylistState}
+                tooltip="Saves your current playlist in the browser's storage. Newly released tracks will not be added automatically."
+                onChange={() => {
+                  setSavePlaylistState((prev) => !prev);
                 }}
               />
             </div>

@@ -11,18 +11,22 @@ import {
 } from '../state/player';
 import SearchBar from '../components/SearchBar';
 import { useDataSourceState } from '../context/DataSourceContext';
+import { useSettings } from '../context/SettingsContext';
+import { PLAYING_STATE_KEY } from '../constants';
 
 const HomePage: React.FC = () => {
+  const { settings } = useSettings();
   const dataSource = useDataSourceState();
   const [playingState, setPlayingState] = useAtom(playingStateAtom);
   const setIsPlaying = useSetAtom(isPlayingAtom);
 
   useEffect(() => {
-    const savedPlayingState = localStorage.getItem('playingState');
+    if (!settings.savePlaylistState) return;
+    const savedPlayingState = localStorage.getItem(PLAYING_STATE_KEY);
     setPlayingState(
       savedPlayingState ? JSON.parse(savedPlayingState) : emptyPlayingState
     );
-  }, [setPlayingState]);
+  }, [setPlayingState, settings.savePlaylistState]);
 
   const setCurrentQueueSong: (newVal: number) => void = (newVal) => {
     setIsPlaying(true);
