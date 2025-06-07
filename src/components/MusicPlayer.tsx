@@ -8,6 +8,8 @@ import { selectedPlaylistAtom } from '../state/playlist';
 import { useAtom, useAtomValue } from 'jotai';
 import { useEvent } from 'react-use';
 import { isPlayingAtom } from '../state/player';
+import { useSettings } from '../context/SettingsContext';
+import { PLAYING_STATE_KEY } from '../constants';
 
 interface IMusicPlayerProps {
   playingState: IPlayingState;
@@ -15,6 +17,7 @@ interface IMusicPlayerProps {
 }
 
 export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
+  const { settings } = useSettings();
   const player = useRef<ReactPlayer>(null);
   const { playingState, setCurrentQueueSong } = props;
   const selectedPlaylist = useAtomValue(selectedPlaylistAtom);
@@ -22,6 +25,14 @@ export const MusicPlayer: React.FC<IMusicPlayerProps> = (props) => {
   const [inputValue, setInputValue] = useState(
     playingState.currentQueueSong + 1
   );
+
+  useEffect(() => {
+    if (settings.savePlaylistState) {
+      localStorage.setItem(PLAYING_STATE_KEY, JSON.stringify(playingState));
+    } else {
+      localStorage.removeItem(PLAYING_STATE_KEY);
+    }
+  }, [playingState, settings.savePlaylistState]);
 
   useEffect(() => {
     setInputValue(playingState.currentQueueSong + 1);

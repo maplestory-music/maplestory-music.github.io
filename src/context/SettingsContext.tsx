@@ -6,6 +6,7 @@ interface ISettings {
   hideMinorTracks: boolean;
   distinctKmstVersion: boolean;
   jsonOptimizedTrackIdCopy: boolean;
+  savePlaylistState: boolean;
 }
 
 type SettingsContextOutput = {
@@ -21,6 +22,7 @@ const defaultSettings: ISettings = {
   hideMinorTracks: false,
   distinctKmstVersion: false,
   jsonOptimizedTrackIdCopy: false,
+  savePlaylistState: false,
 };
 
 function getDefaultSettings(): ISettings {
