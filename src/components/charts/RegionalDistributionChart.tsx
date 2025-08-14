@@ -68,6 +68,10 @@ const RegionalDistributionChart: React.FC<ICommonChartProps> = (props) => {
           { name: 'SEA', y: getYearlyRegionalCount(MapleClient.SEA) },
           { name: 'Global', y: getYearlyRegionalCount(MapleClient.Global) },
           { name: 'Brazil', y: getYearlyRegionalCount(MapleClient.Brazil) },
+          {
+            name: 'MapleStory N',
+            y: getYearlyRegionalCount(MapleClient.MapleStoryN),
+          },
         ],
         size: '100%',
         innerSize: '70%',

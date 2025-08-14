@@ -5,6 +5,7 @@ export enum MapleClient {
   Taiwan = 'TMS',
   SEA = 'MSEA',
   Global = 'GMS',
+  MapleStoryN = 'MSN',
   // Defunct
   Thailand = 'ThMS',
   Brazil = 'BMS',

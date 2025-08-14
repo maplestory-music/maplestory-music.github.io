@@ -22,6 +22,7 @@ const getEmptyBucket = (): ClientBucket => ({
   GMS: new Array(12).fill(0),
   ThMS: new Array(12).fill(0),
   BMS: new Array(12).fill(0),
+  MSN: new Array(12).fill(0),
 });
 const allClients = ['KMS', 'JMS', 'CMS', 'TMS', 'MSEA', 'GMS', 'ThMS', 'BMS'];
 
